@@ -67,7 +67,7 @@ public class BodyDamageTab extends TabBase {
         if (LegendaryTabs.curiosLoaded)
             TabsMenu.addTabToScreen(this, CuriosScreenV2.class, (player) -> 176, (player) -> 166, 50);
 
-        if (LegendaryTabs.legendarySurvivalOverhaulLoaded)
+        if (LegendaryTabs.legendarySurvivalOverhaulLoaded && Config.Baked.includeOpenedScreenTab)
             TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 50);
 
         if (LegendaryTabs.reskillableLoaded)

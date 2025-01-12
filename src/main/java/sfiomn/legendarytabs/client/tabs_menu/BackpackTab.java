@@ -84,7 +84,7 @@ public class BackpackTab extends TabBase {
         if (LegendaryTabs.cosmeticArmorLoaded)
             TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 20);
 
-        if (LegendaryTabs.backpackedLoaded) {
+        if (LegendaryTabs.backpackedLoaded && Config.Baked.includeOpenedScreenTab) {
             TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 20);
         }
     }

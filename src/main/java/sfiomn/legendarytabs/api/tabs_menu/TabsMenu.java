@@ -5,7 +5,9 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.ScreenEvent;
+import sfiomn.legendarytabs.LegendaryTabs;
 import sfiomn.legendarytabs.client.screens.TabButton;
+import sfiomn.legendarytabs.config.Config;
 
 import java.util.*;
 import java.util.function.Function;
@@ -54,7 +56,7 @@ public class TabsMenu {
 
             if (TabsMenu.topScreenPos - TAB_HEIGHT >= 0) {
                 int tabPositionIndex = 0;
-                int remainingWidth = screenInfo.width.apply(Minecraft.getInstance().player);
+                int remainingWidth = screenInfo.width.apply(Minecraft.getInstance().player) - Config.Baked.tabsMenuOffsetX;
                 for (List<TabBase> tabBases: screenInfo.tabs.values()) {
                     if (remainingWidth < TAB_WIDTH + 1)
                         break;
@@ -78,6 +80,7 @@ public class TabsMenu {
     }
 
     public static void register(TabBase tabBase) {
+        LegendaryTabs.LOGGER.info("Tab " + tabBase.getClass().getName() + " registered");
         tabBase.initTabOnScreens();
     }
 

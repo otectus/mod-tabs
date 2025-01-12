@@ -135,6 +135,8 @@ repositories {
         name = "CurseForge"
         url = "https://minecraft.curseforge.com/api/maven/"
     }
+
+    maven { url "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -153,17 +155,18 @@ dependencies {
     implementation(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}"))
     implementation(fg.deobf("curse.maven:legendarysurvivaloverhaul-840254:6058277"))
     implementation(fg.deobf("curse.maven:reskillablereimagined-1170464:6050969"))
+    implementation(fg.deobf("curse.maven:architectury-419699:5137938"))
     implementation(fg.deobf("curse.maven:ftbquest-289412:5816794"))
-    implementation(fg.deobf("curse.maven:cosmeticarmor-237307:4600191"))
+    implementation(fg.deobf("curse.maven:ftbteams-404468:5267190"))
+    compileOnly(fg.deobf("curse.maven:cosmeticarmor-237307:4600191"))
     implementation(fg.deobf("curse.maven:backpacked-352835:5813547"))
     implementation(fg.deobf("curse.maven:framework-549225:5911986"))
-
     compileOnly fg.deobf("curse.maven:quark-243121:5594847")
     compileOnly(fg.deobf("curse.maven:reskillable-981352:5997519"))
+    implementation(fg.deobf("curse.maven:xaerosmap-317780:5987149"))
+    compileOnly(fg.deobf("curse.maven:journeymap-32274:5789363"))
 
-    implementation(fg.deobf("curse.maven:architectury-419699:5137938"))
-    implementation(fg.deobf("curse.maven:ftblibrary-404465:5925398"))
-    implementation(fg.deobf("curse.maven:ftbteams-404468:5267190"))
+    runtimeOnly(fg.deobf("curse.maven:ftblibrary-404465:6016763"))
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

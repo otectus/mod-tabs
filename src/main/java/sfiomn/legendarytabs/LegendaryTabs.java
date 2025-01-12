@@ -39,6 +39,8 @@ public class LegendaryTabs
     public static boolean ftbTeamsLoaded = false;
     public static boolean quarkOdditiesLoaded = false;
     public static boolean cosmeticArmorLoaded = false;
+    public static boolean xaerosMapLoaded = false;
+    public static boolean journeyMapLoaded = false;
 
     public LegendaryTabs(FMLJavaModLoadingContext context)
     {
@@ -67,6 +69,8 @@ public class LegendaryTabs
         quarkOdditiesLoaded = ModList.get().isLoaded("quarkoddities");
         legendarySurvivalOverhaulLoaded = ModList.get().isLoaded("legendarysurvivaloverhaul");
         cosmeticArmorLoaded = ModList.get().isLoaded("cosmeticarmorreworked");
+        xaerosMapLoaded = ModList.get().isLoaded("xaeroworldmap");
+        journeyMapLoaded = ModList.get().isLoaded("journeymap");
 
         if (backpackedLoaded)
             LOGGER.debug("Backpacked is loaded, enabling compatibility");
@@ -94,6 +98,12 @@ public class LegendaryTabs
 
         if (cosmeticArmorLoaded)
             LOGGER.debug("Cosmetic Armor is loaded, enabling compatibility");
+
+        if (xaerosMapLoaded)
+            LOGGER.debug("Xaero's Map is loaded, enabling compatibility");
+
+        if (journeyMapLoaded)
+            LOGGER.debug("Journey Map is loaded, enabling compatibility");
     }
 
     private void onModConfigLoadEvent(ModConfigEvent.Loading event)
@@ -135,6 +145,10 @@ public class LegendaryTabs
                 TabsMenu.register(new ReskillableTab());
             if (LegendaryTabs.reskillableReimaginedLoaded)
                 TabsMenu.register(new ReskillableReimaginedTab());
+            if (LegendaryTabs.xaerosMapLoaded)
+                TabsMenu.register(new XaerosMapTab());
+            if (LegendaryTabs.journeyMapLoaded)
+                TabsMenu.register(new JourneyMapTab());
         }
     }
 }

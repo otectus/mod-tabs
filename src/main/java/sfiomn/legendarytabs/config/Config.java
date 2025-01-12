@@ -1,7 +1,6 @@
 package sfiomn.legendarytabs.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,10 +46,14 @@ public class Config
 		public final ForgeConfigSpec.BooleanValue bodyDamageTabEnabled;
 		public final ForgeConfigSpec.BooleanValue reskillableTabEnabled;
 		public final ForgeConfigSpec.BooleanValue ftbQuestsTabEnabled;
+		public final ForgeConfigSpec.BooleanValue xaerosMapTabEnabled;
+		public final ForgeConfigSpec.BooleanValue journeyMapTabEnabled;
 		public final ForgeConfigSpec.BooleanValue ftbTeamsTabEnabled;
 
 		public final ForgeConfigSpec.IntValue tabsMenuOffsetX;
 		public final ForgeConfigSpec.IntValue tabsMenuOffsetY;
+
+		public final ForgeConfigSpec.BooleanValue includeOpenedScreenTab;
 
 		Client(ForgeConfigSpec.Builder builder)
 		{
@@ -60,6 +63,9 @@ public class Config
 					.defineInRange("Season Cards Display X Offset", 2, -10000, 10000);
 			tabsMenuOffsetY = builder
 					.defineInRange("Season Cards Display Y Offset", 0, -10000, 10000);
+			includeOpenedScreenTab = builder
+					.comment(" If enabled, show current tab opened in the tabs menu.")
+					.define("Include Opened Screen Tab", true);
 			inventoryTabEnabled = builder
 					.comment(" If enabled, show the inventory button in the tabs menu.")
 					.define("Inventory Tab Enabled ", true);
@@ -75,6 +81,12 @@ public class Config
 			ftbQuestsTabEnabled = builder
 					.comment(" If enabled, show the ftb quests button in the tabs menu.")
 					.define("FTB Quests Tab Enabled ", true);
+			xaerosMapTabEnabled = builder
+					.comment(" If enabled, show the map button for Xaero's Map mod in the tabs menu.")
+					.define("Xaero's Map Tab Enabled ", true);
+			journeyMapTabEnabled = builder
+					.comment(" If enabled, show the map button for Journey Map mod in the tabs menu.")
+					.define("Journey Map Tab Enabled ", true);
 			ftbTeamsTabEnabled = builder
 					.comment(" If enabled, show the ftb teams button in the tabs menu.")
 					.define("FTB Teams Tab Enabled ", true);
@@ -93,11 +105,15 @@ public class Config
 	public static class Baked
 	{
 		// Tabs Menu
+		public static boolean includeOpenedScreenTab;
+
 		public static int tabsMenuOffsetX;
 		public static int tabsMenuOffsetY;
 
 		public static boolean inventoryTabEnabled;
 		public static boolean backpackTabEnabled;
+		public static boolean xaerosMapTabEnabled;
+		public static boolean journeyMapTabEnabled;
 		public static boolean bodyDamageTabEnabled;
 		public static boolean reskillableTabEnabled;
 		public static boolean ftbQuestsTabEnabled;
@@ -108,6 +124,8 @@ public class Config
 			LegendaryTabs.LOGGER.debug("Load Client configuration from file");
 			try
 			{
+				includeOpenedScreenTab = CLIENT.includeOpenedScreenTab.get();
+
 				tabsMenuOffsetX = CLIENT.tabsMenuOffsetX.get();
 				tabsMenuOffsetY = CLIENT.tabsMenuOffsetY.get();
 
@@ -116,6 +134,8 @@ public class Config
 				bodyDamageTabEnabled = CLIENT.bodyDamageTabEnabled.get();
 				reskillableTabEnabled = CLIENT.reskillableTabEnabled.get();
 				ftbQuestsTabEnabled = CLIENT.ftbQuestsTabEnabled.get();
+				xaerosMapTabEnabled = CLIENT.xaerosMapTabEnabled.get();
+				journeyMapTabEnabled = CLIENT.journeyMapTabEnabled.get();
 				ftbTeamsTabEnabled = CLIENT.ftbTeamsTabEnabled.get();
 			}
 			catch (Exception e)

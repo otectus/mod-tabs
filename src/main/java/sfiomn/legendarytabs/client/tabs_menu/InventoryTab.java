@@ -63,7 +63,8 @@ public class InventoryTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 10);
+        if (Config.Baked.includeOpenedScreenTab)
+            TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 10);
 
         if (LegendaryTabs.legendarySurvivalOverhaulLoaded)
             TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 10);

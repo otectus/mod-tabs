@@ -5,5 +5,7 @@
   "tooltip.legendarytabs.tab.ftb_teams.description": "Teams",
   "tooltip.legendarytabs.tab.inventory.description": "Inventory",
   "tooltip.legendarytabs.tab.reskillable.description": "Skills",
-  "tooltip.legendarytabs.tab.reskillable_reimagined.description": "Skills"
+  "tooltip.legendarytabs.tab.reskillable_reimagined.description": "Skills",
+  "tooltip.legendarytabs.tab.xaerosmap.description": "Map",
+  "tooltip.legendarytabs.tab.journeymap.description": "Map"
 }

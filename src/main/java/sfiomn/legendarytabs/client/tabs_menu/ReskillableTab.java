@@ -68,7 +68,7 @@ public class ReskillableTab extends TabBase {
         if (LegendaryTabs.legendarySurvivalOverhaulLoaded)
             TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 30);
 
-        if (LegendaryTabs.reskillableLoaded)
+        if (LegendaryTabs.reskillableLoaded && Config.Baked.includeOpenedScreenTab)
             TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 30);
 
         if (LegendaryTabs.reskillableReimaginedLoaded)
