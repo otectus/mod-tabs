@@ -158,15 +158,22 @@ dependencies {
     implementation(fg.deobf("curse.maven:architectury-419699:5137938"))
     implementation(fg.deobf("curse.maven:ftbquest-289412:5816794"))
     implementation(fg.deobf("curse.maven:ftbteams-404468:5267190"))
-    compileOnly(fg.deobf("curse.maven:cosmeticarmor-237307:4600191"))
     implementation(fg.deobf("curse.maven:backpacked-352835:5813547"))
     implementation(fg.deobf("curse.maven:framework-549225:5911986"))
-    compileOnly fg.deobf("curse.maven:quark-243121:5594847")
-    compileOnly(fg.deobf("curse.maven:reskillable-981352:5997519"))
-    implementation(fg.deobf("curse.maven:xaerosmap-317780:5987149"))
-    compileOnly(fg.deobf("curse.maven:journeymap-32274:5789363"))
+    implementation(fg.deobf("curse.maven:mapatlases-519759:6057043"))
+    implementation(fg.deobf("curse.maven:moonlightapi-499980:6115056"))
+    implementation(fg.deobf("curse.maven:l2hostility-909207:6042046"))
+    implementation(fg.deobf("curse.maven:l2complements-758349:6040201"))
+    implementation(fg.deobf("curse.maven:l2library-620203:5921890"))
+    implementation(fg.deobf("curse.maven:patchouli-306770:4966125"))
 
     runtimeOnly(fg.deobf("curse.maven:ftblibrary-404465:6016763"))
+
+    compileOnly fg.deobf("curse.maven:quark-243121:5594847")
+    compileOnly(fg.deobf("curse.maven:xaerosmap-317780:5987149"))
+    compileOnly(fg.deobf("curse.maven:journeymap-32274:5789363"))
+    compileOnly(fg.deobf("curse.maven:reskillable-981352:5997519"))
+    compileOnly(fg.deobf("curse.maven:cosmeticarmor-237307:4600191"))
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

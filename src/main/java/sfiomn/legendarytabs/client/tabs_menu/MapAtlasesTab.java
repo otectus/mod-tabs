@@ -1,17 +1,20 @@
 package sfiomn.legendarytabs.client.tabs_menu;
 
 import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
-import journeymap.client.ui.UIManager;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
 import majik.rereskillable.client.screen.SkillScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
+import pepjebs.mapatlases.item.MapAtlasItem;
+import pepjebs.mapatlases.networking.C2S2COpenAtlasScreenPacket;
+import pepjebs.mapatlases.networking.MapAtlasesNetworking;
+import pepjebs.mapatlases.utils.MapAtlasesAccessUtils;
 import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import sfiomn.legendarytabs.LegendaryTabs;
 import sfiomn.legendarytabs.api.tabs_menu.TabBase;
@@ -21,24 +24,26 @@ import sfiomn.legendarytabs.utils.IntegrationUtils;
 import top.theillusivec4.curios.client.gui.CuriosScreenV2;
 
 
-public class JourneyMapTab extends TabBase {
+public class MapAtlasesTab extends TabBase {
     private final ResourceLocation TAB_ICONS = new ResourceLocation(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
     private final int TAB_ICON_TEX_X = 27;
     private final int TAB_ICON_TEX_Y = 69;
 
-    public JourneyMapTab() {
+    public MapAtlasesTab() {
         super();
     }
 
     @Override
     public void openTargetScreen(Player player) {
-        Minecraft.getInstance().setScreen(null);
-        UIManager.INSTANCE.openFullscreenMap();
+        ItemStack atlas = MapAtlasesAccessUtils.getAtlasFromPlayerByConfig(player);
+        if (atlas.getItem() instanceof MapAtlasItem) {
+            MapAtlasesNetworking.CHANNEL.sendToServer(new C2S2COpenAtlasScreenPacket());
+        }
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.journeyMapTabEnabled;
+        return Config.Baked.mapAtlasesTabEnabled && MapAtlasesAccessUtils.getAtlasFromPlayerByConfig(player).getItem() instanceof MapAtlasItem;
     }
 
     @Override
@@ -57,7 +62,7 @@ public class JourneyMapTab extends TabBase {
 
     @Override
     public Component getTooltip() {
-        return Component.translatable("tooltip." + LegendaryTabs.MOD_ID + ".tab.journey_map.description");
+        return Component.translatable("tooltip." + LegendaryTabs.MOD_ID + ".tab.map_atlases.description");
     }
 
     @Override

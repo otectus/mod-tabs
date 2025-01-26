@@ -46,6 +46,7 @@ public class Config
 		public final ForgeConfigSpec.BooleanValue bodyDamageTabEnabled;
 		public final ForgeConfigSpec.BooleanValue reskillableTabEnabled;
 		public final ForgeConfigSpec.BooleanValue ftbQuestsTabEnabled;
+		public final ForgeConfigSpec.BooleanValue mapAtlasesTabEnabled;
 		public final ForgeConfigSpec.BooleanValue xaerosMapTabEnabled;
 		public final ForgeConfigSpec.BooleanValue journeyMapTabEnabled;
 		public final ForgeConfigSpec.BooleanValue ftbTeamsTabEnabled;
@@ -60,9 +61,9 @@ public class Config
 			builder.push("tabs-menu").comment(" Configuration about the new tabs added on top of defined screens");
 			tabsMenuOffsetX = builder
 					.comment(" The X and Y offset of the tabs menu. Set both to 0 for no offset.", " By default, will be rendered above minecraft menus. Set it to 10000 to disable it completely.")
-					.defineInRange("Season Cards Display X Offset", 2, -10000, 10000);
+					.defineInRange("Tabs Menu Display X Offset", 2, -10000, 10000);
 			tabsMenuOffsetY = builder
-					.defineInRange("Season Cards Display Y Offset", 0, -10000, 10000);
+					.defineInRange("Tabs Menu Display Y Offset", 0, -10000, 10000);
 			includeOpenedScreenTab = builder
 					.comment(" If enabled, show current tab opened in the tabs menu.")
 					.define("Include Opened Screen Tab", true);
@@ -81,6 +82,9 @@ public class Config
 			ftbQuestsTabEnabled = builder
 					.comment(" If enabled, show the ftb quests button in the tabs menu.")
 					.define("FTB Quests Tab Enabled ", true);
+			mapAtlasesTabEnabled = builder
+					.comment(" If enabled, show the map button for Map Atlases mod in the tabs menu.")
+					.define("Map Atlases Tab Enabled ", true);
 			xaerosMapTabEnabled = builder
 					.comment(" If enabled, show the map button for Xaero's Map mod in the tabs menu.")
 					.define("Xaero's Map Tab Enabled ", true);
@@ -112,6 +116,7 @@ public class Config
 
 		public static boolean inventoryTabEnabled;
 		public static boolean backpackTabEnabled;
+		public static boolean mapAtlasesTabEnabled;
 		public static boolean xaerosMapTabEnabled;
 		public static boolean journeyMapTabEnabled;
 		public static boolean bodyDamageTabEnabled;
@@ -134,6 +139,7 @@ public class Config
 				bodyDamageTabEnabled = CLIENT.bodyDamageTabEnabled.get();
 				reskillableTabEnabled = CLIENT.reskillableTabEnabled.get();
 				ftbQuestsTabEnabled = CLIENT.ftbQuestsTabEnabled.get();
+				mapAtlasesTabEnabled = CLIENT.mapAtlasesTabEnabled.get();
 				xaerosMapTabEnabled = CLIENT.xaerosMapTabEnabled.get();
 				journeyMapTabEnabled = CLIENT.journeyMapTabEnabled.get();
 				ftbTeamsTabEnabled = CLIENT.ftbTeamsTabEnabled.get();

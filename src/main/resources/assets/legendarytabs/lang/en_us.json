@@ -6,6 +6,7 @@
   "tooltip.legendarytabs.tab.inventory.description": "Inventory",
   "tooltip.legendarytabs.tab.reskillable.description": "Skills",
   "tooltip.legendarytabs.tab.reskillable_reimagined.description": "Skills",
-  "tooltip.legendarytabs.tab.xaerosmap.description": "Map",
-  "tooltip.legendarytabs.tab.journeymap.description": "Map"
+  "tooltip.legendarytabs.tab.map_atlases.description": "Map",
+  "tooltip.legendarytabs.tab.xaeros_map.description": "Map",
+  "tooltip.legendarytabs.tab.journey_map.description": "Map"
 }

@@ -57,7 +57,7 @@ public class XaerosMapTab extends TabBase {
 
     @Override
     public Component getTooltip() {
-        return Component.translatable("tooltip." + LegendaryTabs.MOD_ID + ".tab.xaerosmap.description");
+        return Component.translatable("tooltip." + LegendaryTabs.MOD_ID + ".tab.xaeros_map.description");
     }
 
     @Override
