@@ -21,7 +21,8 @@ public class TabsMenu {
     private static int leftScreenPos;
     private static int topScreenPos;
     private static int startTabIndex;
-    private static int tabsCount;
+    private static int currentTabsCount;
+    private static List<TabBase> enabledTabs;
 
     private TabsMenu() {
     }
@@ -58,56 +59,51 @@ public class TabsMenu {
             ScreenInfo screenInfo = tabsScreens.get(event.getScreen().getClass());
             TabsMenu.leftScreenPos = (event.getScreen().width - screenInfo.width.apply(Minecraft.getInstance().player)) / 2;
             TabsMenu.topScreenPos = (event.getScreen().height - screenInfo.height.apply(Minecraft.getInstance().player)) / 2;
+
+            if (TabsMenu.topScreenPos - TAB_HEIGHT < 0)
+                return;
+
             startTabIndex = 0;
+            currentTabsCount = 0;
+            enabledTabs = new ArrayList<>();
+            for (List<TabBase> tabBases: screenInfo.tabs.values()) {
+                enabledTabs.addAll(tabBases.stream().filter(tabBase -> tabBase.isEnabled(Minecraft.getInstance().player)).toList());
+            }
 
-            if (TabsMenu.topScreenPos - TAB_HEIGHT >= 0) {
-                tabsCount = 0;
-                int remainingWidth = screenInfo.width.apply(Minecraft.getInstance().player) - Config.Baked.tabsMenuOffsetX;
-                for (List<TabBase> tabBases: screenInfo.tabs.values()) {
-                    if (remainingWidth < TAB_WIDTH + 1) {
-                        if (screenInfo.totalTabs > tabsCount)
-                            event.addListener(new NextTabsButton(tabsCount, TabsMenu.leftScreenPos, TabsMenu.topScreenPos,
-                                    button -> nextTabButtons(event.getScreen())));
-                        break;
-                    }
+            int remainingWidth = screenInfo.width.apply(Minecraft.getInstance().player) - Config.Baked.tabsMenuOffsetX;
+            for (TabBase tabBase: enabledTabs) {
+                if (remainingWidth > TAB_WIDTH) {
+                    event.addListener(new TabButton(tabBase, Minecraft.getInstance().player, event.getScreen(), currentTabsCount, TabsMenu.leftScreenPos, TabsMenu.topScreenPos));
 
-                    for (TabBase tabBase: tabBases) {
-                        if (!tabBase.isEnabled(Minecraft.getInstance().player))
-                            continue;
-
-                        event.addListener(new TabButton(tabBase, Minecraft.getInstance().player, event.getScreen(), tabsCount, TabsMenu.leftScreenPos, TabsMenu.topScreenPos));
-
-                        remainingWidth -= TAB_WIDTH + 1;
-                        tabsCount++;
-                    }
+                    remainingWidth -= TAB_WIDTH + 1;
+                    currentTabsCount++;
                 }
             }
+
+            if (enabledTabs.size() > currentTabsCount)
+                event.addListener(new NextTabsButton(currentTabsCount, TabsMenu.leftScreenPos, TabsMenu.topScreenPos,
+                        button -> nextTabButtons(event.getScreen())));
         }
     }
 
     public static void nextTabButtons(Screen screen) {
         List<? extends GuiEventListener> tabButtons = screen.children().stream().filter(button -> button instanceof TabButton).toList();
 
-        ScreenInfo screenInfo = tabsScreens.get(screen.getClass());
-
-        if (startTabIndex + tabsCount >= screenInfo.totalTabs)
+        if (startTabIndex + currentTabsCount >= enabledTabs.size())
             startTabIndex = 0;
         else
-            startTabIndex += tabsCount + Math.min(screenInfo.totalTabs - tabsCount * 2 - startTabIndex, 0);
+            startTabIndex += currentTabsCount + Math.min(enabledTabs.size() - currentTabsCount * 2 - startTabIndex, 0);
 
         int currentTabIndex = 0;
-        for (List<TabBase> tabBases: screenInfo.tabs.values()) {
-            for (TabBase tabBase: tabBases) {
-                int tabIndexToUpdate = currentTabIndex - startTabIndex;
-                if (tabIndexToUpdate >= tabsCount)
-                    break;
+        for (TabBase tabBase: enabledTabs) {
+            int tabIndexToUpdate = currentTabIndex - startTabIndex;
+            if (tabIndexToUpdate >= currentTabsCount)
+                break;
 
-                if (tabIndexToUpdate >= 0) {
-                    ((TabButton) tabButtons.get(tabIndexToUpdate)).setTabBase(tabBase);
-                }
+            if (tabIndexToUpdate >= 0)
+                ((TabButton) tabButtons.get(tabIndexToUpdate)).setTabBase(tabBase);
 
-                currentTabIndex++;
-            }
+            currentTabIndex++;
         }
     }
 
@@ -120,7 +116,6 @@ public class TabsMenu {
         public Function<Player, Integer> width;
         public Function<Player, Integer> height;
         public Map<Integer, List<TabBase>> tabs;
-        public int totalTabs;
         public ScreenInfo(Function<Player, Integer> width, Function<Player, Integer> height, TabBase newTab, int priority) {
             this.width = width;
             this.height = height;
@@ -136,7 +131,6 @@ public class TabsMenu {
                 newTabsForPriority.add(newTab);
                 this.tabs.put(priority, newTabsForPriority);
             }
-            totalTabs++;
         }
     }
 }
