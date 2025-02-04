@@ -1,11 +1,14 @@
 package sfiomn.legendarytabs.client.tabs_menu;
 
+import com.illusivesoulworks.diet.client.screen.DietScreen;
 import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
 import com.mrcrayfish.backpacked.network.Network;
 import com.mrcrayfish.backpacked.network.message.MessageOpenBackpack;
 import com.mrcrayfish.backpacked.platform.Services;
+import daripher.skilltree.client.screen.SkillTreeScreen;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
 import majik.rereskillable.client.screen.SkillScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -22,25 +25,25 @@ import sfiomn.legendarytabs.utils.IntegrationUtils;
 import top.theillusivec4.curios.client.gui.CuriosScreenV2;
 
 
-public class BackpackTab extends TabBase {
+public class PassiveSkillTreeTab extends TabBase {
     private final ResourceLocation TAB_ICONS = new ResourceLocation(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 27;
-    private final int TAB_ICON_TEX_Y = 46;
+    private final int TAB_ICON_TEX_X = 0;
+    private final int TAB_ICON_TEX_Y = 92;
 
-    public BackpackTab() {
+    public PassiveSkillTreeTab() {
         super();
     }
 
     @Override
     public void openTargetScreen(Player player) {
-        if (Config.Baked.backpackTabEnabled && player.level().isClientSide && !Services.BACKPACK.getBackpackStack(player).isEmpty()) {
-            Network.getPlay().sendToServer(new MessageOpenBackpack());
+        if (Config.Baked.passiveSkillTreeTabEnabled && player.level().isClientSide) {
+            Minecraft.getInstance().setScreen(new SkillTreeScreen(new ResourceLocation("skilltree", "main_tree")));
         }
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.backpackTabEnabled && !Services.BACKPACK.getBackpackStack(player).isEmpty();
+        return Config.Baked.passiveSkillTreeTabEnabled;
     }
 
     @Override
@@ -54,38 +57,40 @@ public class BackpackTab extends TabBase {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return currentScreen instanceof BackpackScreen;
+        return false;
     }
 
     @Override
     public Component getTooltip() {
-        return Component.translatable("tooltip." + LegendaryTabs.MOD_ID + ".tab.backpack.description");
+        return Component.translatable("tooltip." + LegendaryTabs.MOD_ID + ".tab.passive_skill_tree.description");
     }
 
     @Override
     public void initTabOnScreens() {
-        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 20);
+        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 40);
 
         if (LegendaryTabs.legendarySurvivalOverhaulLoaded)
-            TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 20);
+            TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 40);
 
         if (LegendaryTabs.reskillableLoaded)
-            TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 20);
+            TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 40);
 
         if (LegendaryTabs.reskillableReimaginedLoaded)
-            TabsMenu.addTabToScreen(this, net.bandit.reskillable.client.screen.SkillScreen.class, (player) -> 176, (player) -> 166, 20);
+            TabsMenu.addTabToScreen(this, net.bandit.reskillable.client.screen.SkillScreen.class, (player) -> 176, (player) -> 166, 40);
 
         if (LegendaryTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreenV2.class, (player) -> 176, (player) -> 166, 20);
+            TabsMenu.addTabToScreen(this, CuriosScreenV2.class, (player) -> 176, (player) -> 166, 40);
 
         if (LegendaryTabs.quarkOdditiesLoaded)
-            TabsMenu.addTabToScreen(this, BackpackInventoryScreen.class, (player) -> 176, (player) -> 224, 20);
+            TabsMenu.addTabToScreen(this, BackpackInventoryScreen.class, (player) -> 176, (player) -> 224, 40);
 
         if (LegendaryTabs.cosmeticArmorLoaded)
-            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 20);
+            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 40);
 
-        if (LegendaryTabs.backpackedLoaded && Config.Baked.includeOpenedScreenTab) {
-            TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 20);
-        }
+        if (LegendaryTabs.backpackedLoaded)
+            TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 40);
+
+        if (LegendaryTabs.dietLoaded)
+            TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 40);
     }
 }

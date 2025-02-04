@@ -50,6 +50,9 @@ public class Config
 		public final ForgeConfigSpec.BooleanValue xaerosMapTabEnabled;
 		public final ForgeConfigSpec.BooleanValue journeyMapTabEnabled;
 		public final ForgeConfigSpec.BooleanValue ftbTeamsTabEnabled;
+		public final ForgeConfigSpec.BooleanValue dietTabEnabled;
+		public final ForgeConfigSpec.BooleanValue pufferfishSkillsTabEnabled;
+		public final ForgeConfigSpec.BooleanValue passiveSkillTreeTabEnabled;
 
 		public final ForgeConfigSpec.IntValue tabsMenuOffsetX;
 		public final ForgeConfigSpec.IntValue tabsMenuOffsetY;
@@ -94,6 +97,15 @@ public class Config
 			ftbTeamsTabEnabled = builder
 					.comment(" If enabled, show the ftb teams button in the tabs menu.")
 					.define("FTB Teams Tab Enabled ", true);
+			dietTabEnabled = builder
+					.comment(" If enabled, show the ftb teams button in the tabs menu.")
+					.define("FTB Teams Tab Enabled ", true);
+			pufferfishSkillsTabEnabled = builder
+					.comment(" If enabled, show the pufferfish's skills button in the tabs menu.")
+					.define("Pufferfish Skills Tab Enabled ", true);
+			passiveSkillTreeTabEnabled = builder
+					.comment(" If enabled, show the passive skill tree button in the tabs menu.")
+					.define("Passive Skill Tree Tab Enabled ", true);
 			builder.pop();
 		}
 	}
@@ -123,6 +135,9 @@ public class Config
 		public static boolean reskillableTabEnabled;
 		public static boolean ftbQuestsTabEnabled;
 		public static boolean ftbTeamsTabEnabled;
+		public static boolean dietTabEnabled;
+		public static boolean pufferfishSkillsTabEnabled;
+		public static boolean passiveSkillTreeTabEnabled;
 
 		public static void bakeClient()
 		{
@@ -143,6 +158,9 @@ public class Config
 				xaerosMapTabEnabled = CLIENT.xaerosMapTabEnabled.get();
 				journeyMapTabEnabled = CLIENT.journeyMapTabEnabled.get();
 				ftbTeamsTabEnabled = CLIENT.ftbTeamsTabEnabled.get();
+				dietTabEnabled = CLIENT.dietTabEnabled.get();
+				pufferfishSkillsTabEnabled = CLIENT.pufferfishSkillsTabEnabled.get();
+				passiveSkillTreeTabEnabled = CLIENT.passiveSkillTreeTabEnabled.get();
 			}
 			catch (Exception e)
 			{

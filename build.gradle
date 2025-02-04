@@ -162,10 +162,11 @@ dependencies {
     implementation(fg.deobf("curse.maven:framework-549225:5911986"))
     implementation(fg.deobf("curse.maven:mapatlases-519759:6057043"))
     implementation(fg.deobf("curse.maven:moonlightapi-499980:6115056"))
-    implementation(fg.deobf("curse.maven:l2hostility-909207:6042046"))
-    implementation(fg.deobf("curse.maven:l2complements-758349:6040201"))
-    implementation(fg.deobf("curse.maven:l2library-620203:5921890"))
-    implementation(fg.deobf("curse.maven:patchouli-306770:4966125"))
+    implementation(fg.deobf("curse.maven:diet-443570:4813904"))
+    implementation(fg.deobf("curse.maven:passiveskill-850298:5715659"))
+    implementation(fg.deobf("curse.maven:itemproductionlib-950401:5114036"))
+    implementation(fg.deobf("curse.maven:attributefix-280510:4911084"))
+    implementation(fg.deobf("curse.maven:pufferfishsskills-835091:6028617"))
 
     runtimeOnly(fg.deobf("curse.maven:ftblibrary-404465:6016763"))
 

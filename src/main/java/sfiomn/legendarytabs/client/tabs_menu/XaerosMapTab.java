@@ -1,5 +1,6 @@
 package sfiomn.legendarytabs.client.tabs_menu;
 
+import com.illusivesoulworks.diet.client.screen.DietScreen;
 import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
 import majik.rereskillable.client.screen.SkillScreen;
@@ -82,8 +83,10 @@ public class XaerosMapTab extends TabBase {
         if (LegendaryTabs.cosmeticArmorLoaded)
             TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 75);
 
-        if (LegendaryTabs.backpackedLoaded) {
+        if (LegendaryTabs.backpackedLoaded)
             TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 75);
-        }
+
+        if (LegendaryTabs.dietLoaded)
+            TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 75);
     }
 }

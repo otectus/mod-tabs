@@ -1,5 +1,6 @@
 package sfiomn.legendarytabs.client.tabs_menu;
 
+import com.illusivesoulworks.diet.client.screen.DietScreen;
 import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
 import dev.ftb.mods.ftbquests.client.FTBQuestsClient;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
@@ -80,8 +81,10 @@ public class FtbQuestsTab extends TabBase {
         if (LegendaryTabs.cosmeticArmorLoaded)
             TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 70);
 
-        if (LegendaryTabs.backpackedLoaded) {
+        if (LegendaryTabs.backpackedLoaded)
             TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 70);
-        }
+
+        if (LegendaryTabs.dietLoaded)
+            TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 70);
     }
 }

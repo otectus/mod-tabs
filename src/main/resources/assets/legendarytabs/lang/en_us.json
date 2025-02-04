@@ -8,5 +8,8 @@
   "tooltip.legendarytabs.tab.reskillable_reimagined.description": "Skills",
   "tooltip.legendarytabs.tab.map_atlases.description": "Map",
   "tooltip.legendarytabs.tab.xaeros_map.description": "Map",
-  "tooltip.legendarytabs.tab.journey_map.description": "Map"
+  "tooltip.legendarytabs.tab.journey_map.description": "Map",
+  "tooltip.legendarytabs.tab.diet.description": "Diet",
+  "tooltip.legendarytabs.tab.passive_skill_tree.description": "Skill Tree",
+  "tooltip.legendarytabs.tab.pufferfish_skills.description": "Skill Tree"
 }

@@ -41,7 +41,9 @@ public class LegendaryTabs
     public static boolean mapAtlasesLoaded = false;
     public static boolean xaerosMapLoaded = false;
     public static boolean journeyMapLoaded = false;
-    public static boolean l2HostilityLoaded = false;
+    public static boolean dietLoaded = false;
+    public static boolean passiveSkillTreeLoaded = false;
+    public static boolean pufferfishsSkillsLoaded = false;
 
     public LegendaryTabs(FMLJavaModLoadingContext context)
     {
@@ -73,7 +75,9 @@ public class LegendaryTabs
         mapAtlasesLoaded = ModList.get().isLoaded("map_atlases");
         xaerosMapLoaded = ModList.get().isLoaded("xaeroworldmap");
         journeyMapLoaded = ModList.get().isLoaded("journeymap");
-        l2HostilityLoaded = ModList.get().isLoaded("l2hostility");
+        dietLoaded = ModList.get().isLoaded("diet");
+        passiveSkillTreeLoaded = ModList.get().isLoaded("skilltree");
+        pufferfishsSkillsLoaded = ModList.get().isLoaded("puffish_skills");
 
         if (backpackedLoaded)
             LOGGER.debug("Backpacked is loaded, enabling compatibility");
@@ -111,8 +115,14 @@ public class LegendaryTabs
         if (journeyMapLoaded)
             LOGGER.debug("Journey Map is loaded, enabling compatibility");
 
-        //if (l2HostilityLoaded)
-            //LOGGER.debug("L2 Hostility is loaded, enabling compatibility");
+        if (dietLoaded)
+            LOGGER.debug("Diet is loaded, enabling compatibility");
+
+        if (passiveSkillTreeLoaded)
+            LOGGER.debug("Passive Skill Tree is loaded, enabling compatibility");
+
+        if (pufferfishsSkillsLoaded)
+            LOGGER.debug("Pufferfish's Skills is loaded, enabling compatibility");
     }
 
     private void onModConfigLoadEvent(ModConfigEvent.Loading event)
@@ -143,7 +153,7 @@ public class LegendaryTabs
             TabsMenu.register(new InventoryTab());
 
             if (LegendaryTabs.backpackedLoaded)
-                TabsMenu.register(new BackpackTab());
+                TabsMenu.register(new BackpackedTab());
             if (LegendaryTabs.legendarySurvivalOverhaulLoaded)
                 TabsMenu.register(new BodyDamageTab());
             if (LegendaryTabs.ftbQuestsLoaded)
@@ -160,6 +170,12 @@ public class LegendaryTabs
                 TabsMenu.register(new XaerosMapTab());
             if (LegendaryTabs.journeyMapLoaded)
                 TabsMenu.register(new JourneyMapTab());
+            if (LegendaryTabs.dietLoaded)
+                TabsMenu.register(new DietTab());
+            if (LegendaryTabs.passiveSkillTreeLoaded)
+                TabsMenu.register(new PassiveSkillTreeTab());
+            if (LegendaryTabs.pufferfishsSkillsLoaded)
+                TabsMenu.register(new PufferfishsSkillsTab());
         }
     }
 }
