@@ -153,8 +153,8 @@ dependencies {
     // External libraries.
 
     implementation(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}"))
-    implementation(fg.deobf("curse.maven:legendarysurvivaloverhaul-840254:6058277"))
-    implementation(fg.deobf("curse.maven:reskillablereimagined-1170464:6050969"))
+    implementation(fg.deobf("curse.maven:legendarysurvivaloverhaul-840254:6527474"))
+    implementation(fg.deobf("curse.maven:reskillablereimagined-1170464:6517519"))
     implementation(fg.deobf("curse.maven:architectury-419699:5137938"))
     implementation(fg.deobf("curse.maven:ftbquest-289412:5816794"))
     implementation(fg.deobf("curse.maven:ftbteams-404468:5267190"))
@@ -167,14 +167,18 @@ dependencies {
     implementation(fg.deobf("curse.maven:itemproductionlib-950401:5114036"))
     implementation(fg.deobf("curse.maven:attributefix-280510:4911084"))
     implementation(fg.deobf("curse.maven:pufferfishsskills-835091:6028617"))
+    //implementation(fg.deobf("curse.maven:justlevelingfork-1073400:6189891"))
+    implementation(fg.deobf("curse.maven:travelersbackpack-321117:6423948"))
 
     runtimeOnly(fg.deobf("curse.maven:ftblibrary-404465:6016763"))
+    //runtimeOnly(fg.deobf("curse.maven:yetanotherconfig-667299:6336646"))
 
-    compileOnly fg.deobf("curse.maven:quark-243121:5594847")
-    compileOnly(fg.deobf("curse.maven:xaerosmap-317780:5987149"))
-    compileOnly(fg.deobf("curse.maven:journeymap-32274:5789363"))
+    implementation fg.deobf("curse.maven:quark-243121:6427817")
+    implementation fg.deobf("curse.maven:zeta-968868:6432578")
+    implementation(fg.deobf("curse.maven:xaerosmap-317780:6212636"))
+    implementation(fg.deobf("curse.maven:journeymap-32274:5789363"))
     compileOnly(fg.deobf("curse.maven:reskillable-981352:5997519"))
-    compileOnly(fg.deobf("curse.maven:cosmeticarmor-237307:4600191"))
+    implementation(fg.deobf("curse.maven:cosmeticarmor-237307:4600191"))
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

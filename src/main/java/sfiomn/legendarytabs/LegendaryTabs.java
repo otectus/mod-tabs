@@ -30,6 +30,7 @@ public class LegendaryTabs
     public static Path modConfigPath = Paths.get(configPath.toAbsolutePath().toString(), "legendarytabs");
 
     public static boolean backpackedLoaded = false;
+    public static boolean travelersBackpackLoaded = false;
     public static boolean legendarySurvivalOverhaulLoaded = false;
     public static boolean curiosLoaded = false;
     public static boolean reskillableLoaded = false;
@@ -64,6 +65,7 @@ public class LegendaryTabs
     private void modIntegration(IEventBus forgeBus)
     {
         backpackedLoaded = ModList.get().isLoaded("backpacked");
+        travelersBackpackLoaded = ModList.get().isLoaded("travelersbackpack");
         curiosLoaded = ModList.get().isLoaded("curios");
         reskillableLoaded = ModList.get().isLoaded("rereskillable");
         reskillableReimaginedLoaded = ModList.get().isLoaded("reskillable");
@@ -81,6 +83,9 @@ public class LegendaryTabs
 
         if (backpackedLoaded)
             LOGGER.debug("Backpacked is loaded, enabling compatibility");
+
+        if (travelersBackpackLoaded)
+            LOGGER.debug("Travelers Backpack is loaded, enabling compatibility");
 
         if (reskillableLoaded)
             LOGGER.debug("Rereskillable is loaded, enabling compatibility");
@@ -154,6 +159,8 @@ public class LegendaryTabs
 
             if (LegendaryTabs.backpackedLoaded)
                 TabsMenu.register(new BackpackedTab());
+            if (LegendaryTabs.travelersBackpackLoaded)
+                TabsMenu.register(new TravelersBackpackTab());
             if (LegendaryTabs.legendarySurvivalOverhaulLoaded)
                 TabsMenu.register(new BodyDamageTab());
             if (LegendaryTabs.ftbQuestsLoaded)

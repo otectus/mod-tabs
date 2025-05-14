@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import sfiomn.legendarytabs.LegendaryTabs;
 import sfiomn.legendarytabs.api.tabs_menu.TabBase;
 import sfiomn.legendarytabs.config.Config;
 

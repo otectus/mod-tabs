@@ -2,6 +2,7 @@ package sfiomn.legendarytabs.client.tabs_menu;
 
 import com.illusivesoulworks.diet.client.screen.DietScreen;
 import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
+import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
 import net.bandit.reskillable.client.screen.SkillScreen;
 import net.minecraft.client.Minecraft;
@@ -83,6 +84,9 @@ public class ReskillableReimaginedTab extends TabBase {
 
         if (LegendaryTabs.backpackedLoaded)
             TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 30);
+
+        if (LegendaryTabs.travelersBackpackLoaded)
+            TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 30);
 
         if (LegendaryTabs.dietLoaded)
             TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 30);

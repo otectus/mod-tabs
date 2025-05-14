@@ -5,7 +5,10 @@ import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
 import com.mrcrayfish.backpacked.network.Network;
 import com.mrcrayfish.backpacked.network.message.MessageOpenBackpack;
 import com.mrcrayfish.backpacked.platform.Services;
+import com.tiviacz.travelersbackpack.capability.CapabilityUtils;
 import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
+import com.tiviacz.travelersbackpack.inventory.BackpackContainer;
+import com.tiviacz.travelersbackpack.network.ServerboundActionTagPacket;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
 import majik.rereskillable.client.screen.SkillScreen;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,6 +16,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
@@ -24,25 +28,25 @@ import sfiomn.legendarytabs.utils.IntegrationUtils;
 import top.theillusivec4.curios.client.gui.CuriosScreenV2;
 
 
-public class BackpackedTab extends TabBase {
+public class TravelersBackpackTab extends TabBase {
     private final ResourceLocation TAB_ICONS = new ResourceLocation(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
     private final int TAB_ICON_TEX_X = 27;
     private final int TAB_ICON_TEX_Y = 46;
 
-    public BackpackedTab() {
+    public TravelersBackpackTab() {
         super();
     }
 
     @Override
     public void openTargetScreen(Player player) {
-        if (Config.Baked.backpackTabEnabled && player.level().isClientSide && !Services.BACKPACK.getBackpackStack(player).isEmpty()) {
-            Network.getPlay().sendToServer(new MessageOpenBackpack());
+        if (Config.Baked.travelersBackpackTabEnabled && CapabilityUtils.isWearingBackpack(player)) {
+            ServerboundActionTagPacket.create(1, new Object[0]);
         }
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.backpackTabEnabled && !Services.BACKPACK.getBackpackStack(player).isEmpty();
+        return Config.Baked.travelersBackpackTabEnabled && CapabilityUtils.isWearingBackpack(player);
     }
 
     @Override
@@ -56,7 +60,7 @@ public class BackpackedTab extends TabBase {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return currentScreen instanceof BackpackScreen;
+        return currentScreen instanceof com.tiviacz.travelersbackpack.client.screens.BackpackScreen;
     }
 
     @Override
@@ -86,10 +90,10 @@ public class BackpackedTab extends TabBase {
         if (LegendaryTabs.cosmeticArmorLoaded)
             TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 20);
 
-        if (LegendaryTabs.backpackedLoaded && Config.Baked.includeOpenedScreenTab)
+        if (LegendaryTabs.backpackedLoaded)
             TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 20);
 
-        if (LegendaryTabs.travelersBackpackLoaded)
+        if (LegendaryTabs.travelersBackpackLoaded && Config.Baked.includeOpenedScreenTab)
             TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 20);
 
         if (LegendaryTabs.dietLoaded)
