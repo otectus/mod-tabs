@@ -14,20 +14,17 @@ public class ClientForgeEvents {
 
     @SubscribeEvent
     public static void preRenderScreen(ScreenEvent.Render.Pre event) {
-        if (event.getScreen() instanceof Screen) {
+        event.getScreen();
+        Screen screen = event.getScreen();
 
-            Screen screen = event.getScreen();
-
-            if (screen instanceof AbstractContainerScreen<?> containerScreen) {
-                TabsMenu.updateButtonsPosition(screen, containerScreen.getGuiLeft(), containerScreen.getGuiTop());
-            }
+        if (screen instanceof AbstractContainerScreen<?> containerScreen) {
+            TabsMenu.updateButtonsPosition(screen, containerScreen.getGuiLeft(), containerScreen.getGuiTop());
         }
     }
 
     @SubscribeEvent
     public static void screenInitPost(ScreenEvent.Init.Post event) {
-        if (event.getScreen() instanceof Screen) {
-            TabsMenu.initScreenButtons(event);
-        }
+        event.getScreen();
+        TabsMenu.initScreenButtons(event);
     }
 }

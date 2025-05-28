@@ -102,8 +102,8 @@ public class Config
 					.comment(" If enabled, show the ftb teams button in the tabs menu.")
 					.define("FTB Teams Tab Enabled ", true);
 			dietTabEnabled = builder
-					.comment(" If enabled, show the ftb teams button in the tabs menu.")
-					.define("FTB Teams Tab Enabled ", true);
+					.comment(" If enabled, show the diet button in the tabs menu.")
+					.define("Diet Tab Enabled ", true);
 			pufferfishSkillsTabEnabled = builder
 					.comment(" If enabled, show the pufferfish's skills button in the tabs menu.")
 					.define("Pufferfish Skills Tab Enabled ", true);
