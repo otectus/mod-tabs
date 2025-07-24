@@ -1,8 +1,7 @@
 package sfiomn.legendarytabs.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 import sfiomn.legendarytabs.LegendaryTabs;
 
@@ -13,54 +12,40 @@ import java.nio.file.Path;
 
 public class Config
 {
-	public static final ForgeConfigSpec CLIENT_SPEC;
+	public static final ModConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 
 	static
 	{
-		final Pair<Client, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(Client::new);
+		final Pair<Client, ModConfigSpec> client = new ModConfigSpec.Builder().configure(Client::new);
 		CLIENT_SPEC = client.getRight();
 		CLIENT = client.getLeft();
 	}
 
-	public static void register(FMLJavaModLoadingContext context)
-	{
-		Path configPath = LegendaryTabs.modConfigPath;
-
-		try {
-			Files.createDirectory(configPath);
-		} catch (FileAlreadyExistsException ignored) {
-		} catch (IOException e) {
-			LegendaryTabs.LOGGER.error("Failed to create Legendary Tabs config directory " + configPath);
-			e.printStackTrace();
-		}
-
-
-		context.registerConfig(ModConfig.Type.CLIENT, CLIENT_SPEC, LegendaryTabs.MOD_ID + "/" + LegendaryTabs.MOD_ID +"-client.toml");
-	}
+	public static final ModConfigSpec SPEC = CLIENT_SPEC;
 
 	public static class Client
 	{
-		public final ForgeConfigSpec.BooleanValue inventoryTabEnabled;
-		public final ForgeConfigSpec.BooleanValue backpackTabEnabled;
-		public final ForgeConfigSpec.BooleanValue travelersBackpackTabEnabled;
-		public final ForgeConfigSpec.BooleanValue bodyDamageTabEnabled;
-		public final ForgeConfigSpec.BooleanValue reskillableTabEnabled;
-		public final ForgeConfigSpec.BooleanValue ftbQuestsTabEnabled;
-		public final ForgeConfigSpec.BooleanValue mapAtlasesTabEnabled;
-		public final ForgeConfigSpec.BooleanValue xaerosMapTabEnabled;
-		public final ForgeConfigSpec.BooleanValue journeyMapTabEnabled;
-		public final ForgeConfigSpec.BooleanValue ftbTeamsTabEnabled;
-		public final ForgeConfigSpec.BooleanValue dietTabEnabled;
-		public final ForgeConfigSpec.BooleanValue pufferfishSkillsTabEnabled;
-		public final ForgeConfigSpec.BooleanValue passiveSkillTreeTabEnabled;
+		public final ModConfigSpec.BooleanValue inventoryTabEnabled;
+		public final ModConfigSpec.BooleanValue backpackTabEnabled;
+		public final ModConfigSpec.BooleanValue travelersBackpackTabEnabled;
+		public final ModConfigSpec.BooleanValue bodyDamageTabEnabled;
+		public final ModConfigSpec.BooleanValue reskillableTabEnabled;
+		public final ModConfigSpec.BooleanValue ftbQuestsTabEnabled;
+		public final ModConfigSpec.BooleanValue mapAtlasesTabEnabled;
+		public final ModConfigSpec.BooleanValue xaerosMapTabEnabled;
+		public final ModConfigSpec.BooleanValue journeyMapTabEnabled;
+		public final ModConfigSpec.BooleanValue ftbTeamsTabEnabled;
+		public final ModConfigSpec.BooleanValue dietTabEnabled;
+		public final ModConfigSpec.BooleanValue pufferfishSkillsTabEnabled;
+		public final ModConfigSpec.BooleanValue passiveSkillTreeTabEnabled;
 
-		public final ForgeConfigSpec.IntValue tabsMenuOffsetX;
-		public final ForgeConfigSpec.IntValue tabsMenuOffsetY;
+		public final ModConfigSpec.IntValue tabsMenuOffsetX;
+		public final ModConfigSpec.IntValue tabsMenuOffsetY;
 
-		public final ForgeConfigSpec.BooleanValue includeOpenedScreenTab;
+		public final ModConfigSpec.BooleanValue includeOpenedScreenTab;
 
-		Client(ForgeConfigSpec.Builder builder)
+		Client(ModConfigSpec.Builder builder)
 		{
 			builder.push("tabs-menu").comment(" Configuration about the new tabs added on top of defined screens");
 			tabsMenuOffsetX = builder
@@ -116,7 +101,7 @@ public class Config
 
 	public static class Server
 	{
-		Server(ForgeConfigSpec.Builder builder)
+		Server(ModConfigSpec.Builder builder)
 		{
 
 		}

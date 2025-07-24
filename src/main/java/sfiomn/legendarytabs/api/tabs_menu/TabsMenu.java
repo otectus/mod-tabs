@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import sfiomn.legendarytabs.LegendaryTabs;
 import sfiomn.legendarytabs.client.screens.NextTabsButton;
 import sfiomn.legendarytabs.client.screens.TabButton;

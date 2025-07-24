@@ -1,10 +1,10 @@
 package sfiomn.legendarytabs.utils;
 
-import com.illusivesoulworks.diet.api.type.IDietSuite;
-import com.illusivesoulworks.diet.common.data.suite.DietSuites;
+//import com.illusivesoulworks.diet.api.type.IDietSuite;
+//import com.illusivesoulworks.diet.common.data.suite.DietSuites;
 import com.mrcrayfish.backpacked.item.BackpackItem;
 import com.mrcrayfish.backpacked.platform.Services;
-import com.tiviacz.travelersbackpack.capability.CapabilityUtils;
+import com.tiviacz.travelersbackpack.capability.AttachmentUtils;
 import com.tiviacz.travelersbackpack.inventory.BackpackWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -36,22 +36,25 @@ public class IntegrationUtils {
     }
 
     public static int getDietHeight(Player player) {
+        // Diet mod is disabled - returning default height
         if (!LegendaryTabs.dietLoaded)
             return 0;
 
-        if (Minecraft.getInstance().level == null)
-            return 0;
-        return ((Collection<?>) com.illusivesoulworks.diet.platform.Services.CAPABILITY.get(player)
-                .map(
-                        (tracker) -> (Set) DietSuites.getSuite(Minecraft.getInstance().level, tracker.getSuite()).map(IDietSuite::getGroups).orElse(Set.of()))
-                .orElse(Set.of())).size() * 20 + 60;
+        // Diet mod functionality commented out until it's updated to NeoForge 1.21.1
+        // if (Minecraft.getInstance().level == null)
+        //     return 0;
+        // return ((Collection<?>) com.illusivesoulworks.diet.platform.Services.CAPABILITY.get(player)
+        //         .map(
+        //                 (tracker) -> (Set) DietSuites.getSuite(Minecraft.getInstance().level, tracker.getSuite()).map(IDietSuite::getGroups).orElse(Set.of()))
+        //         .orElse(Set.of())).size() * 20 + 60;
+        return 0;
     }
 
     public static int getTravelersBackpackWidth(Player player) {
         if (!LegendaryTabs.travelersBackpackLoaded)
             return 0;
 
-        BackpackWrapper wrapper = CapabilityUtils.getBackpackWrapper(player);
+        BackpackWrapper wrapper = AttachmentUtils.getBackpackWrapper(player);
         if (wrapper != null) {
             int slotCount = wrapper.getStorage().getSlots();
             boolean wider = slotCount > 81;
@@ -67,7 +70,7 @@ public class IntegrationUtils {
         if (!LegendaryTabs.travelersBackpackLoaded)
             return 0;
 
-        BackpackWrapper wrapper = CapabilityUtils.getBackpackWrapper(player);
+        BackpackWrapper wrapper = AttachmentUtils.getBackpackWrapper(player);
         if (wrapper != null) {
             int slotCount = wrapper.getStorage().getSlots();
             boolean wider = slotCount > 81;

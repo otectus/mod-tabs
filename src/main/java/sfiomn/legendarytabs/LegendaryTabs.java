@@ -1,17 +1,18 @@
 package sfiomn.legendarytabs;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.loading.FMLPaths;
 import org.slf4j.Logger;
 import sfiomn.legendarytabs.api.tabs_menu.TabsMenu;
 import sfiomn.legendarytabs.client.tabs_menu.*;
@@ -46,23 +47,19 @@ public class LegendaryTabs
     public static boolean passiveSkillTreeLoaded = false;
     public static boolean pufferfishsSkillsLoaded = false;
 
-    public LegendaryTabs(FMLJavaModLoadingContext context)
+    public LegendaryTabs(IEventBus modEventBus, ModContainer modContainer)
     {
-        IEventBus modBus = context.getModEventBus();
-        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        IEventBus neoForgeBus = NeoForge.EVENT_BUS;
 
-        modBus.addListener(this::onModConfigLoadEvent);
-        modBus.addListener(this::onModConfigReloadEvent);
+        modEventBus.addListener(this::onModConfigLoadEvent);
+        modEventBus.addListener(this::onModConfigReloadEvent);
 
-        Config.register(context);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, Config.SPEC, "legendarytabs-client.toml");
 
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
-
-        modIntegration(forgeBus);
+        modIntegration(neoForgeBus);
     }
 
-    private void modIntegration(IEventBus forgeBus)
+    private void modIntegration(IEventBus neoForgeBus)
     {
         backpackedLoaded = ModList.get().isLoaded("backpacked");
         travelersBackpackLoaded = ModList.get().isLoaded("travelersbackpack");
@@ -148,7 +145,7 @@ public class LegendaryTabs
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent
