@@ -9,7 +9,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import sfiomn.legendarytabs.LegendaryTabs;
 import sfiomn.legendarytabs.api.tabs_menu.TabsMenu;
 
-@EventBusSubscriber(modid = LegendaryTabs.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = LegendaryTabs.MOD_ID, value = Dist.CLIENT)
 public class ClientNeoForgeEvents {
 
     @SubscribeEvent
