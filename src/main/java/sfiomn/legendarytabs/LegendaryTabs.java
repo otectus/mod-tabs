@@ -20,6 +20,7 @@ import sfiomn.legendarytabs.config.Config;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 @Mod(LegendaryTabs.MOD_ID)
 public class LegendaryTabs
@@ -127,6 +128,7 @@ public class LegendaryTabs
             LOGGER.debug("Pufferfish's Skills is loaded, enabling compatibility");
     }
 
+    @SubscribeEvent
     private void onModConfigLoadEvent(ModConfigEvent.Loading event)
     {
         final ModConfig config = event.getConfig();
@@ -135,6 +137,7 @@ public class LegendaryTabs
             Config.Baked.bakeClient();
     }
 
+    @SubscribeEvent
     private void onModConfigReloadEvent(ModConfigEvent.Reloading event)
     {
         final ModConfig config = event.getConfig();
