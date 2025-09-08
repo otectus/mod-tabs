@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarytabs.LegendaryTabs;
 import sfiomn.legendarytabs.api.tabs_menu.TabBase;
+import sfiomn.legendarytabs.api.tabs_menu.TabsMenu;
 import sfiomn.legendarytabs.config.Config;
 
 import static sfiomn.legendarytabs.api.tabs_menu.TabBase.TAB_HEIGHT;
@@ -33,8 +34,10 @@ public class TabButton extends Button {
     @Override
     public void onPress() {
         super.onPress();
-        if (!this.isDisabled)
+        if (!this.isDisabled) {
+            TabsMenu.markScreenOpenedViaTab(this.screen);
             tabBase.openTargetScreen(this.player);
+        }
     }
 
     public void setTabBase(TabBase tabBase) {

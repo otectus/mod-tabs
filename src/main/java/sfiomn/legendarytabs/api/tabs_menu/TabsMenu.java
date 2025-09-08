@@ -23,6 +23,8 @@ public class TabsMenu {
     private static int startTabIndex;
     private static int currentTabsCount;
     private static List<TabBase> enabledTabs;
+    private static boolean screenOpenedViaTab = false;
+    private static Screen sourceScreen = null;
 
     private TabsMenu() {
     }
@@ -110,6 +112,24 @@ public class TabsMenu {
     public static void register(TabBase tabBase) {
         LegendaryTabs.LOGGER.info("Tab " + tabBase.getClass().getName() + " registered");
         tabBase.initTabOnScreens();
+    }
+
+    public static void markScreenOpenedViaTab(Screen sourceScreen) {
+        TabsMenu.screenOpenedViaTab = true;
+        TabsMenu.sourceScreen = sourceScreen;
+    }
+
+    public static boolean wasScreenOpenedViaTab() {
+        return screenOpenedViaTab;
+    }
+
+    public static Screen getSourceScreen() {
+        return sourceScreen;
+    }
+
+    public static void clearTabScreenTracking() {
+        screenOpenedViaTab = false;
+        sourceScreen = null;
     }
 
     public static class ScreenInfo {
