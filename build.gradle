@@ -115,6 +115,11 @@ repositories {
     }
 
     maven { url "https://api.modrinth.com/maven" }
+    
+    // Local flat directory for external JARs
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -122,6 +127,7 @@ dependencies {
 
     implementation("curse.maven:curios-309927:6529130")
     //implementation("curse.maven:legendarysurvivaloverhaul-840254:6527474") // Not updated to NeoForge 1.21.1 yet
+    implementation(name: 'legendarysurvivaloverhaul-1.21.1-2.3.22', version: null)
     implementation("curse.maven:reskillable-reimagined-1170464:6599973")
     implementation("curse.maven:architectury-api-419699:5786327")
     implementation("curse.maven:ftb-quests-forge-289412:6721642")

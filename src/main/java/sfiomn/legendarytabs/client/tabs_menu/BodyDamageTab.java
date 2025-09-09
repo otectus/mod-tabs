@@ -12,8 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 //import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-//import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
-//import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
+import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
+import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import sfiomn.legendarytabs.LegendaryTabs;
 import sfiomn.legendarytabs.api.tabs_menu.TabBase;
 import sfiomn.legendarytabs.api.tabs_menu.TabsMenu;
@@ -21,7 +21,7 @@ import sfiomn.legendarytabs.config.Config;
 import sfiomn.legendarytabs.utils.IntegrationUtils;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
-//import static sfiomn.legendarysurvivaloverhaul.config.Config.Baked.localizedBodyDamageEnabled;
+import static sfiomn.legendarysurvivaloverhaul.config.Config.Baked.localizedBodyDamageEnabled;
 
 public class BodyDamageTab extends TabBase {
     private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
@@ -34,15 +34,13 @@ public class BodyDamageTab extends TabBase {
 
     @Override
     public void openTargetScreen(Player player) {
-        // Commented out until Legendary Survival Overhaul is updated to NeoForge 1.21.1
-        //if (LegendaryTabs.legendarySurvivalOverhaulLoaded && localizedBodyDamageEnabled)
-        //    ClientHooks.openBodyHealthScreen(player);
+        if (LegendaryTabs.legendarySurvivalOverhaulLoaded && localizedBodyDamageEnabled)
+            ClientHooks.openBodyHealthScreen(player);
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        // Commented out until Legendary Survival Overhaul is updated to NeoForge 1.21.1
-        return false; //LegendaryTabs.legendarySurvivalOverhaulLoaded && Config.Baked.bodyDamageTabEnabled && localizedBodyDamageEnabled;
+        return LegendaryTabs.legendarySurvivalOverhaulLoaded && Config.Baked.bodyDamageTabEnabled && localizedBodyDamageEnabled;
     }
 
     @Override
@@ -56,8 +54,7 @@ public class BodyDamageTab extends TabBase {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        // Commented out until Legendary Survival Overhaul is updated to NeoForge 1.21.1
-        return false; //localizedBodyDamageEnabled && currentScreen instanceof BodyHealthScreen;
+        return localizedBodyDamageEnabled && currentScreen instanceof BodyHealthScreen;
     }
 
     @Override
@@ -72,9 +69,8 @@ public class BodyDamageTab extends TabBase {
         if (LegendaryTabs.curiosLoaded)
             TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 50);
 
-        // Commented out until mods are updated to NeoForge 1.21.1
-        //if (LegendaryTabs.legendarySurvivalOverhaulLoaded && Config.Baked.includeOpenedScreenTab)
-        //    TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 50);
+        if (LegendaryTabs.legendarySurvivalOverhaulLoaded && Config.Baked.includeOpenedScreenTab)
+            TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 50);
 
         //if (LegendaryTabs.reskillableLoaded)
         //    TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 50);
