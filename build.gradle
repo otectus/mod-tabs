@@ -148,6 +148,12 @@ dependencies {
     implementation("curse.maven:journeymap-32274:6689206")
     //compileOnly("curse.maven:reskillable-981352:5997519") // Not updated to NeoForge 1.21.1 yet
     implementation("curse.maven:cosmetic-armor-reworked-237307:5610814")
+    
+    // L2 Hostility compatibility dependencies
+    implementation("curse.maven:l2hostility-909207:6610946")
+    implementation("curse.maven:l2library-620203:6820079")
+    implementation("curse.maven:l2-complements-758349:6939788")
+    implementation("curse.maven:patchouli-306770:6842247")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

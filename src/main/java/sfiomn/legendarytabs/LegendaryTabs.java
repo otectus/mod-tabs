@@ -47,6 +47,9 @@ public class LegendaryTabs
     public static boolean dietLoaded = false;
     public static boolean passiveSkillTreeLoaded = false;
     public static boolean pufferfishsSkillsLoaded = false;
+    public static boolean l2HostilityLoaded = false;
+    public static boolean l2LibraryLoaded = false;
+    public static boolean l2ComplementsLoaded = false;
 
     public LegendaryTabs(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -78,6 +81,9 @@ public class LegendaryTabs
         dietLoaded = ModList.get().isLoaded("diet");
         passiveSkillTreeLoaded = ModList.get().isLoaded("skilltree");
         pufferfishsSkillsLoaded = ModList.get().isLoaded("puffish_skills");
+        l2HostilityLoaded = ModList.get().isLoaded("l2hostility");
+        l2LibraryLoaded = ModList.get().isLoaded("l2library");
+        l2ComplementsLoaded = ModList.get().isLoaded("l2complements");
 
         if (backpackedLoaded)
             LOGGER.debug("Backpacked is loaded, enabling compatibility");
@@ -126,6 +132,15 @@ public class LegendaryTabs
 
         if (pufferfishsSkillsLoaded)
             LOGGER.debug("Pufferfish's Skills is loaded, enabling compatibility");
+
+        if (l2HostilityLoaded)
+            LOGGER.debug("L2 Hostility is loaded, enabling compatibility");
+
+        if (l2LibraryLoaded)
+            LOGGER.debug("L2 Library is loaded, enabling compatibility");
+
+        if (l2ComplementsLoaded)
+            LOGGER.debug("L2 Complements is loaded, enabling compatibility");
     }
 
     @SubscribeEvent
@@ -183,6 +198,10 @@ public class LegendaryTabs
                 TabsMenu.register(new PassiveSkillTreeTab());
             if (LegendaryTabs.pufferfishsSkillsLoaded)
                 TabsMenu.register(new PufferfishsSkillsTab());
+            if (LegendaryTabs.l2HostilityLoaded)
+                TabsMenu.register(new L2HostilityDifficultyTab());
+            if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2ComplementsLoaded)
+                TabsMenu.register(new L2AttributeTab());
         }
     }
 }

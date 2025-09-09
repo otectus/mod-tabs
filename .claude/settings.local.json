@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/MinecraftMods/Neoport Mods/L2Library/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
