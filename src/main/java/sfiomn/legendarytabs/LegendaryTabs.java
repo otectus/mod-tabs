@@ -50,6 +50,7 @@ public class LegendaryTabs
     public static boolean l2HostilityLoaded = false;
     public static boolean l2LibraryLoaded = false;
     public static boolean l2ComplementsLoaded = false;
+    public static boolean l2ArtifactsLoaded = false;
 
     public LegendaryTabs(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -84,6 +85,7 @@ public class LegendaryTabs
         l2HostilityLoaded = ModList.get().isLoaded("l2hostility");
         l2LibraryLoaded = ModList.get().isLoaded("l2library");
         l2ComplementsLoaded = ModList.get().isLoaded("l2complements");
+        l2ArtifactsLoaded = ModList.get().isLoaded("l2artifacts");
 
         if (backpackedLoaded)
             LOGGER.debug("Backpacked is loaded, enabling compatibility");
@@ -141,6 +143,9 @@ public class LegendaryTabs
 
         if (l2ComplementsLoaded)
             LOGGER.debug("L2 Complements is loaded, enabling compatibility");
+
+        if (l2ArtifactsLoaded)
+            LOGGER.debug("L2 Artifacts is loaded, enabling compatibility");
     }
 
     @SubscribeEvent
@@ -202,6 +207,8 @@ public class LegendaryTabs
                 TabsMenu.register(new L2HostilityDifficultyTab());
             if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2ComplementsLoaded)
                 TabsMenu.register(new L2AttributeTab());
+            if (LegendaryTabs.l2ArtifactsLoaded)
+                TabsMenu.register(new L2ArtifactsTab());
         }
     }
 }

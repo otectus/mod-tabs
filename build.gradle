@@ -159,6 +159,7 @@ dependencies {
     implementation("curse.maven:l2hostility-909207:6610946")
     implementation("curse.maven:l2library-620203:6820079")
     implementation("curse.maven:l2-complements-758349:6939788")
+    implementation("curse.maven:l2-artifacts-659547:6515998")
     implementation("curse.maven:patchouli-306770:6842247")
 
     // For more info:

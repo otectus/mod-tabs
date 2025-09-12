@@ -31,7 +31,7 @@ public class ClientNeoForgeEvents {
         TabsMenu.initScreenButtons(event);
         
         // Hide L2 tabs after screen initialization
-        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded) {
+        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded) {
             hideL2Tabs(event.getScreen());
         }
     }
@@ -63,7 +63,7 @@ public class ClientNeoForgeEvents {
     @SubscribeEvent
     public static void onScreenRender(ScreenEvent.Render.Pre event) {
         // Hide L2Library tabs when L2 mods are loaded and we're managing tabs
-        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded) {
+        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded) {
             Screen screen = event.getScreen();
             if (screen instanceof AbstractContainerScreen<?>) {
                 // Cancel L2's tab rendering by removing their tab widgets
@@ -73,14 +73,15 @@ public class ClientNeoForgeEvents {
     }
 
     private static void hideL2Tabs(Screen screen) {
-        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded) {
+        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded) {
             try {
                 // Remove L2's tab buttons from the screen
                 screen.children().removeIf(widget -> {
                     String className = widget.getClass().getName();
                     boolean isL2Tab = className.contains("l2tabs") || 
                                      className.contains("l2library") ||
-                                     className.contains("l2hostility");
+                                     className.contains("l2hostility") ||
+                                     className.contains("l2artifacts");
                     boolean isTab = className.toLowerCase().contains("tab");
                     return isL2Tab && isTab;
                 });
@@ -89,7 +90,8 @@ public class ClientNeoForgeEvents {
                     String className = renderable.getClass().getName();
                     boolean isL2Tab = className.contains("l2tabs") || 
                                      className.contains("l2library") ||
-                                     className.contains("l2hostility");
+                                     className.contains("l2hostility") ||
+                                     className.contains("l2artifacts");
                     boolean isTab = className.toLowerCase().contains("tab");
                     return isL2Tab && isTab;
                 });

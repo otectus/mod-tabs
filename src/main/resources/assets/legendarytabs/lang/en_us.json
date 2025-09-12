@@ -13,5 +13,6 @@
   "tooltip.legendarytabs.tab.passive_skill_tree.description": "Skill Tree",
   "tooltip.legendarytabs.tab.pufferfish_skills.description": "Skill Tree",
   "tooltip.legendarytabs.tab.l2_hostility_difficulty.description": "Difficulty",
-  "tooltip.legendarytabs.tab.l2_attributes.description": "Attributes"
+  "tooltip.legendarytabs.tab.l2_attributes.description": "Attributes",
+  "tooltip.legendarytabs.tab.l2_artifacts.description": "Set Effects"
 }
