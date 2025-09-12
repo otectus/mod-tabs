@@ -1,7 +1,7 @@
 package sfiomn.legendarytabs.client.tabs_menu;
 
 //import com.illusivesoulworks.diet.client.screen.DietScreen;
-import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
+//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
 import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
 import journeymap.client.ui.UIManager;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
@@ -85,7 +85,8 @@ public class JourneyMapTab extends TabBase {
             TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 75);
 
         if (LegendaryTabs.backpackedLoaded)
-            TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 75);
+            // Backpacked integration temporarily disabled - mod is in active development
+            //TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 75);
 
         if (LegendaryTabs.travelersBackpackLoaded)
             TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 75);

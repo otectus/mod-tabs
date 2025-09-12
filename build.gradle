@@ -132,7 +132,7 @@ dependencies {
     implementation("curse.maven:architectury-api-419699:5786327")
     implementation("curse.maven:ftb-quests-forge-289412:6721642")
     implementation("curse.maven:ftb-teams-forge-404468:6119437")
-    implementation("curse.maven:backpacked-352835:6642269")
+    //implementation("curse.maven:backpacked-352835:6642269") // Temporarily disabled - mod is in active development
     implementation("curse.maven:framework-549225:6531439")
     implementation("curse.maven:map-atlases-forge-519759:6782726")
     implementation("curse.maven:selene-499980:6800719")

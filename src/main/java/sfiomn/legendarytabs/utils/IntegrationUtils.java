@@ -2,8 +2,8 @@ package sfiomn.legendarytabs.utils;
 
 //import com.illusivesoulworks.diet.api.type.IDietSuite;
 //import com.illusivesoulworks.diet.common.data.suite.DietSuites;
-import com.mrcrayfish.backpacked.item.BackpackItem;
-import com.mrcrayfish.backpacked.platform.Services;
+//import com.mrcrayfish.backpacked.item.BackpackItem;
+//import com.mrcrayfish.backpacked.platform.Services;
 import com.tiviacz.travelersbackpack.capability.AttachmentUtils;
 import com.tiviacz.travelersbackpack.inventory.BackpackWrapper;
 import net.minecraft.client.Minecraft;
@@ -18,21 +18,25 @@ public class IntegrationUtils {
     public IntegrationUtils(){}
 
     public static int getBackpackWidth(Player player) {
-        if (!LegendaryTabs.backpackedLoaded)
+        // Backpacked integration temporarily disabled - mod is in active development
+        return 0;
+        /*if (!LegendaryTabs.backpackedLoaded)
             return 0;
 
         ItemStack backpack = Services.BACKPACK.getBackpackStack(player);
         BackpackItem backpackItem = (BackpackItem)backpack.getItem();
-        return 14 + Math.max(backpackItem.getColumnCount(), 9) * 18;
+        return 14 + Math.max(backpackItem.getColumnCount(), 9) * 18;*/
     }
 
     public static int getBackpackHeight(Player player) {
-        if (!LegendaryTabs.backpackedLoaded)
+        // Backpacked integration temporarily disabled - mod is in active development
+        return 0;
+        /*if (!LegendaryTabs.backpackedLoaded)
             return 0;
 
         ItemStack backpack = Services.BACKPACK.getBackpackStack(player);
         BackpackItem backpackItem = (BackpackItem)backpack.getItem();
-        return 114 + backpackItem.getRowCount() * 18;
+        return 114 + backpackItem.getRowCount() * 18;*/
     }
 
     public static int getDietHeight(Player player) {

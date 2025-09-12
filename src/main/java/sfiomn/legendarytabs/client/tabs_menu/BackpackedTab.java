@@ -1,10 +1,10 @@
 package sfiomn.legendarytabs.client.tabs_menu;
 
 //import com.illusivesoulworks.diet.client.screen.DietScreen;
-import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
-import com.mrcrayfish.backpacked.network.Network;
-import com.mrcrayfish.backpacked.network.message.MessageOpenBackpack;
-import com.mrcrayfish.backpacked.platform.Services;
+//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
+//import com.mrcrayfish.backpacked.network.Network;
+//import com.mrcrayfish.backpacked.network.message.MessageOpenBackpack;
+//import com.mrcrayfish.backpacked.platform.Services;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
 //import majik.rereskillable.client.screen.SkillScreen;
 import net.minecraft.client.gui.GuiGraphics;
@@ -34,15 +34,26 @@ public class BackpackedTab extends TabBase {
 
     @Override
     public void openTargetScreen(Player player) {
-        if (Config.Baked.backpackTabEnabled && player.level().isClientSide && !Services.BACKPACK.getBackpackStack(player).isEmpty()) {
+        // Backpacked integration temporarily disabled - mod is in active development
+        /*if (Config.Baked.backpackTabEnabled && player.level().isClientSide && hasBackpack(player)) {
             Network.getPlay().sendToServer(new MessageOpenBackpack());
-        }
+        }*/
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.backpackTabEnabled && !Services.BACKPACK.getBackpackStack(player).isEmpty();
+        // Backpacked integration temporarily disabled - mod is in active development
+        return false;
+        //return Config.Baked.backpackTabEnabled && hasBackpack(player);
     }
+
+    /*private boolean hasBackpack(Player player) {
+        try {
+            return Services.BACKPACK.isBackpackVisible(player);
+        } catch (Exception e) {
+            return false;
+        }
+    }*/
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
@@ -55,7 +66,9 @@ public class BackpackedTab extends TabBase {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return currentScreen instanceof BackpackScreen;
+        // Backpacked integration temporarily disabled - mod is in active development
+        return false;
+        //return currentScreen instanceof BackpackScreen;
     }
 
     @Override
@@ -86,8 +99,9 @@ public class BackpackedTab extends TabBase {
         if (LegendaryTabs.cosmeticArmorLoaded)
             TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 20);
 
-        if (LegendaryTabs.backpackedLoaded && Config.Baked.includeOpenedScreenTab)
-            TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 20);
+        // Backpacked integration temporarily disabled - mod is in active development
+        /*if (LegendaryTabs.backpackedLoaded && Config.Baked.includeOpenedScreenTab)
+            TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 20);*/
 
         if (LegendaryTabs.travelersBackpackLoaded)
             TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 20);

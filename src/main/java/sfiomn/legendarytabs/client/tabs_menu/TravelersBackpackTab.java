@@ -1,10 +1,10 @@
 package sfiomn.legendarytabs.client.tabs_menu;
 
 //import com.illusivesoulworks.diet.client.screen.DietScreen;
-import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
-import com.mrcrayfish.backpacked.network.Network;
-import com.mrcrayfish.backpacked.network.message.MessageOpenBackpack;
-import com.mrcrayfish.backpacked.platform.Services;
+//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
+//import com.mrcrayfish.backpacked.network.Network;
+//import com.mrcrayfish.backpacked.network.message.MessageOpenBackpack;
+//import com.mrcrayfish.backpacked.platform.Services;
 import com.tiviacz.travelersbackpack.capability.AttachmentUtils;
 import com.tiviacz.travelersbackpack.inventory.BackpackContainer;
 import com.tiviacz.travelersbackpack.inventory.BackpackWrapper;
@@ -90,8 +90,9 @@ public class TravelersBackpackTab extends TabBase {
         if (LegendaryTabs.cosmeticArmorLoaded)
             TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 20);
 
-        if (LegendaryTabs.backpackedLoaded)
-            TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 20);
+        // Backpacked integration temporarily disabled - mod is in active development
+        /*if (LegendaryTabs.backpackedLoaded)
+            TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 20);*/
 
         if (LegendaryTabs.travelersBackpackLoaded && Config.Baked.includeOpenedScreenTab)
             TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 20);

@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Read(//d/MinecraftMods/Neoport Mods/L2Library/**)"
+      "Read(//d/MinecraftMods/Neoport Mods/L2Library/**)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [],
     "ask": []

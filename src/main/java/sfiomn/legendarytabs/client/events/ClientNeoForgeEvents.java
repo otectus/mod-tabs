@@ -44,7 +44,7 @@ public class ClientNeoForgeEvents {
             if (minecraft.options.keyInventory.matches(event.getKeyCode(), event.getScanCode())) {
                 Screen sourceScreen = TabsMenu.getSourceScreen();
                 
-                if (sourceScreen instanceof InventoryScreen) {
+                if (sourceScreen instanceof InventoryScreen && minecraft.player != null && minecraft.gameMode != null) {
                     TabsMenu.clearTabScreenTracking();
                     minecraft.setScreen(new InventoryScreen(minecraft.player));
                     event.setCanceled(true);
