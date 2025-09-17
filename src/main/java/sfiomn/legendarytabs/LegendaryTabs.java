@@ -51,6 +51,8 @@ public class LegendaryTabs
     public static boolean l2LibraryLoaded = false;
     public static boolean l2ComplementsLoaded = false;
     public static boolean l2ArtifactsLoaded = false;
+    public static boolean sophisticatedBackpacksLoaded = false;
+    public static boolean cobblemonLoaded = false;
 
     public LegendaryTabs(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -86,6 +88,8 @@ public class LegendaryTabs
         l2LibraryLoaded = ModList.get().isLoaded("l2library");
         l2ComplementsLoaded = ModList.get().isLoaded("l2complements");
         l2ArtifactsLoaded = ModList.get().isLoaded("l2artifacts");
+        sophisticatedBackpacksLoaded = ModList.get().isLoaded("sophisticatedbackpacks");
+        cobblemonLoaded = ModList.get().isLoaded("cobblemon");
 
         if (backpackedLoaded)
             LOGGER.debug("Backpacked is loaded, enabling compatibility");
@@ -146,6 +150,12 @@ public class LegendaryTabs
 
         if (l2ArtifactsLoaded)
             LOGGER.debug("L2 Artifacts is loaded, enabling compatibility");
+
+        if (sophisticatedBackpacksLoaded)
+            LOGGER.debug("Sophisticated Backpacks is loaded, enabling compatibility");
+
+        if (cobblemonLoaded)
+            LOGGER.debug("Cobblemon is loaded, enabling compatibility");
     }
 
     @SubscribeEvent
@@ -209,6 +219,10 @@ public class LegendaryTabs
                 TabsMenu.register(new L2AttributeTab());
             if (LegendaryTabs.l2ArtifactsLoaded)
                 TabsMenu.register(new L2ArtifactsTab());
+            if (LegendaryTabs.sophisticatedBackpacksLoaded)
+                TabsMenu.register(new SophisticatedBackpacksTab());
+            if (LegendaryTabs.cobblemonLoaded)
+                TabsMenu.register(new CobblemonTab());
         }
     }
 }

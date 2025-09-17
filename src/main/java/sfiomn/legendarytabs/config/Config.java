@@ -39,6 +39,8 @@ public class Config
 		public final ModConfigSpec.BooleanValue dietTabEnabled;
 		public final ModConfigSpec.BooleanValue pufferfishSkillsTabEnabled;
 		public final ModConfigSpec.BooleanValue passiveSkillTreeTabEnabled;
+		public final ModConfigSpec.BooleanValue sophisticatedBackpacksTabEnabled;
+		public final ModConfigSpec.BooleanValue cobblemonTabEnabled;
 
 		public final ModConfigSpec.IntValue tabsMenuOffsetX;
 		public final ModConfigSpec.IntValue tabsMenuOffsetY;
@@ -95,6 +97,12 @@ public class Config
 			passiveSkillTreeTabEnabled = builder
 					.comment(" If enabled, show the passive skill tree button in the tabs menu.")
 					.define("Passive Skill Tree Tab Enabled ", true);
+			sophisticatedBackpacksTabEnabled = builder
+					.comment(" If enabled, show the sophisticated backpacks button in the tabs menu.")
+					.define("Sophisticated Backpacks Tab Enabled ", true);
+			cobblemonTabEnabled = builder
+					.comment(" If enabled, show the cobblemon party summary button in the tabs menu.")
+					.define("Cobblemon Tab Enabled ", true);
 			builder.pop();
 		}
 	}
@@ -128,6 +136,8 @@ public class Config
 		public static boolean dietTabEnabled;
 		public static boolean pufferfishSkillsTabEnabled;
 		public static boolean passiveSkillTreeTabEnabled;
+		public static boolean sophisticatedBackpacksTabEnabled;
+		public static boolean cobblemonTabEnabled;
 
 		public static void bakeClient()
 		{
@@ -152,6 +162,8 @@ public class Config
 				dietTabEnabled = CLIENT.dietTabEnabled.get();
 				pufferfishSkillsTabEnabled = CLIENT.pufferfishSkillsTabEnabled.get();
 				passiveSkillTreeTabEnabled = CLIENT.passiveSkillTreeTabEnabled.get();
+				sophisticatedBackpacksTabEnabled = CLIENT.sophisticatedBackpacksTabEnabled.get();
+				cobblemonTabEnabled = CLIENT.cobblemonTabEnabled.get();
 			}
 			catch (Exception e)
 			{

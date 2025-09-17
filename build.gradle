@@ -162,6 +162,14 @@ dependencies {
     implementation("curse.maven:l2-artifacts-659547:6515998")
     implementation("curse.maven:patchouli-306770:6842247")
 
+    // Sophisticated Backpacks
+    implementation("curse.maven:sophisticated-core-618298:6982394")
+    implementation("curse.maven:sophisticated-backpacks-422301:7000062")
+
+    // Cobblemon
+    implementation("curse.maven:kotlin-for-forge-351264:6994056")
+    implementation("curse.maven:cobblemon-687131:6125026")
+
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
