@@ -170,6 +170,9 @@ dependencies {
     implementation("curse.maven:kotlin-for-forge-351264:6994056")
     implementation("curse.maven:cobblemon-687131:6125026")
 
+    // Modular Golems
+    implementation("curse.maven:modulargolems-690937:6965174")
+
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html

@@ -53,6 +53,7 @@ public class LegendaryTabs
     public static boolean l2ArtifactsLoaded = false;
     public static boolean sophisticatedBackpacksLoaded = false;
     public static boolean cobblemonLoaded = false;
+    public static boolean modularGolemsLoaded = false;
 
     public LegendaryTabs(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -90,6 +91,7 @@ public class LegendaryTabs
         l2ArtifactsLoaded = ModList.get().isLoaded("l2artifacts");
         sophisticatedBackpacksLoaded = ModList.get().isLoaded("sophisticatedbackpacks");
         cobblemonLoaded = ModList.get().isLoaded("cobblemon");
+        modularGolemsLoaded = ModList.get().isLoaded("modulargolems");
 
         if (backpackedLoaded)
             LOGGER.debug("Backpacked is loaded, enabling compatibility");
@@ -156,6 +158,9 @@ public class LegendaryTabs
 
         if (cobblemonLoaded)
             LOGGER.debug("Cobblemon is loaded, enabling compatibility");
+
+        if (modularGolemsLoaded)
+            LOGGER.debug("Modular Golems is loaded, enabling compatibility");
     }
 
     @SubscribeEvent
@@ -223,6 +228,8 @@ public class LegendaryTabs
                 TabsMenu.register(new SophisticatedBackpacksTab());
             if (LegendaryTabs.cobblemonLoaded)
                 TabsMenu.register(new CobblemonTab());
+            if (LegendaryTabs.modularGolemsLoaded)
+                TabsMenu.register(new ModularGolemsTab());
         }
     }
 }

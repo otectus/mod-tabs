@@ -16,5 +16,6 @@
   "tooltip.legendarytabs.tab.l2_attributes.description": "Attributes",
   "tooltip.legendarytabs.tab.l2_artifacts.description": "Set Effects",
   "tooltip.legendarytabs.tab.sophisticated_backpacks.description": "Backpack",
-  "tooltip.legendarytabs.tab.cobblemon.description": "Party Summary"
+  "tooltip.legendarytabs.tab.cobblemon.description": "Party Summary",
+  "tooltip.legendarytabs.tab.modular_golems.description": "Golems in World"
 }

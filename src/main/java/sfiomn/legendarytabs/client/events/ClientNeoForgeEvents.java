@@ -29,10 +29,21 @@ public class ClientNeoForgeEvents {
     public static void screenInitPost(ScreenEvent.Init.Post event) {
         event.getScreen();
         TabsMenu.initScreenButtons(event);
-        
+
         // Hide L2 tabs after screen initialization
-        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded) {
-            hideL2Tabs(event.getScreen());
+        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded || LegendaryTabs.modularGolemsLoaded) {
+            // But don't hide tabs when we're in the Modular Golems tracker screens (they need sub-tabs)
+            boolean isModularGolemsTrackerScreen = false;
+            try {
+                Class<?> golemInfoScreenClass = Class.forName("dev.xkmc.modulargolems.content.client.tracker.GolemInfoScreen");
+                isModularGolemsTrackerScreen = golemInfoScreenClass.isInstance(event.getScreen());
+            } catch (ClassNotFoundException e) {
+                // Class not found, not a Modular Golems screen
+            }
+
+            if (!isModularGolemsTrackerScreen) {
+                hideL2Tabs(event.getScreen());
+            }
         }
     }
 
@@ -73,35 +84,48 @@ public class ClientNeoForgeEvents {
     @SubscribeEvent
     public static void onScreenRender(ScreenEvent.Render.Pre event) {
         // Hide L2Library tabs when L2 mods are loaded and we're managing tabs
-        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded) {
+        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded || LegendaryTabs.modularGolemsLoaded) {
             Screen screen = event.getScreen();
             if (screen instanceof AbstractContainerScreen<?>) {
                 // Cancel L2's tab rendering by removing their tab widgets
-                hideL2Tabs(screen);
+                // But don't hide tabs when we're in the Modular Golems tracker screens (they need sub-tabs)
+                boolean isModularGolemsTrackerScreen = false;
+                try {
+                    Class<?> golemInfoScreenClass = Class.forName("dev.xkmc.modulargolems.content.client.tracker.GolemInfoScreen");
+                    isModularGolemsTrackerScreen = golemInfoScreenClass.isInstance(screen);
+                } catch (ClassNotFoundException e) {
+                    // Class not found, not a Modular Golems screen
+                }
+
+                if (!isModularGolemsTrackerScreen) {
+                    hideL2Tabs(screen);
+                }
             }
         }
     }
 
     private static void hideL2Tabs(Screen screen) {
-        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded) {
+        if (LegendaryTabs.l2LibraryLoaded || LegendaryTabs.l2HostilityLoaded || LegendaryTabs.l2ArtifactsLoaded || LegendaryTabs.modularGolemsLoaded) {
             try {
                 // Remove L2's tab buttons from the screen
                 screen.children().removeIf(widget -> {
                     String className = widget.getClass().getName();
-                    boolean isL2Tab = className.contains("l2tabs") || 
+                    boolean isL2Tab = className.contains("l2tabs") ||
                                      className.contains("l2library") ||
                                      className.contains("l2hostility") ||
-                                     className.contains("l2artifacts");
+                                     className.contains("l2artifacts") ||
+                                     className.contains("modulargolems");
                     boolean isTab = className.toLowerCase().contains("tab");
                     return isL2Tab && isTab;
                 });
                 
                 screen.renderables.removeIf(renderable -> {
                     String className = renderable.getClass().getName();
-                    boolean isL2Tab = className.contains("l2tabs") || 
+                    boolean isL2Tab = className.contains("l2tabs") ||
                                      className.contains("l2library") ||
                                      className.contains("l2hostility") ||
-                                     className.contains("l2artifacts");
+                                     className.contains("l2artifacts") ||
+                                     className.contains("modulargolems");
                     boolean isTab = className.toLowerCase().contains("tab");
                     return isL2Tab && isTab;
                 });
