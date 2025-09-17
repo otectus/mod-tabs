@@ -40,11 +40,21 @@ public class ClientNeoForgeEvents {
     public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event) {
         if (TabsMenu.wasScreenOpenedViaTab()) {
             Minecraft minecraft = Minecraft.getInstance();
-            
+
             if (minecraft.options.keyInventory.matches(event.getKeyCode(), event.getScanCode())) {
                 Screen sourceScreen = TabsMenu.getSourceScreen();
-                
+
                 if (sourceScreen instanceof InventoryScreen && minecraft.player != null && minecraft.gameMode != null) {
+                    // Before switching to inventory, properly close any open container (like backpack)
+                    // This fixes the duplication issue when switching from backpack to inventory via keybind
+                    try {
+                        if (minecraft.player.containerMenu != null && !minecraft.player.containerMenu.getClass().getSimpleName().equals("InventoryMenu")) {
+                            minecraft.player.closeContainer();
+                        }
+                    } catch (Exception e) {
+                        // Silently ignore close container errors
+                    }
+
                     TabsMenu.clearTabScreenTracking();
                     minecraft.setScreen(new InventoryScreen(minecraft.player));
                     event.setCanceled(true);

@@ -34,6 +34,7 @@ public class SophisticatedBackpacksTab extends TabBase {
             Class<?> packetDistributorClass = Class.forName("net.neoforged.neoforge.network.PacketDistributor");
             Class<?> payloadClass = Class.forName("net.p3pp3rf1y.sophisticatedbackpacks.network.BackpackOpenPayload");
 
+            // Use the default constructor - let Sophisticated Backpacks handle all the logic
             Object payload = payloadClass.getDeclaredConstructor().newInstance();
 
             // Find the sendToServer method with 2 parameters
@@ -80,18 +81,25 @@ public class SophisticatedBackpacksTab extends TabBase {
                 try {
                     Class<?> curiosAPIClass = Class.forName("top.theillusivec4.curios.api.CuriosApi");
                     Method getCuriosInventoryMethod = curiosAPIClass.getDeclaredMethod("getCuriosInventory", net.minecraft.world.entity.LivingEntity.class);
-                    Object curiosInventory = getCuriosInventoryMethod.invoke(null, player);
+                    Object optionalCuriosInventory = getCuriosInventoryMethod.invoke(null, player);
 
-                    if (curiosInventory != null) {
-                        Method getAllEquippedMethod = curiosInventory.getClass().getDeclaredMethod("getAllEquippedItems");
-                        Iterable<?> equippedItems = (Iterable<?>) getAllEquippedMethod.invoke(curiosInventory);
+                    Method isPresentMethod = optionalCuriosInventory.getClass().getDeclaredMethod("isPresent");
+                    boolean isPresent = (Boolean) isPresentMethod.invoke(optionalCuriosInventory);
 
-                        for (Object equippedItem : equippedItems) {
-                            Method getStackMethod = equippedItem.getClass().getDeclaredMethod("getStack");
-                            ItemStack stack = (ItemStack) getStackMethod.invoke(equippedItem);
-                            if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
-                                return true;
-                            }
+                    if (isPresent) {
+                        Method getMethod = optionalCuriosInventory.getClass().getDeclaredMethod("get");
+                        Object curiosInventory = getMethod.invoke(optionalCuriosInventory);
+
+                        Method findCuriosMethod = curiosInventory.getClass().getDeclaredMethod("findCurios", java.util.function.Predicate.class);
+
+                        java.util.function.Predicate<ItemStack> backpackPredicate = stack ->
+                            !stack.isEmpty() && backpackItemClass.isInstance(stack.getItem());
+
+                        @SuppressWarnings("unchecked")
+                        java.util.List<Object> curioResults = (java.util.List<Object>) findCuriosMethod.invoke(curiosInventory, backpackPredicate);
+
+                        if (!curioResults.isEmpty()) {
+                            return true;
                         }
                     }
                 } catch (Exception e) {
@@ -150,4 +158,5 @@ public class SophisticatedBackpacksTab extends TabBase {
         if (LegendaryTabs.curiosLoaded)
             TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 35);
     }
+
 }
