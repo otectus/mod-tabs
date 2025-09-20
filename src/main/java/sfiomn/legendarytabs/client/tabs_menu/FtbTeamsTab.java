@@ -23,8 +23,8 @@ import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 public class FtbTeamsTab extends TabBase {
     private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0;
-    private final int TAB_ICON_TEX_Y = 46;
+    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
+    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public FtbTeamsTab() {
         super();
@@ -44,11 +44,15 @@ public class FtbTeamsTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
+        // Render tab background (empty tab style like other mods)
         int texOffsetX = 0;
         if (hover)
-            texOffsetX = 54;
+            texOffsetX = 54; // Hover state is at X=54
+        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
 
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        // Use FTB Teams texture directly
+        ResourceLocation teamsTexture = ResourceLocation.fromNamespaceAndPath("ftbteams", "textures/teams.png");
+        gui.blit(teamsTexture, x + 5, y + 5, 0, 0, 16, 16, 16, 16);
     }
 
     @Override

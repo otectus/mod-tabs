@@ -84,7 +84,7 @@ public class ArsElixirumTab extends TabBase {
             iconStack = new ItemStack(Items.BREWING_STAND);
         }
 
-        gui.renderItem(iconStack, x + 5, y + 3);
+        gui.renderItem(iconStack, x + 5, y + 4);
     }
 
     @Override

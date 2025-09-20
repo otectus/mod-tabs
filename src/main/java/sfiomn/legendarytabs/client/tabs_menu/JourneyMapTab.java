@@ -25,8 +25,9 @@ import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 public class JourneyMapTab extends TabBase {
     private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 27;
-    private final int TAB_ICON_TEX_Y = 69;
+    private final ResourceLocation JOURNEYMAP_ICON = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/journeymap.png");
+    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
+    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public JourneyMapTab() {
         super();
@@ -45,11 +46,14 @@ public class JourneyMapTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
+        // Render tab background (empty tab style like other mods)
         int texOffsetX = 0;
         if (hover)
-            texOffsetX = 54;
+            texOffsetX = 54; // Hover state is at X=54
+        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
 
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        // Render custom JourneyMap icon
+        gui.blit(JOURNEYMAP_ICON, x + 5, y + 4, 0, 0, 16, 16, 16, 16);
     }
 
     @Override

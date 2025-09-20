@@ -26,8 +26,11 @@ import xaero.map.gui.GuiMap;
 
 public class XaerosMapTab extends TabBase {
     private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 27;
-    private final int TAB_ICON_TEX_Y = 69;
+    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
+    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
+
+    // Direct reference to Xaero's World Map icon
+    private final ResourceLocation XAEROS_WORLDMAP_ICON = ResourceLocation.fromNamespaceAndPath("xaeroworldmap", "icon.png");
 
     public XaerosMapTab() {
         super();
@@ -45,11 +48,23 @@ public class XaerosMapTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
+        // Render tab background (empty tab style like L2 mods)
         int texOffsetX = 0;
         if (hover)
-            texOffsetX = 54;
+            texOffsetX = 54; // Hover state is at X=54
+        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
 
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        // Render Xaero's World Map icon directly from the mod
+        try {
+            // Draw the icon at 14x14 size (2px smaller in each direction), moved up 1px
+            gui.blit(XAEROS_WORLDMAP_ICON, x + 6, y + 5, 0, 0, 14, 14, 16, 16);
+        } catch (Exception e) {
+            // If icon loading fails, draw a fallback (map-like appearance)
+            LegendaryTabs.LOGGER.debug("Failed to load Xaero's World Map icon, using fallback");
+            // Draw a simple map-like colored rectangle as fallback
+            gui.fill(x + 7, y + 5, x + 19, y + 17, 0xFF8B4513); // Brown background
+            gui.fill(x + 9, y + 7, x + 17, y + 15, 0xFF90EE90); // Light green center
+        }
     }
 
     @Override

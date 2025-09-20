@@ -169,6 +169,7 @@ public class LegendaryTabs
         if (arsElixirumLoaded) {
             LOGGER.debug("Ars Elixirum is loaded, enabling compatibility");
         }
+
     }
 
     @SubscribeEvent
@@ -206,10 +207,34 @@ public class LegendaryTabs
                 TabsMenu.register(new TravelersBackpackTab());
             if (LegendaryTabs.legendarySurvivalOverhaulLoaded)
                 TabsMenu.register(new BodyDamageTab());
-            if (LegendaryTabs.ftbQuestsLoaded)
+            if (LegendaryTabs.ftbQuestsLoaded) {
+                LOGGER.info("Registering FtbQuestsTab");
+
+                // Run inspection to find FTB Quests book item
+                try {
+                    Class<?> inspectorClass = Class.forName("sfiomn.legendarytabs.utils.FTBQuestsInspector");
+                    Method inspectMethod = inspectorClass.getMethod("inspectModClasses");
+                    inspectMethod.invoke(null);
+                } catch (Exception e) {
+                    LOGGER.warn("Failed to run FTB Quests inspection: " + e.getMessage());
+                }
+
                 TabsMenu.register(new FtbQuestsTab());
-            if (LegendaryTabs.ftbTeamsLoaded)
+            }
+            if (LegendaryTabs.ftbTeamsLoaded) {
+                LOGGER.info("Registering FtbTeamsTab");
+
+                // Run inspection to find FTB Teams items
+                try {
+                    Class<?> inspectorClass = Class.forName("sfiomn.legendarytabs.utils.FTBTeamsInspector");
+                    Method inspectMethod = inspectorClass.getMethod("inspectModClasses");
+                    inspectMethod.invoke(null);
+                } catch (Exception e) {
+                    LOGGER.warn("Failed to run FTB Teams inspection: " + e.getMessage());
+                }
+
                 TabsMenu.register(new FtbTeamsTab());
+            }
             if (LegendaryTabs.reskillableLoaded)
                 TabsMenu.register(new ReskillableTab());
             if (LegendaryTabs.reskillableReimaginedLoaded)

@@ -11,6 +11,12 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 //import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
 import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
@@ -25,8 +31,8 @@ import static sfiomn.legendarysurvivaloverhaul.config.Config.Baked.localizedBody
 
 public class BodyDamageTab extends TabBase {
     private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0;
-    private final int TAB_ICON_TEX_Y = 23;
+    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
+    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public BodyDamageTab() {
         super();
@@ -45,11 +51,27 @@ public class BodyDamageTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
+        // Render tab background (empty tab style like L2 mods)
         int texOffsetX = 0;
         if (hover)
-            texOffsetX = 54;
+            texOffsetX = 54; // Hover state is at X=54
+        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
 
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        // Try to get LSO's First Aid Supplies item via reflection, fallback to vanilla item
+        ItemStack iconStack;
+        try {
+            Class<?> itemsClass = Class.forName("sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry");
+            Field firstAidField = itemsClass.getField("FIRST_AID_SUPPLIES");
+            Object registryObject = firstAidField.get(null);
+            Method getMethod = registryObject.getClass().getMethod("get");
+            Item firstAidItem = (Item) getMethod.invoke(registryObject);
+            iconStack = new ItemStack(firstAidItem);
+        } catch (Exception e) {
+            // Fallback to vanilla item (heart)
+            iconStack = new ItemStack(Items.GLISTERING_MELON_SLICE);
+        }
+
+        gui.renderItem(iconStack, x + 5, y + 3);
     }
 
     @Override

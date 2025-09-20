@@ -81,7 +81,7 @@ public class L2HostilityDifficultyTab extends TabBase {
         
         // Render L2's zombie head icon (same as L2Hostility uses)
         ItemStack iconStack = new ItemStack(Items.ZOMBIE_HEAD);
-        gui.renderItem(iconStack, x + 5, y + 3);
+        gui.renderItem(iconStack, x + 5, y + 4);
     }
 
     @Override

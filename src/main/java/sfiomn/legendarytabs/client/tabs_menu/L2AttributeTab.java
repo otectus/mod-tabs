@@ -86,7 +86,7 @@ public class L2AttributeTab extends TabBase {
         
         // Render L2's iron sword icon (same as L2Tabs uses)
         ItemStack iconStack = new ItemStack(Items.IRON_SWORD);
-        gui.renderItem(iconStack, x + 5, y + 3);
+        gui.renderItem(iconStack, x + 5, y + 4);
     }
 
     @Override

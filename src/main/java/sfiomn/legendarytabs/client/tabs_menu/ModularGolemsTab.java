@@ -89,7 +89,7 @@ public class ModularGolemsTab extends TabBase {
             iconStack = new ItemStack(Items.IRON_GOLEM_SPAWN_EGG);
         }
 
-        gui.renderItem(iconStack, x + 5, y + 3);
+        gui.renderItem(iconStack, x + 5, y + 4);
     }
 
     @Override

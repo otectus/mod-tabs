@@ -23,8 +23,11 @@ import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 public class ReskillableReimaginedTab extends TabBase {
     private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 27;
-    private final int TAB_ICON_TEX_Y = 0;
+    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
+    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
+
+    // Direct reference to Reskillable skills spritesheet for the book icon
+    private final ResourceLocation RESKILLABLE_SKILLS = ResourceLocation.fromNamespaceAndPath("reskillable", "textures/gui/skills.png");
 
     public ReskillableReimaginedTab() {
         super();
@@ -43,11 +46,27 @@ public class ReskillableReimaginedTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
+        // Render tab background (empty tab style like L2 mods)
         int texOffsetX = 0;
         if (hover)
-            texOffsetX = 54;
+            texOffsetX = 54; // Hover state is at X=54
+        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
 
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        // Render the book icon from Reskillable's skills.png
+        try {
+            // Book icon coordinates based on exact measurements
+            int u = 241; // X position of book icon
+            int v = 145; // Y position of book icon
+
+            // Draw the 16x16 book icon, scaled down to 14x14 and moved down 2px
+            gui.blit(RESKILLABLE_SKILLS, x + 6, y + 6, u, v, 14, 14, 256, 256);
+        } catch (Exception e) {
+            // If icon loading fails, draw a fallback book-like appearance
+            LegendaryTabs.LOGGER.debug("Failed to load Reskillable book icon, using fallback");
+            // Draw a simple book-like colored rectangle as fallback
+            gui.fill(x + 7, y + 5, x + 19, y + 17, 0xFF8B4513); // Brown book cover
+            gui.fill(x + 9, y + 7, x + 17, y + 15, 0xFFFFF8DC); // Light pages
+        }
     }
 
     @Override

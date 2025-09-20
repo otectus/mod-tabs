@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(dir:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Read(//d/MinecraftMods/other mods gits/reskillable_Reimagined/src/main/java/net/bandit/reskillable/client/**)",
+      "Read(//d/MinecraftMods/other mods gits/reskillable_Reimagined/src/**)",
+      "Read(//d/MinecraftMods/other mods gits/ftbquests/**)",
+      "Bash(powershell:*)",
+      "Read(//d/MinecraftMods/other mods gits/ftbteams/ftb-teams-neoforge-2101.1.4/**)"
     ],
     "deny": [],
     "ask": []

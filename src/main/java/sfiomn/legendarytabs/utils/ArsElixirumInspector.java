@@ -13,6 +13,80 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ArsElixirumInspector {
+    private static Item cachedCauldronItem = null;
+    private static boolean searchAttempted = false;
+
+    /**
+     * Attempts to get the Glass Cauldron item via reflection (cached)
+     */
+    public static Item tryGetCauldronItem() {
+        // Return cached result if already attempted
+        if (searchAttempted) {
+            return cachedCauldronItem;
+        }
+
+        searchAttempted = true;
+
+        // Try possible package structures and item names
+        String[] possiblePackages = {
+            "dev.obscuria.elixirum.registry",
+            "alexthw.elixirum.registry",
+            "elixirum.registry",
+            "alexthw.elixirum.init",
+            "elixirum.init",
+            "dev.obscuria.elixirum.init",
+            "alexthw.ars_elixirum.registry",
+            "ars_elixirum.registry"
+        };
+
+        String[] possibleClasses = {"ElixirumItems", "ModItems", "Items"};
+        String[] possibleFields = {"GLASS_CAULDRON", "glass_cauldron", "CAULDRON", "cauldron"};
+
+        for (String packageName : possiblePackages) {
+            for (String className : possibleClasses) {
+                for (String fieldName : possibleFields) {
+                    try {
+                        Class<?> itemsClass = Class.forName(packageName + "." + className);
+                        Field itemField = itemsClass.getField(fieldName);
+                        Object registryObject = itemField.get(null);
+
+                        // Try to get item from registry object
+                        Item item = extractItemFromRegistry(registryObject);
+                        if (item != null) {
+                            cachedCauldronItem = item;
+                            LegendaryTabs.LOGGER.info("Successfully found Ars Elixirum cauldron: {} from {}.{}.{}",
+                                cachedCauldronItem, packageName, className, fieldName);
+                            return cachedCauldronItem;
+                        }
+                    } catch (Exception e) {
+                        // Continue trying other combinations
+                    }
+                }
+            }
+        }
+
+        LegendaryTabs.LOGGER.info("No Ars Elixirum cauldron item found via reflection, will use fallback");
+        return null; // Will use brewing stand fallback
+    }
+
+    private static Item extractItemFromRegistry(Object registryObject) {
+        try {
+            // Direct item
+            if (registryObject instanceof Item) {
+                return (Item) registryObject;
+            }
+
+            // Try .get() method (common pattern)
+            Method getMethod = registryObject.getClass().getMethod("get");
+            Object result = getMethod.invoke(registryObject);
+            if (result instanceof Item) {
+                return (Item) result;
+            }
+        } catch (Exception e) {
+            // Ignore and return null
+        }
+        return null;
+    }
 
     public static void inspectModClasses() {
         LegendaryTabs.LOGGER.info("=== ARS ELIXIRUM INSPECTION ===");

@@ -26,8 +26,9 @@ import java.util.Optional;
 
 public class PufferfishsSkillsTab extends TabBase {
     private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0;
-    private final int TAB_ICON_TEX_Y = 92;
+    private final ResourceLocation PUFFER_ICON = ResourceLocation.fromNamespaceAndPath(LegendaryTabs.MOD_ID, "textures/gui/puffer.png");
+    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
+    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public PufferfishsSkillsTab() {
         super();
@@ -47,11 +48,14 @@ public class PufferfishsSkillsTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
+        // Render tab background (empty tab style like other mods)
         int texOffsetX = 0;
         if (hover)
-            texOffsetX = 54;
+            texOffsetX = 54; // Hover state is at X=54
+        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
 
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        // Render custom puffer icon
+        gui.blit(PUFFER_ICON, x + 4, y + 4, 0, 0, 16, 16, 16, 16);
     }
 
     @Override
