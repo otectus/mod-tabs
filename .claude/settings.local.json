@@ -1,10 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Read(//d/MinecraftMods/Neoport Mods/L2Library/**)",
-      "WebFetch(domain:github.com)",
-      "Read(//d/MinecraftMods/Neoport Mods/cobblemon/**)",
-      "Read(//d/MinecraftMods/other mods gits/ModularGolems/**)"
+      "Bash(dir:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []

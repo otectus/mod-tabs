@@ -173,6 +173,10 @@ dependencies {
     // Modular Golems
     implementation("curse.maven:modulargolems-690937:6965174")
 
+    // Ars Elixirum
+    implementation("curse.maven:fragmentum-neoforge-1123977:5852645")
+    implementation("curse.maven:ars-elixirum-neoforge-638419:5827505")
+
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html

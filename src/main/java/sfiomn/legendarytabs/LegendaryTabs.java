@@ -18,6 +18,7 @@ import sfiomn.legendarytabs.api.tabs_menu.TabsMenu;
 import sfiomn.legendarytabs.client.tabs_menu.*;
 import sfiomn.legendarytabs.config.Config;
 
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class LegendaryTabs
     public static boolean sophisticatedBackpacksLoaded = false;
     public static boolean cobblemonLoaded = false;
     public static boolean modularGolemsLoaded = false;
+    public static boolean arsElixirumLoaded = false;
 
     public LegendaryTabs(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -92,6 +94,8 @@ public class LegendaryTabs
         sophisticatedBackpacksLoaded = ModList.get().isLoaded("sophisticatedbackpacks");
         cobblemonLoaded = ModList.get().isLoaded("cobblemon");
         modularGolemsLoaded = ModList.get().isLoaded("modulargolems");
+        arsElixirumLoaded = ModList.get().isLoaded("elixirum");
+        LOGGER.info("Mod detection - Ars Elixirum loaded: {}", arsElixirumLoaded);
 
         if (backpackedLoaded)
             LOGGER.debug("Backpacked is loaded, enabling compatibility");
@@ -161,6 +165,10 @@ public class LegendaryTabs
 
         if (modularGolemsLoaded)
             LOGGER.debug("Modular Golems is loaded, enabling compatibility");
+
+        if (arsElixirumLoaded) {
+            LOGGER.debug("Ars Elixirum is loaded, enabling compatibility");
+        }
     }
 
     @SubscribeEvent
@@ -230,6 +238,22 @@ public class LegendaryTabs
                 TabsMenu.register(new CobblemonTab());
             if (LegendaryTabs.modularGolemsLoaded)
                 TabsMenu.register(new ModularGolemsTab());
+            if (LegendaryTabs.arsElixirumLoaded) {
+                LOGGER.info("Registering ArsElixirumTab");
+
+                // Run inspection to find actual class names
+                try {
+                    Class<?> inspectorClass = Class.forName("sfiomn.legendarytabs.utils.ArsElixirumInspector");
+                    Method inspectMethod = inspectorClass.getMethod("inspectModClasses");
+                    inspectMethod.invoke(null);
+                } catch (Exception e) {
+                    LOGGER.warn("Failed to run Ars Elixirum inspection: " + e.getMessage());
+                }
+
+                TabsMenu.register(new ArsElixirumTab());
+            } else {
+                LOGGER.info("Ars Elixirum not loaded, skipping tab registration");
+            }
         }
     }
 }

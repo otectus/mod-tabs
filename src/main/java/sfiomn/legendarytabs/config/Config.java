@@ -41,6 +41,7 @@ public class Config
 		public final ModConfigSpec.BooleanValue passiveSkillTreeTabEnabled;
 		public final ModConfigSpec.BooleanValue sophisticatedBackpacksTabEnabled;
 		public final ModConfigSpec.BooleanValue cobblemonTabEnabled;
+		public final ModConfigSpec.BooleanValue arsElixirumTabEnabled;
 
 		public final ModConfigSpec.IntValue tabsMenuOffsetX;
 		public final ModConfigSpec.IntValue tabsMenuOffsetY;
@@ -103,6 +104,9 @@ public class Config
 			cobblemonTabEnabled = builder
 					.comment(" If enabled, show the cobblemon party summary button in the tabs menu.")
 					.define("Cobblemon Tab Enabled ", true);
+			arsElixirumTabEnabled = builder
+					.comment(" If enabled, show the ars elixirum button in the tabs menu.")
+					.define("Ars Elixirum Tab Enabled ", true);
 			builder.pop();
 		}
 	}
@@ -138,6 +142,7 @@ public class Config
 		public static boolean passiveSkillTreeTabEnabled;
 		public static boolean sophisticatedBackpacksTabEnabled;
 		public static boolean cobblemonTabEnabled;
+		public static boolean arsElixirumTabEnabled;
 
 		public static void bakeClient()
 		{
@@ -164,6 +169,7 @@ public class Config
 				passiveSkillTreeTabEnabled = CLIENT.passiveSkillTreeTabEnabled.get();
 				sophisticatedBackpacksTabEnabled = CLIENT.sophisticatedBackpacksTabEnabled.get();
 				cobblemonTabEnabled = CLIENT.cobblemonTabEnabled.get();
+				arsElixirumTabEnabled = CLIENT.arsElixirumTabEnabled.get();
 			}
 			catch (Exception e)
 			{
