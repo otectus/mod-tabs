@@ -1,0 +1,121 @@
+package vodmordia.modtabs.client.tabs_menu;
+
+//import com.illusivesoulworks.diet.client.screen.DietScreen;
+//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
+import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
+import dev.ftb.mods.ftbquests.client.FTBQuestsClient;
+import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
+//import majik.rereskillable.client.screen.SkillScreen;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+//import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
+//import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
+import vodmordia.modtabs.ModTabs;
+import vodmordia.modtabs.api.tabs_menu.TabBase;
+import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.config.Config;
+import vodmordia.modtabs.utils.IntegrationUtils;
+import top.theillusivec4.curios.client.gui.CuriosScreen;
+
+public class FtbQuestsTab extends TabBase {
+    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
+    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
+    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
+
+    public FtbQuestsTab() {
+        super();
+    }
+
+    @Override
+    public void openTargetScreen(Player player) {
+        if (ModTabs.ftbQuestsLoaded && player.level().isClientSide)
+            FTBQuestsClient.openGui();
+    }
+
+    @Override
+    public boolean isEnabled(Player player) {
+        return Config.Baked.ftbQuestsTabEnabled && ModTabs.ftbQuestsLoaded;
+    }
+
+    @Override
+    public void render(GuiGraphics gui, int x, int y, boolean hover) {
+        // Render tab background (empty tab style like L2 mods)
+        int texOffsetX = 0;
+        if (hover)
+            texOffsetX = 54; // Hover state is at X=54
+        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+
+        // Try to get FTB Quests book item via reflection using inspector
+        ItemStack iconStack;
+        try {
+            Class<?> inspectorClass = Class.forName("vodmordia.modtabs.utils.FTBQuestsInspector");
+            Method getBookMethod = inspectorClass.getMethod("tryGetBookItem");
+            Item bookItem = (Item) getBookMethod.invoke(null);
+
+            if (bookItem != null) {
+                iconStack = new ItemStack(bookItem);
+            } else {
+                // Fallback to vanilla book
+                iconStack = new ItemStack(Items.BOOK);
+            }
+        } catch (Exception e) {
+            // Fallback to vanilla book
+            iconStack = new ItemStack(Items.BOOK);
+        }
+
+        gui.renderItem(iconStack, x + 5, y + 5);
+    }
+
+    @Override
+    public boolean isCurrentlyUsed(Screen currentScreen) {
+        return false;
+    }
+
+    @Override
+    public Component getTooltip() {
+        return Component.translatable("tooltip." + ModTabs.MOD_ID + ".tab.ftb_quests.description");
+    }
+
+    @Override
+    public void initTabOnScreens() {
+        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 70);
+
+        if (ModTabs.curiosLoaded)
+            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 70);
+
+        // if (ModTabs.legendarySurvivalOverhaulLoaded)
+        //     TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 70);
+
+        // if (ModTabs.reskillableLoaded)
+        //     TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 70);
+
+        // if (ModTabs.reskillableReimaginedLoaded)
+        //     TabsMenu.addTabToScreen(this, net.bandit.reskillable.client.screen.SkillScreen.class, (player) -> 176, (player) -> 166, 70);
+
+        // if (ModTabs.quarkOdditiesLoaded)
+        //     TabsMenu.addTabToScreen(this, BackpackInventoryScreen.class, (player) -> 176, (player) -> 224, 70);
+
+        if (ModTabs.cosmeticArmorLoaded)
+            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 70);
+
+        if (ModTabs.backpackedLoaded)
+            // Backpacked integration temporarily disabled - mod is in active development
+            //TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 70);
+
+        if (ModTabs.travelersBackpackLoaded)
+            TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 70);
+
+        // if (ModTabs.dietLoaded)
+        //     TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 70);
+    }
+}

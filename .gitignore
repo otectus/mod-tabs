@@ -21,7 +21,13 @@ build
 eclipse
 run
 docs
+.vscode/launch.json
+.claude
+.vscode
+libs
 
 # Files from Forge MDK
 forge*changelog.txt
 /changelog.txt
+
+

@@ -1,0 +1,22 @@
+{
+  "tooltip.modtabs.tab.backpack.description": "Backpack",
+  "tooltip.modtabs.tab.body_damage.description": "Body Health",
+  "tooltip.modtabs.tab.ftb_quests.description": "Quests",
+  "tooltip.modtabs.tab.ftb_teams.description": "Teams",
+  "tooltip.modtabs.tab.inventory.description": "Inventory",
+  "tooltip.modtabs.tab.reskillable.description": "Skills",
+  "tooltip.modtabs.tab.reskillable_reimagined.description": "Skills",
+  "tooltip.modtabs.tab.map_atlases.description": "Map",
+  "tooltip.modtabs.tab.xaeros_map.description": "Map",
+  "tooltip.modtabs.tab.journey_map.description": "Map",
+  "tooltip.modtabs.tab.diet.description": "Diet",
+  "tooltip.modtabs.tab.passive_skill_tree.description": "Skill Tree",
+  "tooltip.modtabs.tab.pufferfish_skills.description": "Skill Tree",
+  "tooltip.modtabs.tab.l2_hostility_difficulty.description": "Difficulty",
+  "tooltip.modtabs.tab.l2_attributes.description": "Attributes",
+  "tooltip.modtabs.tab.l2_artifacts.description": "Set Effects",
+  "tooltip.modtabs.tab.sophisticated_backpacks.description": "Backpack",
+  "tooltip.modtabs.tab.cobblemon.description": "Party Summary",
+  "tooltip.modtabs.tab.modular_golems.description": "Golems in World",
+  "tooltip.modtabs.tab.ars_elixirum.description": "Elixirs"
+}
