@@ -7,6 +7,7 @@ Originally developed by Sfiomn as "Legendary Tabs", this mod has been rewritten 
 ## Features
 
 - Access various mod screens directly from your inventory
+- Press the inventory key (default e) to return to the inventory from a clicked tab
 - Compatible with the following mods:
   - FTB Quests & Teams
   - Reskillable Reimagined
