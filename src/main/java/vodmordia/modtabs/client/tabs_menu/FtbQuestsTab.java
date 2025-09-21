@@ -22,15 +22,16 @@ import java.lang.reflect.Method;
 //import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
+import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.utils.IntegrationUtils;
+import vodmordia.modtabs.utils.FTBQuestsInspector;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 public class FtbQuestsTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
-    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public FtbQuestsTab() {
         super();
@@ -49,36 +50,45 @@ public class FtbQuestsTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        // Render tab background (empty tab style like L2 mods)
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54; // Hover state is at X=54
-        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(getQuestBookItem(), 5, 5)
+            .render(gui, x, y, hover, false);
+    }
 
+    @Override
+    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(getQuestBookItem(), 5, 5)
+            .render(gui, x, y, hover, true);
+    }
+
+    private ItemStack getQuestBookItem() {
         // Try to get FTB Quests book item via reflection using inspector
-        ItemStack iconStack;
         try {
             Class<?> inspectorClass = Class.forName("vodmordia.modtabs.utils.FTBQuestsInspector");
             Method getBookMethod = inspectorClass.getMethod("tryGetBookItem");
             Item bookItem = (Item) getBookMethod.invoke(null);
 
             if (bookItem != null) {
-                iconStack = new ItemStack(bookItem);
-            } else {
-                // Fallback to vanilla book
-                iconStack = new ItemStack(Items.BOOK);
+                return new ItemStack(bookItem);
             }
         } catch (Exception e) {
-            // Fallback to vanilla book
-            iconStack = new ItemStack(Items.BOOK);
+            // Fall through to fallback
         }
-
-        gui.renderItem(iconStack, x + 5, y + 5);
+        // Fallback to vanilla book
+        return new ItemStack(Items.BOOK);
     }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return false;
+        try {
+            // Always return false so this tab is never disabled - we want it visible on all screens including FTB Quests screens
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
@@ -88,34 +98,44 @@ public class FtbQuestsTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 70);
+        // Try to register known FTB Quests screen classes with inverted display at the top
+        String[] possibleScreenClasses = {
+            "dev.ftb.mods.ftblibrary.ui.ScreenWrapper", // This is the actual FTB Quests screen!
+            "dev.ftb.mods.ftbquests.client.gui.quests.QuestScreen",
+            "dev.ftb.mods.ftbquests.client.gui.QuestionScreen",
+            "dev.ftb.mods.ftbquests.client.gui.QuestsScreen",
+            "dev.ftb.mods.ftbquests.client.screens.QuestScreen",
+            "dev.ftb.mods.ftbquests.client.QuestScreen"
+        };
 
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 70);
+        for (String className : possibleScreenClasses) {
+            try {
+                @SuppressWarnings("unchecked")
+                Class<? extends Screen> screenClass = (Class<? extends Screen>) Class.forName(className);
 
-        // if (ModTabs.legendarySurvivalOverhaulLoaded)
-        //     TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 70);
+                // Force register with inverted display at the top - override any existing registration
+                // This is necessary because FTB Teams might have already registered ScreenWrapper with default settings
+                if (className.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper")) {
+                    TabsMenu.forceRegisterScreenWithAllTabs(screenClass,
+                        (player) -> 176, // Standard GUI width (same as Cobblemon and other screens)
+                        (player) -> 166, // Standard GUI height (same as Cobblemon and other screens)
+                        TabDisplayMode.INVERTED,
+                        TabPositioning.SCREEN_TOP);
+                } else {
+                    TabsMenu.registerScreenWithAllTabs(screenClass,
+                        (player) -> 176, // Standard GUI width (same as Cobblemon and other screens)
+                        (player) -> 166, // Standard GUI height (same as Cobblemon and other screens)
+                        TabDisplayMode.INVERTED,
+                        TabPositioning.SCREEN_TOP);
+                }
 
-        // if (ModTabs.reskillableLoaded)
-        //     TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 70);
-
-        // if (ModTabs.reskillableReimaginedLoaded)
-        //     TabsMenu.addTabToScreen(this, net.bandit.reskillable.client.screen.SkillScreen.class, (player) -> 176, (player) -> 166, 70);
-
-        // if (ModTabs.quarkOdditiesLoaded)
-        //     TabsMenu.addTabToScreen(this, BackpackInventoryScreen.class, (player) -> 176, (player) -> 224, 70);
-
-        if (ModTabs.cosmeticArmorLoaded)
-            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 70);
-
-        if (ModTabs.backpackedLoaded)
-            // Backpacked integration temporarily disabled - mod is in active development
-            //TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 70);
-
-        if (ModTabs.travelersBackpackLoaded)
-            TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 70);
-
-        // if (ModTabs.dietLoaded)
-        //     TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 70);
+                // Since we found one working class, we can break or continue to register multiple
+                // For now, let's continue to register all found screens
+            } catch (ClassNotFoundException e) {
+                // Screen class not found, try next one
+            } catch (Exception e) {
+                // Error registering screen
+            }
+        }
     }
 }

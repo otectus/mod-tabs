@@ -259,6 +259,8 @@ public class ModTabs
                 TabsMenu.register(new L2ArtifactsTab());
             if (ModTabs.sophisticatedBackpacksLoaded)
                 TabsMenu.register(new SophisticatedBackpacksTab());
+            if (ModTabs.cosmeticArmorLoaded)
+                TabsMenu.register(new CosmeticArmorTab());
             if (ModTabs.cobblemonLoaded)
                 TabsMenu.register(new CobblemonTab());
             if (ModTabs.modularGolemsLoaded)
@@ -279,6 +281,9 @@ public class ModTabs
             } else {
                 LOGGER.info("Ars Elixirum not loaded, skipping tab registration");
             }
+
+            // Finalize all pending screen registrations now that all tabs are registered
+            TabsMenu.finalizePendingRegistrations();
         }
     }
 }

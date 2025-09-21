@@ -142,7 +142,6 @@ dependencies {
     //implementation("curse.maven:attributefix-280510:5824104")
     implementation("curse.maven:puffish-skills-835091:6798466")
     //implementation("curse.maven:justlevelingfork-1073400:6189891")
-    // Travelers Backpack - using newer version compatible with NeoForge 1.21.1+
     implementation("curse.maven:travelers-backpack-321117:6687139")
 
     runtimeOnly("curse.maven:ftb-library-forge-404465:6798283")
@@ -152,7 +151,6 @@ dependencies {
     //implementation("curse.maven:zeta-968868:6432578") // Not updated to NeoForge 1.21.1 yet
     implementation("curse.maven:xaeros-world-map-317780:6778114")
     implementation("curse.maven:journeymap-32274:6689206")
-    //compileOnly("curse.maven:reskillable-981352:5997519") // Not updated to NeoForge 1.21.1 yet
     implementation("curse.maven:cosmetic-armor-reworked-237307:5610814")
     
     // L2 Hostility compatibility dependencies
@@ -177,9 +175,6 @@ dependencies {
     implementation("curse.maven:fragmentum-neoforge-1123977:5852645")
     implementation("curse.maven:ars-elixirum-neoforge-638419:5827505")
 
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

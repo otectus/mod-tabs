@@ -7,14 +7,10 @@ import vodmordia.modtabs.ModTabs;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 public class FTBQuestsInspector {
     private static Item cachedBookItem = null;
     private static boolean searchAttempted = false;
-
-    // Inspection methods removed - use documentation for debugging closed-source mods
 
     /**
      * Attempts to get the FTB Quests book item via reflection (cached)

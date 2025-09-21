@@ -1,10 +1,7 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-//import com.illusivesoulworks.diet.client.screen.DietScreen;
-//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
 import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-//import majik.rereskillable.client.screen.SkillScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -17,11 +14,11 @@ import net.minecraft.world.item.Items;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-//import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
 import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
+import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.utils.IntegrationUtils;
@@ -30,9 +27,6 @@ import top.theillusivec4.curios.client.gui.CuriosScreen;
 import static sfiomn.legendarysurvivaloverhaul.config.Config.Baked.localizedBodyDamageEnabled;
 
 public class BodyDamageTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
-    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public BodyDamageTab() {
         super();
@@ -51,27 +45,33 @@ public class BodyDamageTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        // Render tab background (empty tab style like L2 mods)
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54; // Hover state is at X=54
-        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(getFirstAidItem(), 5, 3)
+            .render(gui, x, y, hover, false);
+    }
 
+    @Override
+    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(getFirstAidItem(), 5, 3)
+            .render(gui, x, y, hover, true);
+    }
+
+    private ItemStack getFirstAidItem() {
         // Try to get LSO's First Aid Supplies item via reflection, fallback to vanilla item
-        ItemStack iconStack;
         try {
             Class<?> itemsClass = Class.forName("sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry");
             Field firstAidField = itemsClass.getField("FIRST_AID_SUPPLIES");
             Object registryObject = firstAidField.get(null);
             Method getMethod = registryObject.getClass().getMethod("get");
             Item firstAidItem = (Item) getMethod.invoke(registryObject);
-            iconStack = new ItemStack(firstAidItem);
+            return new ItemStack(firstAidItem);
         } catch (Exception e) {
             // Fallback to vanilla item (heart)
-            iconStack = new ItemStack(Items.GLISTERING_MELON_SLICE);
+            return new ItemStack(Items.GLISTERING_MELON_SLICE);
         }
-
-        gui.renderItem(iconStack, x + 5, y + 3);
     }
 
     @Override
@@ -86,34 +86,8 @@ public class BodyDamageTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 50);
-
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 50);
-
+        // Register only this tab's own screen - the Body Health screen
         if (ModTabs.legendarySurvivalOverhaulLoaded && Config.Baked.includeOpenedScreenTab)
-            TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 50);
-
-        //if (ModTabs.reskillableLoaded)
-        //    TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 50);
-
-        // if (ModTabs.reskillableReimaginedLoaded)
-        //     TabsMenu.addTabToScreen(this, net.bandit.reskillable.client.screen.SkillScreen.class, (player) -> 176, (player) -> 166, 50);
-
-        //if (ModTabs.quarkOdditiesLoaded)
-        //    TabsMenu.addTabToScreen(this, BackpackInventoryScreen.class, (player) -> 176, (player) -> 224, 50);
-
-        if (ModTabs.cosmeticArmorLoaded)
-            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 50);
-
-        if (ModTabs.backpackedLoaded)
-            // Backpacked integration temporarily disabled - mod is in active development
-            //TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 50);
-
-        if (ModTabs.travelersBackpackLoaded)
-            TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 50);
-
-        //if (ModTabs.dietLoaded)
-        //    TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 50);
+            TabsMenu.registerScreenWithAllTabs(BodyHealthScreen.class, (player) -> 176, (player) -> 183);
     }
 }

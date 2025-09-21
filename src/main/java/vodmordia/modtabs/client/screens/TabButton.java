@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
 import vodmordia.modtabs.config.Config;
 
 import static vodmordia.modtabs.api.tabs_menu.TabBase.TAB_HEIGHT;
@@ -21,14 +22,27 @@ public class TabButton extends Button {
     public TabBase tabBase;
     public Player player;
     public Screen screen;
-    public boolean isDisabled ;
+    public boolean isDisabled;
+    public TabDisplayMode displayMode;
 
-    public TabButton(TabBase tabBase, Player player, Screen screen, int tabPositionIndex, int leftScreenPos, int topScreenPos) {
-        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX, topScreenPos - TAB_HEIGHT + Config.Baked.tabsMenuOffsetY, TAB_WIDTH, TAB_HEIGHT, Component.literal(""), button -> {}, DEFAULT_NARRATION);
+    public TabButton(TabBase tabBase, Player player, Screen screen, int tabPositionIndex, int leftScreenPos, int topScreenPos, TabDisplayMode displayMode) {
+        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX,
+              calculateYPosition(topScreenPos, displayMode),
+              TAB_WIDTH, TAB_HEIGHT, Component.literal(""), button -> {}, DEFAULT_NARRATION);
+
+
         this.tabPositionIndex = tabPositionIndex;
         this.player = player;
         this.screen = screen;
+        this.displayMode = displayMode;
         this.setTabBase(tabBase);
+    }
+
+    private static int calculateYPosition(int topScreenPos, TabDisplayMode displayMode) {
+        // Adjust Y position for inverted tabs - they hang down instead of up
+        return displayMode == TabDisplayMode.INVERTED ?
+            topScreenPos + Config.Baked.tabsMenuOffsetY :
+            topScreenPos - TAB_HEIGHT + Config.Baked.tabsMenuOffsetY;
     }
 
     @Override
@@ -48,11 +62,18 @@ public class TabButton extends Button {
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partial) {
-        this.tabBase.render(gui, this.getX(), this.getY(), this.isDisabled || this.isMouseOver(mouseX, mouseY));
+        // Debug for FTB Quests tab specifically
+        if (this.tabBase.getClass().getSimpleName().equals("FtbQuestsTab")) {
+            ModTabs.LOGGER.info("TabButton: FtbQuestsTab renderWidget - displayMode: {}, position: ({}, {})",
+                this.displayMode, this.getX(), this.getY());
+        }
+
+        // Standard tab rendering
+        this.tabBase.render(gui, this.getX(), this.getY(), this.isDisabled || this.isMouseOver(mouseX, mouseY), this.displayMode);
     }
 
     public void updatePosition(int leftScreenPos, int topScreenPos) {
         setX(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX);
-        setY(topScreenPos - TAB_HEIGHT + Config.Baked.tabsMenuOffsetY);
+        setY(calculateYPosition(topScreenPos, displayMode));
     }
 }

@@ -9,12 +9,18 @@ Originally developed by Sfiomn as "Legendary Tabs", this mod has been rewritten 
 - Access various mod screens directly from your inventory
 - Press the inventory key (default e) to return to the inventory from a clicked tab
 - Compatible with the following mods:
-  - FTB Quests & Teams
-  - Reskillable Reimagined
-  - JourneyMap & Xaero's World Map
-  - Traveler's Backpack & Sophisticated Backpacks
-  - L2 Series (Hostility, Artifacts, Complements)
-  - Pufferfish's Skills
-  - Map Atlases
+  - FTB Quests
+  - FTB Teams
+  - Xaero's World Map
+  - Journeymap
+  - Travelers Backpack
+  - Sophisticated Backpacks
   - Cobblemon
+  - Pufferfish Skills
+  - Map Atlases
+  - Cosmetic Armor Reworked
+  - L2 mods (hostility / artifacts) etc
+  - Modular Golems
+  - Ars Elixirium
+  - Reskillable Reimagined
 

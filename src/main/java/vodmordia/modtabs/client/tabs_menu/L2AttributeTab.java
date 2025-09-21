@@ -12,14 +12,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
+import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 public class L2AttributeTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
-    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public L2AttributeTab() {
         super();
@@ -64,10 +62,8 @@ public class L2AttributeTab extends TabBase {
                 }
             }
             
-            ModTabs.LOGGER.error("No suitable constructor found for AttributeScreen");
             
         } catch (Exception e) {
-            ModTabs.LOGGER.error("Failed to open L2 Attributes screen: " + e.getMessage());
         }
     }
 
@@ -78,15 +74,18 @@ public class L2AttributeTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        // Render tab background
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54; // Hover state is at X=54
-        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
-        
-        // Render L2's iron sword icon (same as L2Tabs uses)
-        ItemStack iconStack = new ItemStack(Items.IRON_SWORD);
-        gui.renderItem(iconStack, x + 5, y + 4);
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(new ItemStack(Items.IRON_SWORD), 5, 4)
+            .render(gui, x, y, hover, false);
+    }
+
+    @Override
+    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(new ItemStack(Items.IRON_SWORD), 5, 4)
+            .render(gui, x, y, hover, true);
     }
 
     @Override
@@ -106,12 +105,13 @@ public class L2AttributeTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        if (Config.Baked.includeOpenedScreenTab)
-            TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 25);
-
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 25);
-
-        // Add to other compatible screens as needed
+        // Register only this tab's own screen - the L2 Attribute screen
+        try {
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> attributeScreenClass = (Class<? extends Screen>) Class.forName("dev.xkmc.l2tabs.tabs.contents.AttributeScreen");
+            TabsMenu.registerScreenWithAllTabs(attributeScreenClass, (player) -> 176, (player) -> 166);
+        } catch (ClassNotFoundException e) {
+            // Mod not available
+        }
     }
 }

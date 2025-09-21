@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
+import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
@@ -21,9 +22,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class L2ArtifactsTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
-    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public L2ArtifactsTab() {
         super();
@@ -68,10 +66,8 @@ public class L2ArtifactsTab extends TabBase {
                 }
             }
             
-            ModTabs.LOGGER.error("No suitable constructor found for SetEffectScreen");
             
         } catch (Exception e) {
-            ModTabs.LOGGER.error("Failed to open L2 Artifacts screen: " + e.getMessage());
         }
     }
 
@@ -82,27 +78,33 @@ public class L2ArtifactsTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        // Render tab background
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54; // Hover state is at X=54
-        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
-        
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(getSelectItem(), 5, 3)
+            .render(gui, x, y, hover, false);
+    }
+
+    @Override
+    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(getSelectItem(), 5, 3)
+            .render(gui, x, y, hover, true);
+    }
+
+    private ItemStack getSelectItem() {
         // Try to get L2 Artifacts' SELECT item via reflection, fallback to vanilla item
-        ItemStack iconStack;
         try {
             Class<?> itemsClass = Class.forName("dev.xkmc.l2artifacts.init.registrate.items.ArtifactItems");
             Field selectField = itemsClass.getField("SELECT");
             Object registryObject = selectField.get(null);
             Method getMethod = registryObject.getClass().getMethod("get");
             Item selectItem = (Item) getMethod.invoke(registryObject);
-            iconStack = new ItemStack(selectItem);
+            return new ItemStack(selectItem);
         } catch (Exception e) {
             // Fallback to vanilla item
-            iconStack = new ItemStack(Items.NETHER_STAR);
+            return new ItemStack(Items.NETHER_STAR);
         }
-        
-        gui.renderItem(iconStack, x + 5, y + 3);
     }
 
     @Override
@@ -122,12 +124,13 @@ public class L2ArtifactsTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        if (Config.Baked.includeOpenedScreenTab)
-            TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 35);
-
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 35);
-
-        // Add to other compatible screens as needed
+        // Register only this tab's own screen - the L2 Artifacts Set Effect screen
+        try {
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> setEffectScreenClass = (Class<? extends Screen>) Class.forName("dev.xkmc.l2artifacts.content.client.tab.SetEffectScreen");
+            TabsMenu.registerScreenWithAllTabs(setEffectScreenClass, (player) -> 176, (player) -> 166);
+        } catch (ClassNotFoundException e) {
+            // Mod not available
+        }
     }
 }

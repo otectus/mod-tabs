@@ -16,6 +16,9 @@ import net.minecraft.world.entity.player.Player;
 //import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
+import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
+import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.utils.IntegrationUtils;
@@ -25,11 +28,6 @@ import xaero.map.gui.GuiMap;
 
 
 public class XaerosMapTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
-    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
-
-    // Direct reference to Xaero's World Map icon
     private final ResourceLocation XAEROS_WORLDMAP_ICON = ResourceLocation.fromNamespaceAndPath("xaeroworldmap", "icon.png");
 
     public XaerosMapTab() {
@@ -48,28 +46,42 @@ public class XaerosMapTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        // Render tab background (empty tab style like L2 mods)
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54; // Hover state is at X=54
-        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        TabRenderer.builder()
+            .withBackground()
+            .withCustomIcon((context) -> {
+                try {
+                    context.gui.blit(XAEROS_WORLDMAP_ICON, context.x + 6, context.y + 5, 0, 0, 14, 14, 16, 16);
+                } catch (Exception e) {
+                    context.gui.fill(context.x + 7, context.y + 5, context.x + 19, context.y + 17, 0xFF8B4513);
+                    context.gui.fill(context.x + 9, context.y + 7, context.x + 17, context.y + 15, 0xFF90EE90);
+                }
+            })
+            .render(gui, x, y, hover, false);
+    }
 
-        // Render Xaero's World Map icon directly from the mod
-        try {
-            // Draw the icon at 14x14 size (2px smaller in each direction), moved up 1px
-            gui.blit(XAEROS_WORLDMAP_ICON, x + 6, y + 5, 0, 0, 14, 14, 16, 16);
-        } catch (Exception e) {
-            // If icon loading fails, draw a fallback (map-like appearance)
-            ModTabs.LOGGER.debug("Failed to load Xaero's World Map icon, using fallback");
-            // Draw a simple map-like colored rectangle as fallback
-            gui.fill(x + 7, y + 5, x + 19, y + 17, 0xFF8B4513); // Brown background
-            gui.fill(x + 9, y + 7, x + 17, y + 15, 0xFF90EE90); // Light green center
-        }
+    @Override
+    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+        TabRenderer.builder()
+            .withBackground()
+            .withCustomIcon((context) -> {
+                try {
+                    context.gui.blit(XAEROS_WORLDMAP_ICON, context.x + 6, context.y + 5, 0, 0, 14, 14, 16, 16);
+                } catch (Exception e) {
+                    context.gui.fill(context.x + 7, context.y + 5, context.x + 19, context.y + 17, 0xFF8B4513);
+                    context.gui.fill(context.x + 9, context.y + 7, context.x + 17, context.y + 15, 0xFF90EE90);
+                }
+            })
+            .render(gui, x, y, hover, true);
     }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return false;
+        try {
+            Class<?> guiMapClass = Class.forName("xaero.map.gui.GuiMap");
+            return guiMapClass.isInstance(currentScreen);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
@@ -79,34 +91,21 @@ public class XaerosMapTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 75);
+        // Register Xaero's World Map screen with custom bottom-left positioning
+        try {
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> guiMapClass = (Class<? extends Screen>) Class.forName("xaero.map.gui.GuiMap");
 
-        // if (ModTabs.legendarySurvivalOverhaulLoaded)
-        //     TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 75);
+            // Register with custom positioning - bottom-left like Pufferfish but not inverted
+            TabsMenu.registerScreenWithCustomPosition(guiMapClass,
+                (player) -> 176, // Standard GUI width like other tabs
+                (player) -> 166, // Standard GUI height like other tabs
+                TabDisplayMode.NORMAL, // Normal display mode (not inverted)
+                (screen) -> 16, // Left position - 16px offset from left edge
+                (screen) -> screen.height); // Bottom position - TabButton will subtract TAB_HEIGHT for normal mode
 
-        // if (ModTabs.reskillableLoaded)
-        //     TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 75);
-
-        // if (ModTabs.reskillableReimaginedLoaded)
-        //     TabsMenu.addTabToScreen(this, net.bandit.reskillable.client.screen.SkillScreen.class, (player) -> 176, (player) -> 166, 75);
-
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 75);
-
-        // if (ModTabs.quarkOdditiesLoaded)
-        //     TabsMenu.addTabToScreen(this, BackpackInventoryScreen.class, (player) -> 176, (player) -> 224, 75);
-
-        if (ModTabs.cosmeticArmorLoaded)
-            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 75);
-
-        if (ModTabs.backpackedLoaded)
-            // Backpacked integration temporarily disabled - mod is in active development
-            //TabsMenu.addTabToScreen(this, BackpackScreen.class, (IntegrationUtils::getBackpackWidth), (IntegrationUtils::getBackpackHeight), 75);
-
-        if (ModTabs.travelersBackpackLoaded)
-            TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 75);
-
-        // if (ModTabs.dietLoaded)
-        //     TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 75);
+        } catch (ClassNotFoundException e) {
+            // Xaero's World Map mod not available
+        }
     }
 }

@@ -20,7 +20,7 @@ public class NextTabsButton extends Button {
     public int tabPositionIndex;
 
     public NextTabsButton(int tabPositionIndex, int leftScreenPos, int topScreenPos, net.minecraft.client.gui.components.Button.OnPress press) {
-        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX, topScreenPos - TAB_HEIGHT + Config.Baked.tabsMenuOffsetY, NEXT_TABS_BUTTON_WIDTH, NEXT_TABS_BUTTON_HEIGHT, Component.literal(""), press, DEFAULT_NARRATION);
+        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX, topScreenPos, NEXT_TABS_BUTTON_WIDTH, NEXT_TABS_BUTTON_HEIGHT, Component.literal(""), press, DEFAULT_NARRATION);
         this.tabPositionIndex = tabPositionIndex;
     }
 
@@ -35,6 +35,6 @@ public class NextTabsButton extends Button {
 
     public void updatePosition(int leftScreenPos, int topScreenPos) {
         setX(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX);
-        setY(topScreenPos - TAB_HEIGHT + Config.Baked.tabsMenuOffsetY);
+        setY(topScreenPos);
     }
 }

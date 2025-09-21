@@ -1,20 +1,12 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-//import com.illusivesoulworks.diet.client.screen.DietScreen;
-//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
-//import com.mrcrayfish.backpacked.network.Network;
-//import com.mrcrayfish.backpacked.network.message.MessageOpenBackpack;
-//import com.mrcrayfish.backpacked.platform.Services;
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-//import majik.rereskillable.client.screen.SkillScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-//import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-//import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;

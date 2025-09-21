@@ -9,7 +9,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
+import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.utils.IntegrationUtils;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
@@ -17,10 +20,7 @@ import top.theillusivec4.curios.client.gui.CuriosScreen;
 import java.lang.reflect.Method;
 
 public class CobblemonTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
     private final ResourceLocation POKEBALL_ICON = ResourceLocation.fromNamespaceAndPath("cobblemon", "textures/item/poke_balls/poke_ball.png");
-    private final int TAB_ICON_TEX_X = 0;
-    private final int TAB_ICON_TEX_Y = 138;
 
     public CobblemonTab() {
         super();
@@ -86,7 +86,6 @@ public class CobblemonTab extends TabBase {
                 }
 
             } catch (Exception e) {
-                ModTabs.LOGGER.error("Failed to open Cobblemon GUI: " + e.getMessage());
             }
         }
     }
@@ -98,21 +97,27 @@ public class CobblemonTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54;
+        TabRenderer.builder()
+            .withBackground()
+            .withTextureIcon(POKEBALL_ICON, 5, 3, 16, 16)
+            .render(gui, x, y, hover, false);
+    }
 
-        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
-
-        int scale = 16;
-        gui.blit(POKEBALL_ICON, x + 5, y + 3, 0, 0, scale, scale, scale, scale);
+    @Override
+    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+        TabRenderer.builder()
+            .withBackground()
+            .withTextureIcon(POKEBALL_ICON, 5, 3, 16, 16)
+            .render(gui, x, y, hover, true);
     }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
         try {
+            // Check for both Summary screen and Starter Selection screen
             Class<?> summaryScreenClass = Class.forName("com.cobblemon.mod.common.client.gui.summary.Summary");
-            return summaryScreenClass.isInstance(currentScreen);
+            Class<?> starterScreenClass = Class.forName("com.cobblemon.mod.common.client.gui.startselection.StarterSelectionScreen");
+            return summaryScreenClass.isInstance(currentScreen) || starterScreenClass.isInstance(currentScreen);
         } catch (ClassNotFoundException e) {
             return false;
         }
@@ -125,15 +130,21 @@ public class CobblemonTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 65);
+        // Register both Cobblemon screens - Summary and Starter Selection with inverted display
+        try {
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> summaryScreenClass = (Class<? extends Screen>) Class.forName("com.cobblemon.mod.common.client.gui.summary.Summary");
+            TabsMenu.registerScreenWithAllTabs(summaryScreenClass, (player) -> 176, (player) -> 166, TabDisplayMode.INVERTED, TabPositioning.SCREEN_TOP);
+        } catch (ClassNotFoundException e) {
+            // Summary screen not available
+        }
 
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 65);
-
-        if (ModTabs.cosmeticArmorLoaded)
-            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 65);
-
-        if (ModTabs.travelersBackpackLoaded)
-            TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 65);
+        try {
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> starterScreenClass = (Class<? extends Screen>) Class.forName("com.cobblemon.mod.common.client.gui.startselection.StarterSelectionScreen");
+            TabsMenu.registerScreenWithAllTabs(starterScreenClass, (player) -> 176, (player) -> 166, TabDisplayMode.INVERTED, TabPositioning.SCREEN_TOP);
+        } catch (ClassNotFoundException e) {
+            // Starter selection screen not available
+        }
     }
 }

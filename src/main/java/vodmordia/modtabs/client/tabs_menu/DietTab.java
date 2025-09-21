@@ -67,35 +67,8 @@ public class DietTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 60);
-
-        // Commented out until mods are updated to NeoForge 1.21.1
-        //if (ModTabs.legendarySurvivalOverhaulLoaded)
-        //    TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 60);
-
-        //if (ModTabs.reskillableLoaded)
-        //    TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 60);
-
-        // if (ModTabs.reskillableReimaginedLoaded)
-        //     TabsMenu.addTabToScreen(this, net.bandit.reskillable.client.screen.SkillScreen.class, (player) -> 176, (player) -> 166, 60);
-
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 60);
-
-        //if (ModTabs.quarkOdditiesLoaded)
-        //    TabsMenu.addTabToScreen(this, BackpackInventoryScreen.class, (player) -> 176, (player) -> 224, 60);
-
-        if (ModTabs.cosmeticArmorLoaded)
-            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 60);
-
-        if (ModTabs.backpackedLoaded)
-            // Backpacked integration temporarily disabled - mod is in active development
-            //TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 60);
-
-        if (ModTabs.travelersBackpackLoaded)
-            TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 60);
-
-        //if (ModTabs.dietLoaded && Config.Baked.includeOpenedScreenTab)
-        //    TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 60);
+        // Diet mod is temporarily disabled - mod is not updated to NeoForge 1.21.1
+        // All screens will automatically have this tab through the new system
+        // Once Diet mod is updated, we can register the DietScreen here
     }
 }

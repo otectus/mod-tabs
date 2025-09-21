@@ -7,10 +7,12 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.common.EventBusSubscriber;
-import org.lwjgl.glfw.GLFW;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.client.screens.NextTabsButton;
+import vodmordia.modtabs.client.screens.TabButton;
 
 @EventBusSubscriber(modid = ModTabs.MOD_ID, value = Dist.CLIENT)
 public class ClientNeoForgeEvents {
@@ -47,15 +49,14 @@ public class ClientNeoForgeEvents {
         }
     }
 
-    @SubscribeEvent
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event) {
         if (TabsMenu.wasScreenOpenedViaTab()) {
             Minecraft minecraft = Minecraft.getInstance();
 
             if (minecraft.options.keyInventory.matches(event.getKeyCode(), event.getScanCode())) {
-                Screen sourceScreen = TabsMenu.getSourceScreen();
-
-                if (sourceScreen instanceof InventoryScreen && minecraft.player != null && minecraft.gameMode != null) {
+                if (minecraft.player != null && minecraft.gameMode != null) {
                     // Before switching to inventory, properly close any open container (like backpack)
                     // This fixes the duplication issue when switching from backpack to inventory via keybind
                     try {
@@ -66,7 +67,8 @@ public class ClientNeoForgeEvents {
                         // Silently ignore close container errors
                     }
 
-                    TabsMenu.clearTabScreenTracking();
+                    // Mark and open inventory
+                    TabsMenu.markScreenOpenedViaTab(event.getScreen());
                     minecraft.setScreen(new InventoryScreen(minecraft.player));
                     event.setCanceled(true);
                 }
@@ -135,4 +137,28 @@ public class ClientNeoForgeEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onScreenRenderPost(ScreenEvent.Render.Post event) {
+        // Special handling for screens that don't call super.render() properly
+        String screenClassName = event.getScreen().getClass().getName();
+
+        if (screenClassName.equals("net.puffish.skillsmod.client.gui.SkillsScreen") ||
+            screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
+            screenClassName.equals("xaero.map.gui.GuiMap")) {
+
+            // Find and render all TabButton and NextTabsButton widgets for this screen - this renders AFTER the screen content including blur
+            for (var child : event.getScreen().children()) {
+                if (child instanceof TabButton tabButton) {
+                    // Render the tab button on top of everything the screen just rendered
+                    tabButton.renderWidget(event.getGuiGraphics(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
+                }
+                if (child instanceof NextTabsButton nextTabsButton) {
+                    // Render the next tabs button on top of everything the screen just rendered
+                    nextTabsButton.renderWidget(event.getGuiGraphics(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
+                }
+            }
+        }
+    }
+
 }

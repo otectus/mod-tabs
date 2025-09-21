@@ -12,6 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
+import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
+import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
@@ -20,9 +23,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class ArsElixirumTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0; // Empty tab normal state
-    private final int TAB_ICON_TEX_Y = 138; // Empty tab background in bottom row
 
     public ArsElixirumTab() {
         super();
@@ -46,12 +46,10 @@ public class ArsElixirumTab extends TabBase {
                 selectedSectionField.setAccessible(true);
                 selectedSectionField.set(null, collectionSection);
             } catch (Exception e) {
-                // Section setting failed, but still open screen
             }
 
             Minecraft.getInstance().setScreen((Screen) screen);
         } catch (Exception e) {
-            ModTabs.LOGGER.error("Failed to open Ars Elixirum screen: " + e.getMessage());
         }
     }
 
@@ -62,14 +60,22 @@ public class ArsElixirumTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        // Render tab background
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54; // Hover state is at X=54
-        gui.blit(TAB_ICONS, x, y, TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(getGlassCauldronItem(), 5, 4)
+            .render(gui, x, y, hover, false);
+    }
 
+    @Override
+    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+        TabRenderer.builder()
+            .withBackground()
+            .withItemIcon(getGlassCauldronItem(), 5, 4)
+            .render(gui, x, y, hover, true);
+    }
+
+    private ItemStack getGlassCauldronItem() {
         // Get glass cauldron icon from Ars Elixirum
-        ItemStack iconStack;
         try {
             Class<?> itemsClass = Class.forName("dev.obscuria.elixirum.registry.ElixirumItems");
             Field itemField = itemsClass.getField("GLASS_CAULDRON");
@@ -78,13 +84,11 @@ public class ArsElixirumTab extends TabBase {
             // Get item from Fragmentum Deferred object
             Method getMethod = registryObject.getClass().getMethod("get");
             Item glassCauldron = (Item) getMethod.invoke(registryObject);
-            iconStack = new ItemStack(glassCauldron);
+            return new ItemStack(glassCauldron);
         } catch (Exception e) {
             // Fallback to brewing stand
-            iconStack = new ItemStack(Items.BREWING_STAND);
+            return new ItemStack(Items.BREWING_STAND);
         }
-
-        gui.renderItem(iconStack, x + 5, y + 4);
     }
 
     @Override
@@ -104,12 +108,18 @@ public class ArsElixirumTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        if (Config.Baked.includeOpenedScreenTab)
-            TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 35);
-
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 35);
-
-        // Add to other compatible screens as needed
+        // Register the Ars Elixirum screen with tabs at the bottom (normal, non-inverted)
+        try {
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> elixirumScreenClass = (Class<? extends Screen>) Class.forName("dev.obscuria.elixirum.client.screen.ElixirumScreen");
+            TabsMenu.registerScreenWithAllTabs(elixirumScreenClass,
+                (player) -> 176, // Standard GUI width
+                (player) -> 166, // Standard GUI height
+                TabDisplayMode.NORMAL, // Normal display mode (not inverted)
+                TabPositioning.SCREEN_BOTTOM, // Position tabs at the bottom of the screen
+                0); // No offset from screen bottom edge
+        } catch (ClassNotFoundException e) {
+            // Mod not available
+        }
     }
 }
