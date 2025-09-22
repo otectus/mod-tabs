@@ -19,8 +19,11 @@
   "tooltip.modtabs.tab.cobblemon.description": "Party Summary",
   "tooltip.modtabs.tab.modular_golems.description": "Golems in World",
   "tooltip.modtabs.tab.ars_elixirum.description": "Elixirs",
+  "tooltip.modtabs.tab.advancements.description": "Advancements",
 
   "modtabs.midnightconfig.tabs": "Tab Settings",
+  "modtabs.midnightconfig.stickyInventoryTab": "Sticky Inventory Tab",
+  "modtabs.midnightconfig.stickyInventoryTab.tooltip": "Keep the inventory tab always visible as the first tab on all pages",
   "modtabs.midnightconfig.inventoryTabEnabled": "Enable Inventory Tab",
   "modtabs.midnightconfig.backpackTabEnabled": "Enable Backpacked Tab",
   "modtabs.midnightconfig.travelersBackpackTabEnabled": "Enable Travelers Backpack Tab",
@@ -41,5 +44,6 @@
   "modtabs.midnightconfig.l2HostilityTabEnabled": "Enable L2 Hostility Tab",
   "modtabs.midnightconfig.l2AttributesTabEnabled": "Enable L2 Attributes Tab",
   "modtabs.midnightconfig.l2ArtifactsTabEnabled": "Enable L2 Artifacts Tab",
-  "modtabs.midnightconfig.cosmeticArmorTabEnabled": "Enable Cosmetic Armor Tab"
+  "modtabs.midnightconfig.cosmeticArmorTabEnabled": "Enable Cosmetic Armor Tab",
+  "modtabs.midnightconfig.advancementsTabEnabled": "Enable Advancements Tab"
 }

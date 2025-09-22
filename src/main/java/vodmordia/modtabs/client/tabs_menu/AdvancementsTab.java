@@ -1,11 +1,12 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.puffish.skillsmod.client.SkillsClientMod;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
 import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
@@ -14,33 +15,29 @@ import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
 
-import java.util.Optional;
+public class AdvancementsTab extends TabBase {
+    private final ResourceLocation ADVANCEMENTS_ICON = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/sprites/advancements/challenge_frame_obtained.png");
 
-
-public class PufferfishsSkillsTab extends TabBase {
-    private final ResourceLocation PUFFER_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/puffer.png");
-
-    public PufferfishsSkillsTab() {
+    public AdvancementsTab() {
         super();
     }
 
     @Override
     public void openTargetScreen(Player player) {
-        if (Config.Baked.pufferfishSkillsTabEnabled && player.level().isClientSide) {
-            SkillsClientMod.getInstance().openScreen(Optional.empty());
-        }
+        AdvancementsScreen newGui = new AdvancementsScreen(Minecraft.getInstance().getConnection().getAdvancements());
+        Minecraft.getInstance().setScreen(newGui);
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.pufferfishSkillsTabEnabled;
+        return Config.Baked.advancementsTabEnabled;
     }
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
         TabRenderer.builder()
             .withBackground()
-            .withTextureIcon(PUFFER_ICON, 4, 4, 16, 16)
+            .withTextureIcon(ADVANCEMENTS_ICON, 5, 4, 16, 16)
             .render(gui, x, y, hover, false);
     }
 
@@ -48,29 +45,27 @@ public class PufferfishsSkillsTab extends TabBase {
     protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
         TabRenderer.builder()
             .withBackground()
-            .withTextureIcon(PUFFER_ICON, 4, 4, 16, 16)
+            .withTextureIcon(ADVANCEMENTS_ICON, 5, 4, 16, 16)
             .render(gui, x, y, hover, true);
     }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        // Always return false so this tab is never disabled - we want it visible on all screens including SkillsScreen
-        return false;
+        return currentScreen instanceof AdvancementsScreen;
     }
 
     @Override
     public Component getTooltip() {
-        return Component.translatable("tooltip." + ModTabs.MOD_ID + ".tab.pufferfish_skills.description");
+        return Component.translatable("tooltip." + ModTabs.MOD_ID + ".tab.advancements.description");
     }
 
     @Override
     public void initTabOnScreens() {
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> skillsScreenClass = (Class<? extends Screen>) Class.forName("net.puffish.skillsmod.client.gui.SkillsScreen");
-            TabsMenu.registerScreenWithAllTabs(skillsScreenClass, (player) -> 176, (player) -> 166, TabDisplayMode.INVERTED, TabPositioning.SCREEN_TOP);
-        } catch (ClassNotFoundException e) {
-            // Pufferfish Skills mod not available
-        }
+        // Register the advancements screen with tabs displayed inverted at the top
+        TabsMenu.registerScreenWithAllTabs(AdvancementsScreen.class,
+            (player) -> 176,
+            (player) -> 166,
+            TabDisplayMode.INVERTED,
+            TabPositioning.SCREEN_TOP);
     }
 }

@@ -8,6 +8,7 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.client.screens.NextTabsButton;
 import vodmordia.modtabs.client.screens.TabButton;
+import vodmordia.modtabs.client.tabs_menu.InventoryTab;
 import vodmordia.modtabs.config.Config;
 
 import java.util.*;
@@ -187,6 +188,22 @@ public class TabsMenu {
                         .toList());
             }
 
+            // Handle sticky inventory tab - separate inventory tab from other tabs
+            TabBase inventoryTab = null;
+            List<TabBase> nonInventoryTabs = new ArrayList<>();
+
+            if (Config.Baked.stickyInventoryTab) {
+                for (TabBase tab : enabledTabs) {
+                    if (tab instanceof InventoryTab) {
+                        inventoryTab = tab;
+                    } else {
+                        nonInventoryTabs.add(tab);
+                    }
+                }
+            } else {
+                nonInventoryTabs = enabledTabs;
+            }
+
 
             int remainingWidth;
             try {
@@ -200,7 +217,18 @@ public class TabsMenu {
             // First pass: determine how many tabs can fit
             currentTabsCount = 0;
             int tempWidth = remainingWidth;
-            for (TabBase tabBase: enabledTabs) {
+
+            // If sticky inventory tab is enabled and present, reserve space for it
+            if (Config.Baked.stickyInventoryTab && inventoryTab != null) {
+                if (tempWidth > TAB_WIDTH) {
+                    tempWidth -= TAB_WIDTH + 1;
+                    currentTabsCount++; // Count the inventory tab
+                }
+            }
+
+            // Count remaining space for non-inventory tabs
+            List<TabBase> tabsToCheck = Config.Baked.stickyInventoryTab ? nonInventoryTabs : enabledTabs;
+            for (TabBase tabBase: tabsToCheck) {
                 if (tempWidth > TAB_WIDTH) {
                     tempWidth -= TAB_WIDTH + 1;
                     currentTabsCount++;
@@ -232,24 +260,36 @@ public class TabsMenu {
 
             // Second pass: create buttons for the correct range starting from startTabIndex
             int buttonPosition = 0;
-            for (int tabIndex = 0; tabIndex < enabledTabs.size(); tabIndex++) {
-                TabBase tabBase = enabledTabs.get(tabIndex);
+
+            // If sticky inventory tab is enabled and present, always render it first
+            if (Config.Baked.stickyInventoryTab && inventoryTab != null && currentTabsCount > 0) {
+                TabButton inventoryButton = new TabButton(inventoryTab, Minecraft.getInstance().player, event.getScreen(), buttonPosition, TabsMenu.leftScreenPos, TabsMenu.topScreenPos, screenInfo.displayMode);
+                event.addListener(inventoryButton);
+                buttonPosition++;
+            }
+
+            // Render other tabs based on pagination
+            List<TabBase> tabsToRender = Config.Baked.stickyInventoryTab ? nonInventoryTabs : enabledTabs;
+            int availableSlots = Config.Baked.stickyInventoryTab && inventoryTab != null ? currentTabsCount - 1 : currentTabsCount;
+
+            for (int tabIndex = 0; tabIndex < tabsToRender.size() && buttonPosition < currentTabsCount; tabIndex++) {
+                TabBase tabBase = tabsToRender.get(tabIndex);
                 int tabIndexToShow = tabIndex - startTabIndex;
 
-                if (tabIndexToShow >= 0 && tabIndexToShow < currentTabsCount) {
-
+                if (tabIndexToShow >= 0 && tabIndexToShow < availableSlots) {
                     TabButton newButton = new TabButton(tabBase, Minecraft.getInstance().player, event.getScreen(), buttonPosition, TabsMenu.leftScreenPos, TabsMenu.topScreenPos, screenInfo.displayMode);
                     event.addListener(newButton);
                     buttonPosition++;
                 }
             }
 
-            if (enabledTabs.size() > currentTabsCount) {
-                // For inverted displays, position the next button correctly
-                int nextButtonY = screenInfo.displayMode == TabDisplayMode.INVERTED ?
-                    TabsMenu.topScreenPos :
-                    TabsMenu.topScreenPos - TAB_HEIGHT;
-                event.addListener(new NextTabsButton(currentTabsCount, TabsMenu.leftScreenPos, nextButtonY,
+            // Determine if next button is needed based on sticky inventory tab mode
+            int totalTabsToPage = Config.Baked.stickyInventoryTab ? nonInventoryTabs.size() : enabledTabs.size();
+            int maxVisibleTabs = Config.Baked.stickyInventoryTab && inventoryTab != null ? currentTabsCount - 1 : currentTabsCount;
+
+            if (totalTabsToPage > maxVisibleTabs) {
+                // Use the same positioning logic as TabButton - pass topScreenPos directly and let NextTabsButton handle display mode
+                event.addListener(new NextTabsButton(currentTabsCount, TabsMenu.leftScreenPos, TabsMenu.topScreenPos, screenInfo.displayMode,
                         button -> nextTabButtons(event.getScreen())));
             }
         } else {
@@ -259,21 +299,60 @@ public class TabsMenu {
     public static void nextTabButtons(Screen screen) {
         List<? extends GuiEventListener> tabButtons = screen.children().stream().filter(button -> button instanceof TabButton).toList();
 
-        if (startTabIndex + currentTabsCount >= enabledTabs.size())
-            startTabIndex = 0;
-        else
-            startTabIndex += currentTabsCount + Math.min(enabledTabs.size() - currentTabsCount * 2 - startTabIndex, 0);
+        // Handle sticky inventory tab logic
+        if (Config.Baked.stickyInventoryTab) {
+            // Find inventory and non-inventory tabs
+            TabBase inventoryTab = null;
+            List<TabBase> nonInventoryTabs = new ArrayList<>();
 
-        int currentTabIndex = 0;
-        for (TabBase tabBase: enabledTabs) {
-            int tabIndexToUpdate = currentTabIndex - startTabIndex;
-            if (tabIndexToUpdate >= currentTabsCount)
-                break;
+            for (TabBase tab : enabledTabs) {
+                if (tab instanceof InventoryTab) {
+                    inventoryTab = tab;
+                } else {
+                    nonInventoryTabs.add(tab);
+                }
+            }
 
-            if (tabIndexToUpdate >= 0)
-                ((TabButton) tabButtons.get(tabIndexToUpdate)).setTabBase(tabBase);
+            // Calculate pagination for non-inventory tabs only
+            int availableSlots = inventoryTab != null ? currentTabsCount - 1 : currentTabsCount;
 
-            currentTabIndex++;
+            if (startTabIndex + availableSlots >= nonInventoryTabs.size())
+                startTabIndex = 0;
+            else
+                startTabIndex += availableSlots + Math.min(nonInventoryTabs.size() - availableSlots * 2 - startTabIndex, 0);
+
+            // Update buttons: skip first button if inventory tab is sticky
+            int buttonStartIndex = inventoryTab != null ? 1 : 0;
+            int currentTabIndex = 0;
+
+            for (TabBase tabBase: nonInventoryTabs) {
+                int tabIndexToUpdate = currentTabIndex - startTabIndex;
+                if (tabIndexToUpdate >= availableSlots)
+                    break;
+
+                if (tabIndexToUpdate >= 0 && buttonStartIndex + tabIndexToUpdate < tabButtons.size())
+                    ((TabButton) tabButtons.get(buttonStartIndex + tabIndexToUpdate)).setTabBase(tabBase);
+
+                currentTabIndex++;
+            }
+        } else {
+            // Original logic for non-sticky mode
+            if (startTabIndex + currentTabsCount >= enabledTabs.size())
+                startTabIndex = 0;
+            else
+                startTabIndex += currentTabsCount + Math.min(enabledTabs.size() - currentTabsCount * 2 - startTabIndex, 0);
+
+            int currentTabIndex = 0;
+            for (TabBase tabBase: enabledTabs) {
+                int tabIndexToUpdate = currentTabIndex - startTabIndex;
+                if (tabIndexToUpdate >= currentTabsCount)
+                    break;
+
+                if (tabIndexToUpdate >= 0)
+                    ((TabButton) tabButtons.get(tabIndexToUpdate)).setTabBase(tabBase);
+
+                currentTabIndex++;
+            }
         }
     }
 

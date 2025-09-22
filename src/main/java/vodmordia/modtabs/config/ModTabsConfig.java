@@ -5,6 +5,9 @@ import eu.midnightdust.lib.config.MidnightConfig;
 public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
+    public static boolean stickyInventoryTab = true;
+
+    @Entry(category = "tabs")
     public static boolean inventoryTabEnabled = true;
 
     @Entry(category = "tabs")
@@ -66,4 +69,7 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static boolean cosmeticArmorTabEnabled = true;
+
+    @Entry(category = "tabs")
+    public static boolean advancementsTabEnabled = true;
 }

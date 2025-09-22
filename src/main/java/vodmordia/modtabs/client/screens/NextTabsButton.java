@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import vodmordia.modtabs.ModTabs;
+import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
 
 import static vodmordia.modtabs.api.tabs_menu.TabBase.TAB_HEIGHT;
 import static vodmordia.modtabs.api.tabs_menu.TabBase.TAB_WIDTH;
@@ -17,10 +18,27 @@ public class NextTabsButton extends Button {
     public static final int NEXT_TABS_BUTTON_WIDTH = 12;
     public static final int NEXT_TABS_BUTTON_HEIGHT = 21;
     public int tabPositionIndex;
+    public TabDisplayMode displayMode;
 
     public NextTabsButton(int tabPositionIndex, int leftScreenPos, int topScreenPos, net.minecraft.client.gui.components.Button.OnPress press) {
         super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1), topScreenPos, NEXT_TABS_BUTTON_WIDTH, NEXT_TABS_BUTTON_HEIGHT, Component.literal(""), press, DEFAULT_NARRATION);
         this.tabPositionIndex = tabPositionIndex;
+        this.displayMode = TabDisplayMode.NORMAL; // Default for backward compatibility
+    }
+
+    public NextTabsButton(int tabPositionIndex, int leftScreenPos, int topScreenPos, TabDisplayMode displayMode, net.minecraft.client.gui.components.Button.OnPress press) {
+        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1),
+              calculateYPosition(topScreenPos, displayMode),
+              NEXT_TABS_BUTTON_WIDTH, NEXT_TABS_BUTTON_HEIGHT, Component.literal(""), press, DEFAULT_NARRATION);
+        this.tabPositionIndex = tabPositionIndex;
+        this.displayMode = displayMode;
+    }
+
+    private static int calculateYPosition(int topScreenPos, TabDisplayMode displayMode) {
+        // Use the same positioning logic as TabButton
+        return displayMode == TabDisplayMode.INVERTED ?
+            topScreenPos :
+            topScreenPos - TAB_HEIGHT;
     }
 
     @Override
@@ -34,6 +52,6 @@ public class NextTabsButton extends Button {
 
     public void updatePosition(int leftScreenPos, int topScreenPos) {
         setX(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1));
-        setY(topScreenPos);
+        setY(calculateYPosition(topScreenPos, displayMode));
     }
 }

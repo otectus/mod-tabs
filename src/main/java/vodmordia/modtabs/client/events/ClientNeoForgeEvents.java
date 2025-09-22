@@ -161,4 +161,33 @@ public class ClientNeoForgeEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void onScreenMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
+        // Special handling for mouse clicks on screens that cover tab buttons
+        String screenClassName = event.getScreen().getClass().getName();
+
+        if (screenClassName.equals("net.puffish.skillsmod.client.gui.SkillsScreen") ||
+            screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
+            screenClassName.equals("xaero.map.gui.GuiMap")) {
+
+            // Check if the click is within any tab button bounds and forward the click
+            for (var child : event.getScreen().children()) {
+                if (child instanceof TabButton tabButton) {
+                    if (tabButton.isMouseOver(event.getMouseX(), event.getMouseY())) {
+                        tabButton.onPress();
+                        event.setCanceled(true); // Cancel the original click to prevent it from affecting the background screen
+                        return;
+                    }
+                }
+                if (child instanceof NextTabsButton nextTabsButton) {
+                    if (nextTabsButton.isMouseOver(event.getMouseX(), event.getMouseY())) {
+                        nextTabsButton.onPress();
+                        event.setCanceled(true); // Cancel the original click to prevent it from affecting the background screen
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
 }

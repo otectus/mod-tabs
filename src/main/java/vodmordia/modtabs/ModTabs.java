@@ -14,6 +14,7 @@ import net.neoforged.fml.loading.FMLPaths;
 import org.slf4j.Logger;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.client.tabs_menu.*;
+import vodmordia.modtabs.client.tabs_menu.AdvancementsTab;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.config.ModTabsConfig;
 import eu.midnightdust.lib.config.MidnightConfig;
@@ -264,6 +265,9 @@ public class ModTabs
             } else {
                 LOGGER.info("Ars Elixirum not loaded, skipping tab registration");
             }
+
+            // Register vanilla advancements tab
+            TabsMenu.register(new AdvancementsTab());
 
             // Finalize all pending screen registrations now that all tabs are registered
             TabsMenu.finalizePendingRegistrations();

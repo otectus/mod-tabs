@@ -30,6 +30,8 @@ public class Config
 		public static boolean l2ArtifactsTabEnabled;
 		public static boolean cosmeticArmorTabEnabled;
 		public static boolean modularGolemsTabEnabled;
+		public static boolean advancementsTabEnabled;
+		public static boolean stickyInventoryTab;
 
 		public static void bakeClient()
 		{
@@ -60,6 +62,8 @@ public class Config
 				l2ArtifactsTabEnabled = ModTabsConfig.l2ArtifactsTabEnabled;
 				cosmeticArmorTabEnabled = ModTabsConfig.cosmeticArmorTabEnabled;
 				modularGolemsTabEnabled = ModTabsConfig.modularGolemsTabEnabled;
+				advancementsTabEnabled = ModTabsConfig.advancementsTabEnabled;
+				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 			}
 			catch (Exception e)
 			{

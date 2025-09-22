@@ -17,6 +17,7 @@ import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
+import vodmordia.modtabs.utils.ArsElixirumInspector;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 import java.lang.reflect.Field;
@@ -75,20 +76,18 @@ public class ArsElixirumTab extends TabBase {
     }
 
     private ItemStack getGlassCauldronItem() {
-        // Get glass cauldron icon from Ars Elixirum
+        // Try to get Ars Elixirum glass cauldron item via reflection using inspector
         try {
-            Class<?> itemsClass = Class.forName("dev.obscuria.elixirum.registry.ElixirumItems");
-            Field itemField = itemsClass.getField("GLASS_CAULDRON");
-            Object registryObject = itemField.get(null);
+            Item glassCauldronItem = ArsElixirumInspector.tryGetGlassCauldronItem();
 
-            // Get item from Fragmentum Deferred object
-            Method getMethod = registryObject.getClass().getMethod("get");
-            Item glassCauldron = (Item) getMethod.invoke(registryObject);
-            return new ItemStack(glassCauldron);
+            if (glassCauldronItem != null) {
+                return new ItemStack(glassCauldronItem);
+            }
         } catch (Exception e) {
-            // Fallback to brewing stand
-            return new ItemStack(Items.BREWING_STAND);
+            // Fall through to fallback
         }
+        // Fallback to brewing stand
+        return new ItemStack(Items.BREWING_STAND);
     }
 
     @Override
