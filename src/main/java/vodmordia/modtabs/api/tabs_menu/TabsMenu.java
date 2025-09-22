@@ -190,7 +190,7 @@ public class TabsMenu {
 
             int remainingWidth;
             try {
-                remainingWidth = screenInfo.width.apply(Minecraft.getInstance().player) - Config.Baked.tabsMenuOffsetX;
+                remainingWidth = screenInfo.width.apply(Minecraft.getInstance().player);
             } catch (Exception e) {
                 ModTabs.LOGGER.error("TabsMenu: Width calculation failed: " + e.getMessage());
                 return;
@@ -247,8 +247,8 @@ public class TabsMenu {
             if (enabledTabs.size() > currentTabsCount) {
                 // For inverted displays, position the next button correctly
                 int nextButtonY = screenInfo.displayMode == TabDisplayMode.INVERTED ?
-                    TabsMenu.topScreenPos + Config.Baked.tabsMenuOffsetY :
-                    TabsMenu.topScreenPos - TAB_HEIGHT + Config.Baked.tabsMenuOffsetY;
+                    TabsMenu.topScreenPos :
+                    TabsMenu.topScreenPos - TAB_HEIGHT;
                 event.addListener(new NextTabsButton(currentTabsCount, TabsMenu.leftScreenPos, nextButtonY,
                         button -> nextTabButtons(event.getScreen())));
             }

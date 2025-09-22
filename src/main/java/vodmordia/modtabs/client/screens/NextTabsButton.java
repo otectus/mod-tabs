@@ -6,7 +6,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.config.Config;
 
 import static vodmordia.modtabs.api.tabs_menu.TabBase.TAB_HEIGHT;
 import static vodmordia.modtabs.api.tabs_menu.TabBase.TAB_WIDTH;
@@ -20,7 +19,7 @@ public class NextTabsButton extends Button {
     public int tabPositionIndex;
 
     public NextTabsButton(int tabPositionIndex, int leftScreenPos, int topScreenPos, net.minecraft.client.gui.components.Button.OnPress press) {
-        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX, topScreenPos, NEXT_TABS_BUTTON_WIDTH, NEXT_TABS_BUTTON_HEIGHT, Component.literal(""), press, DEFAULT_NARRATION);
+        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1), topScreenPos, NEXT_TABS_BUTTON_WIDTH, NEXT_TABS_BUTTON_HEIGHT, Component.literal(""), press, DEFAULT_NARRATION);
         this.tabPositionIndex = tabPositionIndex;
     }
 
@@ -34,7 +33,7 @@ public class NextTabsButton extends Button {
     }
 
     public void updatePosition(int leftScreenPos, int topScreenPos) {
-        setX(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX);
+        setX(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1));
         setY(topScreenPos);
     }
 }

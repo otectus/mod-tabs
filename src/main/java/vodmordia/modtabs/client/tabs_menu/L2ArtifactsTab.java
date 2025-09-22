@@ -73,7 +73,7 @@ public class L2ArtifactsTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.inventoryTabEnabled; // Use a generic config for now
+        return Config.Baked.l2ArtifactsTabEnabled;
     }
 
     @Override

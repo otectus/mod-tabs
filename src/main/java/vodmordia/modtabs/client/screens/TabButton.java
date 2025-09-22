@@ -11,7 +11,6 @@ import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabBase;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
-import vodmordia.modtabs.config.Config;
 
 import static vodmordia.modtabs.api.tabs_menu.TabBase.TAB_HEIGHT;
 import static vodmordia.modtabs.api.tabs_menu.TabBase.TAB_WIDTH;
@@ -26,7 +25,7 @@ public class TabButton extends Button {
     public TabDisplayMode displayMode;
 
     public TabButton(TabBase tabBase, Player player, Screen screen, int tabPositionIndex, int leftScreenPos, int topScreenPos, TabDisplayMode displayMode) {
-        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX,
+        super(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1),
               calculateYPosition(topScreenPos, displayMode),
               TAB_WIDTH, TAB_HEIGHT, Component.literal(""), button -> {}, DEFAULT_NARRATION);
 
@@ -41,8 +40,8 @@ public class TabButton extends Button {
     private static int calculateYPosition(int topScreenPos, TabDisplayMode displayMode) {
         // Adjust Y position for inverted tabs - they hang down instead of up
         return displayMode == TabDisplayMode.INVERTED ?
-            topScreenPos + Config.Baked.tabsMenuOffsetY :
-            topScreenPos - TAB_HEIGHT + Config.Baked.tabsMenuOffsetY;
+            topScreenPos :
+            topScreenPos - TAB_HEIGHT;
     }
 
     @Override
@@ -73,7 +72,7 @@ public class TabButton extends Button {
     }
 
     public void updatePosition(int leftScreenPos, int topScreenPos) {
-        setX(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1) + Config.Baked.tabsMenuOffsetX);
+        setX(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1));
         setY(calculateYPosition(topScreenPos, displayMode));
     }
 }

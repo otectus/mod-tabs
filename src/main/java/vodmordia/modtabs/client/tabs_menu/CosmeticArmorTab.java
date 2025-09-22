@@ -21,7 +21,7 @@ public class CosmeticArmorTab extends TabBase {
 
     @Override
     public void openTargetScreen(Player player) {
-        if (Config.Baked.inventoryTabEnabled) { // Using inventoryTabEnabled as there's no specific config for cosmetic armor
+        if (Config.Baked.cosmeticArmorTabEnabled) {
             try {
                 // Use reflection to send the PayloadOpenCosArmorInventory packet
                 Class<?> packetDistributorClass = Class.forName("net.neoforged.neoforge.network.PacketDistributor");
@@ -48,7 +48,7 @@ public class CosmeticArmorTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.inventoryTabEnabled; // Always enabled when inventory tab is enabled
+        return Config.Baked.cosmeticArmorTabEnabled;
     }
 
     @Override

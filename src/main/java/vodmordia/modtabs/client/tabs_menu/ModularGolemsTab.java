@@ -59,7 +59,7 @@ public class ModularGolemsTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.inventoryTabEnabled; // Use a generic config for now
+        return Config.Baked.modularGolemsTabEnabled;
     }
 
     @Override

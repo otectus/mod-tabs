@@ -8,8 +8,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.loading.FMLPaths;
@@ -17,6 +15,8 @@ import org.slf4j.Logger;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.client.tabs_menu.*;
 import vodmordia.modtabs.config.Config;
+import vodmordia.modtabs.config.ModTabsConfig;
+import eu.midnightdust.lib.config.MidnightConfig;
 
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -61,10 +61,10 @@ public class ModTabs
     {
         IEventBus neoForgeBus = NeoForge.EVENT_BUS;
 
-        modEventBus.addListener(this::onModConfigLoadEvent);
-        modEventBus.addListener(this::onModConfigReloadEvent);
+        // Initialize MidnightConfig
+        MidnightConfig.init(MOD_ID, ModTabsConfig.class);
 
-        modContainer.registerConfig(ModConfig.Type.CLIENT, Config.SPEC, "modtabs-client.toml");
+        // Old NeoForge config system removed - using MidnightConfig only
 
         modIntegration(neoForgeBus);
     }
@@ -172,24 +172,7 @@ public class ModTabs
 
     }
 
-    @SubscribeEvent
-    private void onModConfigLoadEvent(ModConfigEvent.Loading event)
-    {
-        final ModConfig config = event.getConfig();
-
-        if (config.getSpec() == Config.CLIENT_SPEC)
-            Config.Baked.bakeClient();
-    }
-
-    @SubscribeEvent
-    private void onModConfigReloadEvent(ModConfigEvent.Reloading event)
-    {
-        final ModConfig config = event.getConfig();
-
-        // Since client config is not shared, we want it to update instantly whenever it's saved
-        if (config.getSpec() == Config.CLIENT_SPEC)
-            Config.Baked.bakeClient();
-    }
+    // Old config event handlers removed - MidnightConfig handles reloading automatically
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)

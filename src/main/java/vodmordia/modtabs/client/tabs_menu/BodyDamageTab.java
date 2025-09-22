@@ -87,7 +87,7 @@ public class BodyDamageTab extends TabBase {
     @Override
     public void initTabOnScreens() {
         // Register only this tab's own screen - the Body Health screen
-        if (ModTabs.legendarySurvivalOverhaulLoaded && Config.Baked.includeOpenedScreenTab)
+        if (ModTabs.legendarySurvivalOverhaulLoaded)
             TabsMenu.registerScreenWithAllTabs(BodyHealthScreen.class, (player) -> 176, (player) -> 183);
     }
 }

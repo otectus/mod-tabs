@@ -115,7 +115,12 @@ repositories {
     }
 
     maven { url "https://api.modrinth.com/maven" }
-    
+
+    // Midnight Lib repository
+    maven {
+        url "https://maven.terraformersmc.com/releases/"
+    }
+
     // Local flat directory for external JARs
     flatDir {
         dirs 'libs'
@@ -124,6 +129,9 @@ repositories {
 
 dependencies {
     // External libraries.
+
+    // Midnight Lib - Required dependency for in-game config
+    implementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
     implementation("curse.maven:curios-309927:6529130")
     

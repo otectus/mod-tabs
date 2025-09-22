@@ -71,8 +71,7 @@ public class InventoryTab extends TabBase {
     @Override
     public void initTabOnScreens() {
         // Register the vanilla inventory screen and common mod screens with all tabs
-        if (Config.Baked.includeOpenedScreenTab)
-            TabsMenu.registerScreenWithAllTabs(InventoryScreen.class, (player) -> 176, (player) -> 166);
+        TabsMenu.registerScreenWithAllTabs(InventoryScreen.class, (player) -> 176, (player) -> 166);
 
         if (ModTabs.legendarySurvivalOverhaulLoaded)
             TabsMenu.registerScreenWithAllTabs(BodyHealthScreen.class, (player) -> 176, (player) -> 183);

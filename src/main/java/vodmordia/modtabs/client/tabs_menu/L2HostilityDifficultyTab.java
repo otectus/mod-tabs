@@ -64,7 +64,7 @@ public class L2HostilityDifficultyTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.inventoryTabEnabled; // Use a generic config for now
+        return Config.Baked.l2HostilityTabEnabled;
     }
 
     @Override

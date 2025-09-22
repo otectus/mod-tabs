@@ -85,7 +85,7 @@ public class ReskillableReimaginedTab extends TabBase {
     @Override
     public void initTabOnScreens() {
         // Register only this tab's own screen - the Reskillable Reimagined skill screen
-        if (ModTabs.reskillableReimaginedLoaded && Config.Baked.includeOpenedScreenTab)
+        if (ModTabs.reskillableReimaginedLoaded)
             TabsMenu.registerScreenWithAllTabs(SkillScreen.class, (player) -> 176, (player) -> 166);
     }
 }
