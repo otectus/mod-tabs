@@ -1,32 +1,29 @@
 package vodmordia.modtabs.client.tabs_menu;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
-import vodmordia.modtabs.api.tabs_menu.TabPositioning;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.utils.ArsElixirumInspector;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class ArsElixirumTab extends TabBase {
+@TabConfig(configKey = "arsElixirumTab", defaultEnabled = true, defaultOrder = 0)
+public class ArsElixirumTab extends SimpleItemTab {
 
     public ArsElixirumTab() {
-        super();
+        super(() -> getGlassCauldronItem());
     }
 
     @Override
@@ -56,26 +53,11 @@ public class ArsElixirumTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.arsElixirumTabEnabled;
+        return Config.Baked.arsElixirumTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.ARS_ELIXIRUM);
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getGlassCauldronItem(), 5, 4)
-            .render(gui, x, y, hover, false);
-    }
 
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getGlassCauldronItem(), 5, 4)
-            .render(gui, x, y, hover, true);
-    }
-
-    private ItemStack getGlassCauldronItem() {
+    private static ItemStack getGlassCauldronItem() {
         // Try to get Ars Elixirum glass cauldron item via reflection using inspector
         try {
             Item glassCauldronItem = ArsElixirumInspector.tryGetGlassCauldronItem();
@@ -107,18 +89,9 @@ public class ArsElixirumTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register the Ars Elixirum screen with tabs at the bottom (normal, non-inverted)
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> elixirumScreenClass = (Class<? extends Screen>) Class.forName("dev.obscuria.elixirum.client.screen.ElixirumScreen");
-            TabsMenu.registerScreenWithAllTabs(elixirumScreenClass,
-                (player) -> 176, // Standard GUI width
-                (player) -> 166, // Standard GUI height
-                TabDisplayMode.NORMAL, // Normal display mode (not inverted)
-                TabPositioning.SCREEN_BOTTOM, // Position tabs at the bottom of the screen
-                0); // No offset from screen bottom edge
-        } catch (ClassNotFoundException e) {
-            // Mod not available
-        }
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .atBottom()
+            .registerAllTabs("dev.obscuria.elixirum.client.screen.ElixirumScreen");
     }
 }

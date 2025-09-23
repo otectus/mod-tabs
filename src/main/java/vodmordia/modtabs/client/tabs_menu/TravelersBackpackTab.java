@@ -13,17 +13,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 import vodmordia.modtabs.utils.IntegrationUtils;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
-public class TravelersBackpackTab extends TabBase {
+@TabConfig(configKey = "travelersBackpackTab", defaultEnabled = true, defaultOrder = 0)
+public class TravelersBackpackTab extends SimpleItemTab {
 
     public TravelersBackpackTab() {
-        super();
+        super(() -> getStandardBackpackItem());
     }
 
     @Override
@@ -51,7 +55,7 @@ public class TravelersBackpackTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.travelersBackpackTabEnabled && hasBackpack(player);
+        return Config.Baked.travelersBackpackTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.TRAVELERS_BACKPACK) && hasBackpack(player);
     }
 
     private boolean hasBackpack(Player player) {
@@ -73,7 +77,7 @@ public class TravelersBackpackTab extends TabBase {
             }
 
             // Check Curios if available
-            if (ModTabs.curiosLoaded) {
+            if (ModIntegrationManager.isModLoaded(ModIntegration.CURIOS)) {
                 try {
                     Class<?> curiosAPIClass = Class.forName("top.theillusivec4.curios.api.CuriosApi");
                     java.lang.reflect.Method getCuriosInventoryMethod = curiosAPIClass.getDeclaredMethod("getCuriosInventory", net.minecraft.world.entity.LivingEntity.class);
@@ -111,25 +115,8 @@ public class TravelersBackpackTab extends TabBase {
         }
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        ItemStack backpackItem = getStandardBackpackItem();
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(backpackItem, 5, 4)
-            .render(gui, x, y, hover, false);
-    }
 
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        ItemStack backpackItem = getStandardBackpackItem();
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(backpackItem, 5, 4)
-            .render(gui, x, y, hover, true);
-    }
-
-    private ItemStack getStandardBackpackItem() {
+    private static ItemStack getStandardBackpackItem() {
         try {
             // Use reflection to get the standard travelers backpack item
             Class<?> modItemsClass = Class.forName("com.tiviacz.travelersbackpack.init.ModItems");
@@ -160,13 +147,9 @@ public class TravelersBackpackTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register only this tab's own screen - the Travelers Backpack screen
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> backpackScreenClass = (Class<? extends Screen>) Class.forName("com.tiviacz.travelersbackpack.client.screens.BackpackScreen");
-            TabsMenu.registerScreenWithAllTabs(backpackScreenClass, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight);
-        } catch (ClassNotFoundException e) {
-            // Mod not available
-        }
+        ScreenRegistry.builder()
+            .withDimensions(IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight)
+            .withPositioning(TabPositioning.GUI_RELATIVE)
+            .registerAllTabs("com.tiviacz.travelersbackpack.client.screens.BackpackScreen");
     }
 }

@@ -5,6 +5,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
+import vodmordia.modtabs.config.Config;
+import vodmordia.modtabs.config.ModTabsConfig;
 
 
 public abstract class TabBase {
@@ -23,12 +25,6 @@ public abstract class TabBase {
     public abstract void render(GuiGraphics gui, int x, int y, boolean hover);
 
     public void render(GuiGraphics gui, int x, int y, boolean hover, TabDisplayMode displayMode) {
-        // Debug logging for FTB Quests tab specifically
-        if (this.getClass().getSimpleName().equals("FtbQuestsTab")) {
-            ModTabs.LOGGER.info("TabBase: FtbQuestsTab rendering - displayMode: {}, isInverted: {}, position: ({}, {})",
-                displayMode, displayMode == TabDisplayMode.INVERTED, x, y);
-        }
-
         if (displayMode == TabDisplayMode.INVERTED) {
             renderInverted(gui, x, y, hover);
         } else {
@@ -46,4 +42,8 @@ public abstract class TabBase {
     public abstract boolean isCurrentlyUsed(Screen currentScreen);
 
     public abstract Component getTooltip();
+
+    public int getOverrideOrder() {
+        return TabRegistry.getTabOrder(this);
+    }
 }

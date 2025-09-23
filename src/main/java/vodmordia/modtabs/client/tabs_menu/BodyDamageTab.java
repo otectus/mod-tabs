@@ -1,12 +1,7 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
-import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,49 +12,36 @@ import java.lang.reflect.Method;
 import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
 import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
-import vodmordia.modtabs.utils.IntegrationUtils;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
 import static sfiomn.legendarysurvivaloverhaul.config.Config.Baked.localizedBodyDamageEnabled;
 
-public class BodyDamageTab extends TabBase {
+@TabConfig(configKey = "bodyDamageTab", defaultEnabled = true, defaultOrder = 0)
+public class BodyDamageTab extends SimpleItemTab {
 
     public BodyDamageTab() {
-        super();
+        super(() -> getFirstAidItem());
     }
 
     @Override
     public void openTargetScreen(Player player) {
-        if (ModTabs.legendarySurvivalOverhaulLoaded && localizedBodyDamageEnabled)
+        if (ModIntegrationManager.isModLoaded(ModIntegration.LEGENDARY_SURVIVAL_OVERHAUL) && localizedBodyDamageEnabled)
             ClientHooks.openBodyHealthScreen(player);
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return ModTabs.legendarySurvivalOverhaulLoaded && Config.Baked.bodyDamageTabEnabled && localizedBodyDamageEnabled;
+        return ModIntegrationManager.isModLoaded(ModIntegration.LEGENDARY_SURVIVAL_OVERHAUL) && Config.Baked.bodyDamageTabEnabled && localizedBodyDamageEnabled;
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getFirstAidItem(), 5, 3)
-            .render(gui, x, y, hover, false);
-    }
 
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getFirstAidItem(), 5, 3)
-            .render(gui, x, y, hover, true);
-    }
-
-    private ItemStack getFirstAidItem() {
+    private static ItemStack getFirstAidItem() {
         // Try to get LSO's First Aid Supplies item via reflection, fallback to vanilla item
         try {
             Class<?> itemsClass = Class.forName("sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry");
@@ -86,8 +68,9 @@ public class BodyDamageTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register only this tab's own screen - the Body Health screen
-        if (ModTabs.legendarySurvivalOverhaulLoaded)
-            TabsMenu.registerScreenWithAllTabs(BodyHealthScreen.class, (player) -> 176, (player) -> 183);
+        ScreenRegistry.builder()
+            .withBodyHealthDimensions()
+            .withPositioning(TabPositioning.GUI_RELATIVE)
+            .registerAllTabs(BodyHealthScreen.class);
     }
 }

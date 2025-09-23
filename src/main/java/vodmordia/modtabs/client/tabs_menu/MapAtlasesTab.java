@@ -19,20 +19,21 @@ import pepjebs.mapatlases.networking.C2S2COpenAtlasScreenPacket;
 import pepjebs.mapatlases.utils.MapAtlasesAccessUtils;
 //import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
-import vodmordia.modtabs.utils.IntegrationUtils;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 
-public class MapAtlasesTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 27;
-    private final int TAB_ICON_TEX_Y = 69;
+@TabConfig(configKey = "mapAtlasesTab", defaultEnabled = true, defaultOrder = 0)
+public class MapAtlasesTab extends SimpleTextureTab {
+    private static final ResourceLocation MAP_ATLAS_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/map_atlas.png");
 
     public MapAtlasesTab() {
-        super();
+        super(MAP_ATLAS_ICON);
     }
 
     @Override
@@ -45,17 +46,9 @@ public class MapAtlasesTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.mapAtlasesTabEnabled && MapAtlasesAccessUtils.getAtlasFromPlayerByConfig(player).getItem() instanceof MapAtlasItem;
+        return Config.Baked.mapAtlasesTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.MAP_ATLASES) && MapAtlasesAccessUtils.getAtlasFromPlayerByConfig(player).getItem() instanceof MapAtlasItem;
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54;
-
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {

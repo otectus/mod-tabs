@@ -1,27 +1,26 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.CustomIconTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
-import vodmordia.modtabs.utils.IntegrationUtils;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
-
-public class BackpackedTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 27;
-    private final int TAB_ICON_TEX_Y = 46;
-
+@TabConfig(configKey = "backpackedTab", defaultEnabled = false, defaultOrder = 0)
+public class BackpackedTab extends CustomIconTab {
     public BackpackedTab() {
-        super();
+        super((context) -> {
+            // Use the backpack icon from tab_menu_buttons.png
+            ResourceLocation tabIcons = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
+            int texOffsetX = context.hover ? 54 : 0;
+            context.gui.blit(tabIcons, context.x, context.y, 27 + texOffsetX, 46, 26, 30);
+        });
     }
 
     @Override
@@ -35,25 +34,7 @@ public class BackpackedTab extends TabBase {
     @Override
     public boolean isEnabled(Player player) {
         // Backpacked integration temporarily disabled - mod is in active development
-        return false;
-        //return Config.Baked.backpackTabEnabled && hasBackpack(player);
-    }
-
-    /*private boolean hasBackpack(Player player) {
-        try {
-            return Services.BACKPACK.isBackpackVisible(player);
-        } catch (Exception e) {
-            return false;
-        }
-    }*/
-
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54;
-
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
+        return false && Config.Baked.backpackedTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.BACKPACKED);
     }
 
     @Override
@@ -70,35 +51,8 @@ public class BackpackedTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        TabsMenu.addTabToScreen(this, InventoryScreen.class, (player) -> 176, (player) -> 166, 20);
-
-        // Disabled mods - commented out until they're updated to NeoForge 1.21.1
-        // if (ModTabs.legendarySurvivalOverhaulLoaded)
-        //     TabsMenu.addTabToScreen(this, BodyHealthScreen.class, (player) -> 176, (player) -> 183, 20);
-
-        // if (ModTabs.reskillableLoaded)
-        //     TabsMenu.addTabToScreen(this, SkillScreen.class, (player) -> 176, (player) -> 166, 20);
-
-        // if (ModTabs.reskillableReimaginedLoaded)
-        //     TabsMenu.addTabToScreen(this, net.bandit.reskillable.client.screen.SkillScreen.class, (player) -> 176, (player) -> 166, 20);
-
-        if (ModTabs.curiosLoaded)
-            TabsMenu.addTabToScreen(this, CuriosScreen.class, (player) -> 176, (player) -> 166, 20);
-
-        // if (ModTabs.quarkOdditiesLoaded)
-        //     TabsMenu.addTabToScreen(this, BackpackInventoryScreen.class, (player) -> 176, (player) -> 224, 20);
-
-        if (ModTabs.cosmeticArmorLoaded)
-            TabsMenu.addTabToScreen(this, GuiCosArmorInventory.class, (player) -> 176, (player) -> 166, 20);
-
         // Backpacked integration temporarily disabled - mod is in active development
-        /*if (ModTabs.backpackedLoaded && Config.Baked.includeOpenedScreenTab)
-            TabsMenu.addTabToScreen(this, BackpackScreen.class, IntegrationUtils::getBackpackWidth, IntegrationUtils::getBackpackHeight, 20);*/
-
-        if (ModTabs.travelersBackpackLoaded)
-            TabsMenu.addTabToScreen(this, com.tiviacz.travelersbackpack.client.screens.BackpackScreen.class, IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight, 20);
-
-        // if (ModTabs.dietLoaded)
-        //     TabsMenu.addTabToScreen(this, DietScreen.class, (player) -> 248, IntegrationUtils::getDietHeight, 20);
+        // When enabled, this tab would appear on all screens through ScreenRegistry
+        // For now, keep the tab disabled until Backpacked mod is updated
     }
 }

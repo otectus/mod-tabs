@@ -33,6 +33,14 @@ public class TabsMenu {
     private TabsMenu() {
     }
 
+    public static boolean hasCustomPositioning(Screen screen) {
+        ScreenInfo screenInfo = tabsScreens.get(screen.getClass());
+        if (screenInfo == null) {
+            return false;
+        }
+        return screenInfo.positioning != TabPositioning.GUI_RELATIVE;
+    }
+
     public static void updateButtonsPosition(Screen screen, int leftScreenPos, int topScreenPos) {
         if (TabsMenu.leftScreenPos != leftScreenPos || TabsMenu.topScreenPos != topScreenPos) {
             TabsMenu.leftScreenPos = leftScreenPos;
@@ -144,7 +152,10 @@ public class TabsMenu {
                     break;
                 case SCREEN_TOP:
                     // Position at top of screen with offset
-                    TabsMenu.leftScreenPos = (event.getScreen().width - screenInfo.width.apply(Minecraft.getInstance().player)) / 2;
+                    int guiWidth = screenInfo.width.apply(Minecraft.getInstance().player);
+                    int screenWidth = event.getScreen().width;
+                    TabsMenu.leftScreenPos = (screenWidth - guiWidth) / 2;
+
                     // For inverted tabs, position at absolute top (y=0), otherwise use offset
                     TabsMenu.topScreenPos = screenInfo.displayMode == TabDisplayMode.INVERTED ? 0 : screenInfo.screenEdgeOffset;
                     break;
@@ -188,6 +199,30 @@ public class TabsMenu {
                         .toList());
             }
 
+            // Sort tabs by override order first, then alphabetically by class name
+            enabledTabs.sort((tab1, tab2) -> {
+                int order1 = tab1.getOverrideOrder();
+                int order2 = tab2.getOverrideOrder();
+
+
+                // If both have order 0 (no override), sort alphabetically
+                if (order1 == 0 && order2 == 0) {
+                    return tab1.getClass().getSimpleName().compareTo(tab2.getClass().getSimpleName());
+                }
+
+                // If one has order 0, it goes after the one with a set order
+                if (order1 == 0) return 1;
+                if (order2 == 0) return -1;
+
+                // If both have the same non-zero order, sort alphabetically
+                if (order1 == order2) {
+                    return tab1.getClass().getSimpleName().compareTo(tab2.getClass().getSimpleName());
+                }
+
+                // Otherwise sort by order
+                return Integer.compare(order1, order2);
+            });
+
             // Handle sticky inventory tab - separate inventory tab from other tabs
             TabBase inventoryTab = null;
             List<TabBase> nonInventoryTabs = new ArrayList<>();
@@ -200,6 +235,7 @@ public class TabsMenu {
                         nonInventoryTabs.add(tab);
                     }
                 }
+                // No need to sort nonInventoryTabs again since enabledTabs is already sorted
             } else {
                 nonInventoryTabs = enabledTabs;
             }

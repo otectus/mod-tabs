@@ -1,58 +1,36 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
 import dev.ftb.mods.ftbteams.net.OpenGUIMessage;
-import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
-import vodmordia.modtabs.api.tabs_menu.TabPositioning;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
-import vodmordia.modtabs.utils.IntegrationUtils;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
-public class FtbTeamsTab extends TabBase {
+@TabConfig(configKey = "ftbTeamsTab", defaultEnabled = true, defaultOrder = 0)
+public class FtbTeamsTab extends SimpleTextureTab {
+    private static final ResourceLocation TEAMS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ftbteams", "textures/teams.png");
 
     public FtbTeamsTab() {
-        super();
+        super(TEAMS_TEXTURE);
     }
 
     @Override
     public void openTargetScreen(Player player) {
-        if (ModTabs.ftbTeamsLoaded && player.level().isClientSide) {
+        if (ModIntegrationManager.isModLoaded(ModIntegration.FTB_TEAMS) && player.level().isClientSide) {
             (new OpenGUIMessage()).sendToServer();
         }
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.ftbTeamsTabEnabled && ModTabs.ftbTeamsLoaded;
-    }
-
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        ResourceLocation teamsTexture = ResourceLocation.fromNamespaceAndPath("ftbteams", "textures/teams.png");
-        TabRenderer.builder()
-            .withBackground()
-            .withTextureIcon(teamsTexture, 5, 5, 16, 16)
-            .render(gui, x, y, hover, false);
-    }
-
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        ResourceLocation teamsTexture = ResourceLocation.fromNamespaceAndPath("ftbteams", "textures/teams.png");
-        TabRenderer.builder()
-            .withBackground()
-            .withTextureIcon(teamsTexture, 5, 5, 16, 16)
-            .render(gui, x, y, hover, true);
+        return Config.Baked.ftbTeamsTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.FTB_TEAMS);
     }
 
     @Override
@@ -67,43 +45,24 @@ public class FtbTeamsTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Try to register FTB Teams screen classes with inverted display at the top
-        // FTB Teams uses the same ScreenWrapper as FTB Quests, so we'll register the same class
-        String[] possibleScreenClasses = {
-            "dev.ftb.mods.ftblibrary.ui.ScreenWrapper", // This is the actual FTB Teams screen!
-            "dev.ftb.mods.ftbteams.client.gui.TeamsScreen",
-            "dev.ftb.mods.ftbteams.client.screens.TeamsScreen",
-            "dev.ftb.mods.ftbteams.client.TeamsScreen"
-        };
+        // Register FTB Teams screen classes with inverted display at the top
+        // FTB Teams uses the same ScreenWrapper as FTB Quests
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .inverted()
+            .atTop()
+            .registerAllTabs(
+                "dev.ftb.mods.ftblibrary.ui.ScreenWrapper", // Main FTB Teams screen
+                "dev.ftb.mods.ftbteams.client.gui.TeamsScreen",
+                "dev.ftb.mods.ftbteams.client.screens.TeamsScreen",
+                "dev.ftb.mods.ftbteams.client.TeamsScreen"
+            );
 
-        for (String className : possibleScreenClasses) {
-            try {
-                @SuppressWarnings("unchecked")
-                Class<? extends Screen> screenClass = (Class<? extends Screen>) Class.forName(className);
-
-                // Force register with inverted display at the top - override any existing registration
-                // This is necessary because FTB Quests might have already registered ScreenWrapper with default settings
-                if (className.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper")) {
-                    TabsMenu.forceRegisterScreenWithAllTabs(screenClass,
-                        (player) -> 176, // Standard GUI width (same as FTB Quests and other screens)
-                        (player) -> 166, // Standard GUI height (same as FTB Quests and other screens)
-                        TabDisplayMode.INVERTED,
-                        TabPositioning.SCREEN_TOP);
-                } else {
-                    TabsMenu.registerScreenWithAllTabs(screenClass,
-                        (player) -> 176, // Standard GUI width (same as FTB Quests and other screens)
-                        (player) -> 166, // Standard GUI height (same as FTB Quests and other screens)
-                        TabDisplayMode.INVERTED,
-                        TabPositioning.SCREEN_TOP);
-                }
-
-                // Since we found one working class, we can break or continue to register multiple
-                // For now, let's continue to register all found screens
-            } catch (ClassNotFoundException e) {
-                // Screen class not found, try next one
-            } catch (Exception e) {
-                // Error registering screen
-            }
-        }
+        // Force register ScreenWrapper to override any existing registration from FTB Quests
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .inverted()
+            .atTop()
+            .forceRegisterAllTabs("dev.ftb.mods.ftblibrary.ui.ScreenWrapper");
     }
 }

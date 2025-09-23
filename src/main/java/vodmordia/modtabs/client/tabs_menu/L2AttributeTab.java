@@ -2,25 +2,25 @@ package vodmordia.modtabs.client.tabs_menu;
 
 // import dev.xkmc.l2tabs.tabs.contents.AttributeScreen; // Available at runtime only
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.ScaledItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
-public class L2AttributeTab extends TabBase {
+@TabConfig(configKey = "l2AttributesTab", defaultEnabled = true, defaultOrder = 0)
+public class L2AttributeTab extends ScaledItemTab {
 
     public L2AttributeTab() {
-        super();
+        super(() -> new ItemStack(Items.IRON_SWORD), 5, 4, 0.9f);
     }
 
     @Override
@@ -69,24 +69,9 @@ public class L2AttributeTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.l2AttributesTabEnabled;
+        return Config.Baked.l2AttributesTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.L2_ATTRIBUTES);
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(new ItemStack(Items.IRON_SWORD), 5, 4)
-            .render(gui, x, y, hover, false);
-    }
-
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(new ItemStack(Items.IRON_SWORD), 5, 4)
-            .render(gui, x, y, hover, true);
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
@@ -105,13 +90,9 @@ public class L2AttributeTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register only this tab's own screen - the L2 Attribute screen
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> attributeScreenClass = (Class<? extends Screen>) Class.forName("dev.xkmc.l2tabs.tabs.contents.AttributeScreen");
-            TabsMenu.registerScreenWithAllTabs(attributeScreenClass, (player) -> 176, (player) -> 166);
-        } catch (ClassNotFoundException e) {
-            // Mod not available
-        }
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .withPositioning(TabPositioning.GUI_RELATIVE)
+            .registerAllTabs("dev.xkmc.l2tabs.tabs.contents.AttributeScreen");
     }
 }

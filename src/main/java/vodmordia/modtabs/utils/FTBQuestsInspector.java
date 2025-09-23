@@ -1,46 +1,45 @@
 package vodmordia.modtabs.utils;
 
 import net.minecraft.world.item.Item;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModContainer;
-import vodmordia.modtabs.ModTabs;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class FTBQuestsInspector {
-    private static Item cachedBookItem = null;
-    private static boolean searchAttempted = false;
+public class FTBQuestsInspector extends ModInspector {
+    private static final FTBQuestsInspector INSTANCE = new FTBQuestsInspector();
 
-    /**
-     * Attempts to get the FTB Quests book item via reflection (cached)
-     */
+    private FTBQuestsInspector() {
+        super("FTB Quests");
+    }
+
+    public static void inspect() {
+        INSTANCE.inspectModClasses();
+    }
+
     public static Item tryGetBookItem() {
-        // Return cached result if already attempted
-        if (searchAttempted) {
-            return cachedBookItem;
-        }
+        Object item = INSTANCE.findBookItem();
+        return item instanceof Item ? (Item) item : null;
+    }
 
-        searchAttempted = true;
+    @Override
+    public void inspectModClasses() {
+        // Pre-cache the book item lookup
+        findBookItem();
+        logCacheStats();
+    }
 
-        try {
-            // Get FTB Quests book item: dev.ftb.mods.ftbquests.registry.ModItems.BOOK
-            Class<?> itemsClass = Class.forName("dev.ftb.mods.ftbquests.registry.ModItems");
-            Field bookField = itemsClass.getField("BOOK");
-            Object registrySupplier = bookField.get(null);
-
-            // Call .get() method on Architectury's DeferredRegister$Entry
-            Method getMethod = registrySupplier.getClass().getMethod("get");
-            getMethod.setAccessible(true); // Bypass module access restrictions
-            Object item = getMethod.invoke(registrySupplier);
-
-            if (item instanceof Item) {
-                cachedBookItem = (Item) item;
-                return cachedBookItem;
+    private Object findBookItem() {
+        // Try to get FTB Quests book item: dev.ftb.mods.ftbquests.registry.ModItems.BOOK
+        Object registrySupplier = findItem("dev.ftb.mods.ftbquests.registry.ModItems", "BOOK");
+        if (registrySupplier != null) {
+            try {
+                // Call .get() method on Architectury's DeferredRegister$Entry
+                Method getMethod = registrySupplier.getClass().getMethod("get");
+                getMethod.setAccessible(true);
+                return getMethod.invoke(registrySupplier);
+            } catch (Exception e) {
+                // Failed to get item from registry supplier
             }
-        } catch (Exception e) {
-            // Silently fail and use fallback
         }
-        return null; // Will use vanilla book fallback
+        return null;
     }
 }

@@ -1,29 +1,28 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class SophisticatedBackpacksTab extends TabBase {
+@TabConfig(configKey = "sophisticatedBackpacksTab", defaultEnabled = true, defaultOrder = 0)
+public class SophisticatedBackpacksTab extends SimpleItemTab {
 
     public SophisticatedBackpacksTab() {
-        super();
+        super(() -> getBackpackItem());
     }
 
     @Override
@@ -52,7 +51,7 @@ public class SophisticatedBackpacksTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.sophisticatedBackpacksTabEnabled && hasBackpack(player);
+        return Config.Baked.sophisticatedBackpacksTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.SOPHISTICATED_BACKPACKS) && hasBackpack(player);
     }
 
     private boolean hasBackpack(Player player) {
@@ -74,7 +73,7 @@ public class SophisticatedBackpacksTab extends TabBase {
             }
 
             // Check Curios if available
-            if (ModTabs.curiosLoaded) {
+            if (ModIntegrationManager.isModLoaded(ModIntegration.CURIOS)) {
                 try {
                     Class<?> curiosAPIClass = Class.forName("top.theillusivec4.curios.api.CuriosApi");
                     Method getCuriosInventoryMethod = curiosAPIClass.getDeclaredMethod("getCuriosInventory", net.minecraft.world.entity.LivingEntity.class);
@@ -110,23 +109,8 @@ public class SophisticatedBackpacksTab extends TabBase {
         }
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getBackpackItem(), 5, 3)
-            .render(gui, x, y, hover, false);
-    }
 
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getBackpackItem(), 5, 3)
-            .render(gui, x, y, hover, true);
-    }
-
-    private ItemStack getBackpackItem() {
+    private static ItemStack getBackpackItem() {
         try {
             Class<?> itemsClass = Class.forName("net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems");
             Field backpackField = itemsClass.getField("BACKPACK");
@@ -156,14 +140,10 @@ public class SophisticatedBackpacksTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register only this tab's own screen
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> backpackScreenClass = (Class<? extends Screen>) Class.forName("net.p3pp3rf1y.sophisticatedbackpacks.client.gui.BackpackScreen");
-            TabsMenu.registerScreenWithAllTabs(backpackScreenClass, (player) -> 176, (player) -> 166);
-        } catch (ClassNotFoundException e) {
-            // Mod not available
-        }
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .withPositioning(TabPositioning.GUI_RELATIVE)
+            .registerAllTabs("net.p3pp3rf1y.sophisticatedbackpacks.client.gui.BackpackScreen");
     }
 
 }

@@ -13,6 +13,8 @@ import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.client.screens.NextTabsButton;
 import vodmordia.modtabs.client.screens.TabButton;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @EventBusSubscriber(modid = ModTabs.MOD_ID, value = Dist.CLIENT)
 public class ClientNeoForgeEvents {
@@ -23,7 +25,9 @@ public class ClientNeoForgeEvents {
         Screen screen = event.getScreen();
 
         if (screen instanceof AbstractContainerScreen<?> containerScreen) {
-            TabsMenu.updateButtonsPosition(screen, containerScreen.getGuiLeft(), containerScreen.getGuiTop());
+            if (!TabsMenu.hasCustomPositioning(screen)) {
+                TabsMenu.updateButtonsPosition(screen, containerScreen.getGuiLeft(), containerScreen.getGuiTop());
+            }
         }
     }
 
@@ -33,7 +37,10 @@ public class ClientNeoForgeEvents {
         TabsMenu.initScreenButtons(event);
 
         // Hide L2 tabs after screen initialization
-        if (ModTabs.l2LibraryLoaded || ModTabs.l2HostilityLoaded || ModTabs.l2ArtifactsLoaded || ModTabs.modularGolemsLoaded) {
+        if (ModIntegrationManager.isModLoaded(ModIntegration.L2_LIBRARY) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.L2_HOSTILITY) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.L2_ARTIFACTS) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.MODULAR_GOLEMS)) {
             // But don't hide tabs when we're in the Modular Golems tracker screens (they need sub-tabs)
             boolean isModularGolemsTrackerScreen = false;
             try {
@@ -67,8 +74,8 @@ public class ClientNeoForgeEvents {
                         // Silently ignore close container errors
                     }
 
-                    // Mark and open inventory
-                    TabsMenu.markScreenOpenedViaTab(event.getScreen());
+                    // Open inventory and clear tab tracking so normal E key behavior works
+                    TabsMenu.clearTabScreenTracking();
                     minecraft.setScreen(new InventoryScreen(minecraft.player));
                     event.setCanceled(true);
                 }
@@ -86,7 +93,10 @@ public class ClientNeoForgeEvents {
     @SubscribeEvent
     public static void onScreenRender(ScreenEvent.Render.Pre event) {
         // Hide L2Library tabs when L2 mods are loaded and we're managing tabs
-        if (ModTabs.l2LibraryLoaded || ModTabs.l2HostilityLoaded || ModTabs.l2ArtifactsLoaded || ModTabs.modularGolemsLoaded) {
+        if (ModIntegrationManager.isModLoaded(ModIntegration.L2_LIBRARY) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.L2_HOSTILITY) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.L2_ARTIFACTS) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.MODULAR_GOLEMS)) {
             Screen screen = event.getScreen();
             if (screen instanceof AbstractContainerScreen<?>) {
                 // Cancel L2's tab rendering by removing their tab widgets
@@ -107,7 +117,10 @@ public class ClientNeoForgeEvents {
     }
 
     private static void hideL2Tabs(Screen screen) {
-        if (ModTabs.l2LibraryLoaded || ModTabs.l2HostilityLoaded || ModTabs.l2ArtifactsLoaded || ModTabs.modularGolemsLoaded) {
+        if (ModIntegrationManager.isModLoaded(ModIntegration.L2_LIBRARY) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.L2_HOSTILITY) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.L2_ARTIFACTS) ||
+            ModIntegrationManager.isModLoaded(ModIntegration.MODULAR_GOLEMS)) {
             try {
                 // Remove L2's tab buttons from the screen
                 screen.children().removeIf(widget -> {
@@ -133,7 +146,7 @@ public class ClientNeoForgeEvents {
                 });
                 
             } catch (Exception e) {
-                ModTabs.LOGGER.debug("Failed to hide L2 tabs: " + e.getMessage());
+                
             }
         }
     }

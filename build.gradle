@@ -183,6 +183,15 @@ dependencies {
     implementation("curse.maven:fragmentum-neoforge-1123977:5852645")
     implementation("curse.maven:ars-elixirum-neoforge-638419:5827505")
 
+    // Ars Nouveau
+    implementation("curse.maven:geckolib-388172:7013768")
+    implementation("curse.maven:ars-nouveau-401955:6954892")
+
+    // Draconic Evolution
+    implementation("curse.maven:brandons-core-231382:6769922")
+    implementation("curse.maven:codechicken-lib-1-8-242818:6583751")
+    implementation("curse.maven:draconic-evolution-223565:6943035")
+
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

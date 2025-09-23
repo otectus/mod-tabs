@@ -61,18 +61,12 @@ public class TabButton extends Button {
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partial) {
-        // Debug for FTB Quests tab specifically
-        if (this.tabBase.getClass().getSimpleName().equals("FtbQuestsTab")) {
-            ModTabs.LOGGER.info("TabButton: FtbQuestsTab renderWidget - displayMode: {}, position: ({}, {})",
-                this.displayMode, this.getX(), this.getY());
-        }
-
-        // Standard tab rendering
         this.tabBase.render(gui, this.getX(), this.getY(), this.isDisabled || this.isMouseOver(mouseX, mouseY), this.displayMode);
     }
 
     public void updatePosition(int leftScreenPos, int topScreenPos) {
-        setX(leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1));
+        int finalX = leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1);
+        setX(finalX);
         setY(calculateYPosition(topScreenPos, displayMode));
     }
 }

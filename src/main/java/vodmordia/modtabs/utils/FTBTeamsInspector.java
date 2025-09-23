@@ -16,27 +16,24 @@ public class FTBTeamsInspector {
             Class<?> itemsClass = Class.forName("dev.ftb.mods.ftbteams.registry.ModItems");
             Field[] fields = itemsClass.getFields();
 
-            ModTabs.LOGGER.info("=== FTB Teams ModItems Fields ===");
             for (Field field : fields) {
                 try {
                     Object fieldValue = field.get(null);
-                    ModTabs.LOGGER.info("Field: {} = {} (Type: {})", field.getName(), fieldValue, field.getType().getSimpleName());
 
                     if (fieldValue != null) {
-                        ModTabs.LOGGER.info("  Field value class: {}", fieldValue.getClass().getName());
                         Method[] methods = fieldValue.getClass().getMethods();
                         for (Method method : methods) {
                             if (method.getName().equals("get") && method.getParameterCount() == 0) {
-                                ModTabs.LOGGER.info("  Has get() method: {}", method);
+                                
                             }
                         }
                     }
                 } catch (Exception e) {
-                    ModTabs.LOGGER.warn("Failed to inspect field {}: {}", field.getName(), e.getMessage());
+                    
                 }
             }
         } catch (ClassNotFoundException e) {
-            ModTabs.LOGGER.info("ModItems class not found, trying alternative locations");
+            
 
             // Try other potential locations
             String[] possibleClasses = {
@@ -48,17 +45,17 @@ public class FTBTeamsInspector {
             for (String className : possibleClasses) {
                 try {
                     Class<?> itemsClass = Class.forName(className);
-                    ModTabs.LOGGER.info("Found alternative items class: {}", className);
+
                     Field[] fields = itemsClass.getFields();
                     for (Field field : fields) {
-                        ModTabs.LOGGER.info("Field in {}: {}", className, field.getName());
+                       
                     }
                 } catch (ClassNotFoundException ex) {
-                    ModTabs.LOGGER.debug("Class {} not found", className);
+                    
                 }
             }
         } catch (Exception e) {
-            ModTabs.LOGGER.error("Failed to inspect FTB Teams classes", e);
+           
         }
     }
 
@@ -101,7 +98,6 @@ public class FTBTeamsInspector {
 
                     if (item instanceof Item) {
                         cachedTeamItem = (Item) item;
-                        ModTabs.LOGGER.info("Successfully found FTB Teams item: {} from {}.{}", cachedTeamItem, className, itemName);
                         return cachedTeamItem;
                     }
                 } catch (Exception e) {
@@ -109,8 +105,6 @@ public class FTBTeamsInspector {
                 }
             }
         }
-
-        ModTabs.LOGGER.info("No FTB Teams items found via reflection, will use fallback");
         return null; // Will use fallback
     }
 }

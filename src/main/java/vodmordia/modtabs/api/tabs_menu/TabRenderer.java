@@ -26,6 +26,7 @@ public class TabRenderer {
     private int iconU, iconV, iconTextureWidth, iconTextureHeight;
     private ItemStack iconItem = null;
     private int itemX, itemY;
+    private float itemScale = 1.0f;
     private Consumer<RenderContext> customIconRenderer = null;
 
     private TabRenderer() {}
@@ -81,6 +82,18 @@ public class TabRenderer {
         this.iconItem = item;
         this.itemX = x;
         this.itemY = y;
+        this.itemScale = 1.0f;
+        return this;
+    }
+
+    /**
+     * Adds an ItemStack icon at the specified position with custom scale
+     */
+    public TabRenderer withItemIcon(ItemStack item, int x, int y, float scale) {
+        this.iconItem = item;
+        this.itemX = x;
+        this.itemY = y;
+        this.itemScale = scale;
         return this;
     }
 
@@ -130,12 +143,25 @@ public class TabRenderer {
 
     private void renderTextureIcon(GuiGraphics gui, int x, int y, boolean inverted) {
         // Icons always render upright, regardless of tab orientation
-        gui.blit(iconTexture, x + iconX, y + iconY, iconU, iconV, iconWidth, iconHeight, iconTextureWidth, iconTextureHeight);
+        // Move icon up 3px when tabs are inverted
+        int yOffset = inverted ? -3 : 0;
+        gui.blit(iconTexture, x + iconX, y + iconY + yOffset, iconU, iconV, iconWidth, iconHeight, iconTextureWidth, iconTextureHeight);
     }
 
     private void renderItemIcon(GuiGraphics gui, int x, int y, boolean inverted) {
         // Items always render upright, regardless of tab orientation
-        gui.renderItem(iconItem, x + itemX, y + itemY);
+        // Move icon up 3px when tabs are inverted
+        int yOffset = inverted ? -3 : 0;
+        if (itemScale != 1.0f) {
+            gui.pose().pushPose();
+            gui.pose().translate(x + itemX + 8, y + itemY + yOffset + 8, 0); // Center around item center
+            gui.pose().scale(itemScale, itemScale, 1.0f);
+            gui.pose().translate(-8, -8, 0); // Move back to render position
+            gui.renderItem(iconItem, 0, 0);
+            gui.pose().popPose();
+        } else {
+            gui.renderItem(iconItem, x + itemX, y + itemY + yOffset);
+        }
     }
 
     private void renderCustomIcon(GuiGraphics gui, int x, int y, boolean hover, boolean inverted) {

@@ -16,20 +16,21 @@ import net.minecraft.world.entity.player.Player;
 //import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 //import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
-import vodmordia.modtabs.utils.IntegrationUtils;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 
-public class PassiveSkillTreeTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0;
-    private final int TAB_ICON_TEX_Y = 92;
+@TabConfig(configKey = "passiveSkillTreeTab", defaultEnabled = true, defaultOrder = 0)
+public class PassiveSkillTreeTab extends SimpleTextureTab {
+    private static final ResourceLocation SKILL_TREE_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/skill_tree.png");
 
     public PassiveSkillTreeTab() {
-        super();
+        super(SKILL_TREE_ICON);
     }
 
     @Override
@@ -41,17 +42,9 @@ public class PassiveSkillTreeTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.passiveSkillTreeTabEnabled;
+        return Config.Baked.passiveSkillTreeTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.PASSIVE_SKILL_TREE);
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54;
-
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {

@@ -15,20 +15,21 @@ import net.minecraft.world.entity.player.Player;
 //import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
 //import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
-import vodmordia.modtabs.utils.IntegrationUtils;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 
-public class DietTab extends TabBase {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
-    private final int TAB_ICON_TEX_X = 0;
-    private final int TAB_ICON_TEX_Y = 69;
+@TabConfig(configKey = "dietTab", defaultEnabled = false, defaultOrder = 0)
+public class DietTab extends SimpleTextureTab {
+    private static final ResourceLocation DIET_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/diet.png");
 
     public DietTab() {
-        super();
+        super(DIET_ICON);
     }
 
     @Override
@@ -42,17 +43,9 @@ public class DietTab extends TabBase {
     @Override
     public boolean isEnabled(Player player) {
         // Commented out until Diet mod is updated to NeoForge 1.21.1
-        return false; //Config.Baked.dietTabEnabled;
+        return false && Config.Baked.dietTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.DIET);
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        int texOffsetX = 0;
-        if (hover)
-            texOffsetX = 54;
-
-        gui.blit(TAB_ICONS, x, y,TAB_ICON_TEX_X + texOffsetX, TAB_ICON_TEX_Y, TAB_WIDTH, TAB_HEIGHT);
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
@@ -68,7 +61,10 @@ public class DietTab extends TabBase {
     @Override
     public void initTabOnScreens() {
         // Diet mod is temporarily disabled - mod is not updated to NeoForge 1.21.1
-        // All screens will automatically have this tab through the new system
-        // Once Diet mod is updated, we can register the DietScreen here
+        // Once Diet mod is updated, we can register the DietScreen here:
+        // ScreenRegistry.builder()
+        //     .withDietDimensions()
+        //     .withPositioning(TabPositioning.GUI_RELATIVE)
+        //     .registerAllTabs("com.illusivesoulworks.diet.client.screen.DietScreen");
     }
 }

@@ -1,29 +1,29 @@
 package vodmordia.modtabs.client.tabs_menu;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class ModularGolemsTab extends TabBase {
+@TabConfig(configKey = "modularGolemsTab", defaultEnabled = true, defaultOrder = 0)
+public class ModularGolemsTab extends SimpleItemTab {
 
     public ModularGolemsTab() {
-        super();
+        super(ModularGolemsTab::getHolderGolemItem);
     }
 
     @Override
@@ -59,26 +59,11 @@ public class ModularGolemsTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.modularGolemsTabEnabled;
+        return Config.Baked.modularGolemsTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.MODULAR_GOLEMS);
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getHolderGolemItem(), 5, 4)
-            .render(gui, x, y, hover, false);
-    }
 
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getHolderGolemItem(), 5, 4)
-            .render(gui, x, y, hover, true);
-    }
-
-    private ItemStack getHolderGolemItem() {
+    private static ItemStack getHolderGolemItem() {
         // Try to get Modular Golems' HOLDER_GOLEM item via reflection, fallback to vanilla item
         try {
             Class<?> itemsClass = Class.forName("dev.xkmc.modulargolems.init.registrate.GolemItems");
@@ -111,13 +96,9 @@ public class ModularGolemsTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register only this tab's own screen - the Modular Golems info screen
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> golemInfoScreenClass = (Class<? extends Screen>) Class.forName("dev.xkmc.modulargolems.content.client.tracker.GolemInfoScreen");
-            TabsMenu.registerScreenWithAllTabs(golemInfoScreenClass, (player) -> 176, (player) -> 166);
-        } catch (ClassNotFoundException e) {
-            // Mod not available
-        }
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .withPositioning(TabPositioning.GUI_RELATIVE)
+            .registerAllTabs("dev.xkmc.modulargolems.content.client.tracker.GolemInfoScreen");
     }
 }

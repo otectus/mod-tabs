@@ -1,22 +1,25 @@
 package vodmordia.modtabs.client.tabs_menu;
 
 import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
-public class CosmeticArmorTab extends TabBase {
+@TabConfig(configKey = "cosmeticArmorTab", defaultEnabled = true, defaultOrder = 0)
+public class CosmeticArmorTab extends SimpleTextureTab {
+    private static final ResourceLocation COSMETIC_ARMOR_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/cosmeticarmor.png");
 
     public CosmeticArmorTab() {
-        super();
+        super(COSMETIC_ARMOR_ICON);
     }
 
     @Override
@@ -48,25 +51,7 @@ public class CosmeticArmorTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.cosmeticArmorTabEnabled;
-    }
-
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        ResourceLocation customIcon = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/cosmeticarmor.png");
-        TabRenderer.builder()
-            .withBackground()
-            .withTextureIcon(customIcon, 5, 4, 16, 16)
-            .render(gui, x, y, hover, false);
-    }
-
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        ResourceLocation customIcon = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/cosmeticarmor.png");
-        TabRenderer.builder()
-            .withBackground()
-            .withTextureIcon(customIcon, 5, 4, 16, 16)
-            .render(gui, x, y, hover, true);
+        return Config.Baked.cosmeticArmorTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.COSMETIC_ARMOR);
     }
 
     @Override
@@ -81,7 +66,9 @@ public class CosmeticArmorTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register only this tab's own screen - the Cosmetic Armor screen
-        TabsMenu.registerScreenWithAllTabs(GuiCosArmorInventory.class, (player) -> 176, (player) -> 166);
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .withPositioning(TabPositioning.GUI_RELATIVE)
+            .registerAllTabs(GuiCosArmorInventory.class);
     }
 }

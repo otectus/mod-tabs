@@ -2,29 +2,29 @@ package vodmordia.modtabs.client.tabs_menu;
 
 // import dev.xkmc.l2artifacts.content.client.tab.SetEffectScreen; // Available at runtime only
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class L2ArtifactsTab extends TabBase {
+@TabConfig(configKey = "l2ArtifactsTab", defaultEnabled = true, defaultOrder = 0)
+public class L2ArtifactsTab extends SimpleItemTab {
 
     public L2ArtifactsTab() {
-        super();
+        super(() -> getSelectItem());
     }
 
     @Override
@@ -73,26 +73,11 @@ public class L2ArtifactsTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.l2ArtifactsTabEnabled;
+        return Config.Baked.l2ArtifactsTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.L2_ARTIFACTS);
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getSelectItem(), 5, 3)
-            .render(gui, x, y, hover, false);
-    }
 
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(getSelectItem(), 5, 3)
-            .render(gui, x, y, hover, true);
-    }
-
-    private ItemStack getSelectItem() {
+    private static ItemStack getSelectItem() {
         // Try to get L2 Artifacts' SELECT item via reflection, fallback to vanilla item
         try {
             Class<?> itemsClass = Class.forName("dev.xkmc.l2artifacts.init.registrate.items.ArtifactItems");
@@ -124,13 +109,9 @@ public class L2ArtifactsTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register only this tab's own screen - the L2 Artifacts Set Effect screen
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> setEffectScreenClass = (Class<? extends Screen>) Class.forName("dev.xkmc.l2artifacts.content.client.tab.SetEffectScreen");
-            TabsMenu.registerScreenWithAllTabs(setEffectScreenClass, (player) -> 176, (player) -> 166);
-        } catch (ClassNotFoundException e) {
-            // Mod not available
-        }
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .withPositioning(TabPositioning.GUI_RELATIVE)
+            .registerAllTabs("dev.xkmc.l2artifacts.content.client.tab.SetEffectScreen");
     }
 }

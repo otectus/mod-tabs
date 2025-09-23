@@ -10,6 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import vodmordia.modtabs.ModTabs;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
 import java.util.Collection;
 import java.util.Set;
@@ -41,7 +43,7 @@ public class IntegrationUtils {
 
     public static int getDietHeight(Player player) {
         // Diet mod is disabled - returning default height
-        if (!ModTabs.dietLoaded)
+        if (!ModIntegrationManager.isModLoaded(ModIntegration.DIET))
             return 0;
 
         // Diet mod functionality commented out until it's updated to NeoForge 1.21.1
@@ -55,7 +57,7 @@ public class IntegrationUtils {
     }
 
     public static int getTravelersBackpackWidth(Player player) {
-        if (!ModTabs.travelersBackpackLoaded)
+        if (!ModIntegrationManager.isModLoaded(ModIntegration.TRAVELERS_BACKPACK))
             return 0;
 
         BackpackWrapper wrapper = AttachmentUtils.getBackpackWrapper(player);
@@ -63,15 +65,13 @@ public class IntegrationUtils {
             int slotCount = wrapper.getStorage().getSlots();
             boolean wider = slotCount > 81;
             boolean tanksVisible = wrapper.tanksVisible();
-            ModTabs.LOGGER.debug("travelers width : " + (wider ? (tanksVisible ? 256 : 212) : (tanksVisible ? 220 : 176)));
             return wider ? (tanksVisible ? 256 : 212) : (tanksVisible ? 220 : 176);
         }
-        ModTabs.LOGGER.debug("wrapper is null");
         return 176;
     }
 
     public static int getTravelersBackpackHeight(Player player) {
-        if (!ModTabs.travelersBackpackLoaded)
+        if (!ModIntegrationManager.isModLoaded(ModIntegration.TRAVELERS_BACKPACK))
             return 0;
 
         BackpackWrapper wrapper = AttachmentUtils.getBackpackWrapper(player);
@@ -83,7 +83,6 @@ public class IntegrationUtils {
 
             int slotsHeight = rows * 18;
             int playerInventoryHeight = 96;
-            ModTabs.LOGGER.debug("travelers height : " + (17 + slotsHeight + playerInventoryHeight));
             return 17 + slotsHeight + playerInventoryHeight;
         }
         return 7 * 18 + 96 + 17;

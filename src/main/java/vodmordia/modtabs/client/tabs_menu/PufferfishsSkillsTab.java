@@ -1,27 +1,26 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.puffish.skillsmod.client.SkillsClientMod;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
-import vodmordia.modtabs.api.tabs_menu.TabPositioning;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
 import java.util.Optional;
 
-
-public class PufferfishsSkillsTab extends TabBase {
-    private final ResourceLocation PUFFER_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/puffer.png");
+@TabConfig(configKey = "pufferfishSkillsTab", defaultEnabled = true, defaultOrder = 0)
+public class PufferfishsSkillsTab extends SimpleTextureTab {
+    private static final ResourceLocation PUFFER_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/puffer.png");
 
     public PufferfishsSkillsTab() {
-        super();
+        super(PUFFER_ICON);
     }
 
     @Override
@@ -33,23 +32,7 @@ public class PufferfishsSkillsTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.pufferfishSkillsTabEnabled;
-    }
-
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withTextureIcon(PUFFER_ICON, 4, 4, 16, 16)
-            .render(gui, x, y, hover, false);
-    }
-
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withTextureIcon(PUFFER_ICON, 4, 4, 16, 16)
-            .render(gui, x, y, hover, true);
+        return Config.Baked.pufferfishSkillsTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.PUFFERFISHS_SKILLS);
     }
 
     @Override
@@ -65,12 +48,10 @@ public class PufferfishsSkillsTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> skillsScreenClass = (Class<? extends Screen>) Class.forName("net.puffish.skillsmod.client.gui.SkillsScreen");
-            TabsMenu.registerScreenWithAllTabs(skillsScreenClass, (player) -> 176, (player) -> 166, TabDisplayMode.INVERTED, TabPositioning.SCREEN_TOP);
-        } catch (ClassNotFoundException e) {
-            // Pufferfish Skills mod not available
-        }
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .inverted()
+            .atTop()
+            .registerAllTabs("net.puffish.skillsmod.client.gui.SkillsScreen");
     }
 }

@@ -2,25 +2,25 @@ package vodmordia.modtabs.client.tabs_menu;
 
 // import dev.xkmc.l2hostility.content.menu.tab.DifficultyScreen; // Available at runtime only
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.TabBase;
-import vodmordia.modtabs.api.tabs_menu.TabRenderer;
-import vodmordia.modtabs.api.tabs_menu.TabsMenu;
+import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabConfig;
+import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
+import vodmordia.modtabs.integration.ModIntegration;
+import vodmordia.modtabs.integration.ModIntegrationManager;
 
-public class L2HostilityDifficultyTab extends TabBase {
+@TabConfig(configKey = "l2HostilityTab", defaultEnabled = true, defaultOrder = 0)
+public class L2HostilityDifficultyTab extends SimpleItemTab {
 
     public L2HostilityDifficultyTab() {
-        super();
+        super(() -> new ItemStack(Items.ZOMBIE_HEAD));
     }
 
     @Override
@@ -64,24 +64,9 @@ public class L2HostilityDifficultyTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.l2HostilityTabEnabled;
+        return Config.Baked.l2HostilityTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.L2_HOSTILITY);
     }
 
-    @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(new ItemStack(Items.ZOMBIE_HEAD), 5, 4)
-            .render(gui, x, y, hover, false);
-    }
-
-    @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(new ItemStack(Items.ZOMBIE_HEAD), 5, 4)
-            .render(gui, x, y, hover, true);
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
@@ -100,13 +85,9 @@ public class L2HostilityDifficultyTab extends TabBase {
 
     @Override
     public void initTabOnScreens() {
-        // Register only this tab's own screen - the L2 Hostility Difficulty screen
-        try {
-            @SuppressWarnings("unchecked")
-            Class<? extends Screen> difficultyScreenClass = (Class<? extends Screen>) Class.forName("dev.xkmc.l2hostility.content.menu.tab.DifficultyScreen");
-            TabsMenu.registerScreenWithAllTabs(difficultyScreenClass, (player) -> 176, (player) -> 166);
-        } catch (ClassNotFoundException e) {
-            // Mod not available
-        }
+        ScreenRegistry.builder()
+            .withStandardDimensions()
+            .withPositioning(TabPositioning.GUI_RELATIVE)
+            .registerAllTabs("dev.xkmc.l2hostility.content.menu.tab.DifficultyScreen");
     }
 }
