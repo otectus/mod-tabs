@@ -1,6 +1,5 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import dev.ftb.mods.ftbquests.client.FTBQuestsClient;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -25,8 +24,15 @@ public class FtbQuestsTab extends SimpleItemTab {
 
     @Override
     public void openTargetScreen(Player player) {
-        if (Config.Baked.ftbQuestsTabEnabled && player.level().isClientSide)
-            FTBQuestsClient.openGui();
+        if (Config.Baked.ftbQuestsTabEnabled && player.level().isClientSide) {
+            try {
+                Class<?> ftbQuestsClientClass = Class.forName("dev.ftb.mods.ftbquests.client.FTBQuestsClient");
+                java.lang.reflect.Method openGuiMethod = ftbQuestsClientClass.getMethod("openGui");
+                openGuiMethod.invoke(null);
+            } catch (Exception e) {
+                // FTB Quests not present or failed to open GUI
+            }
+        }
     }
 
     @Override

@@ -1,6 +1,5 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import net.bandit.reskillable.client.screen.SkillScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -39,7 +38,13 @@ public class ReskillableReimaginedTab extends CustomIconTab {
     @Override
     public void openTargetScreen(Player player) {
         if (Config.Baked.reskillableReimaginedTabEnabled && player.level().isClientSide) {
-            Minecraft.getInstance().setScreen(new SkillScreen());
+            try {
+                Class<?> skillScreenClass = Class.forName("net.bandit.reskillable.client.screen.SkillScreen");
+                Screen skillScreen = (Screen) skillScreenClass.getDeclaredConstructor().newInstance();
+                Minecraft.getInstance().setScreen(skillScreen);
+            } catch (Exception e) {
+                // Reskillable Reimagined not present or failed to open screen
+            }
         }
     }
 
@@ -50,7 +55,12 @@ public class ReskillableReimaginedTab extends CustomIconTab {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return currentScreen instanceof SkillScreen;
+        try {
+            Class<?> skillScreenClass = Class.forName("net.bandit.reskillable.client.screen.SkillScreen");
+            return skillScreenClass.isInstance(currentScreen);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
@@ -60,9 +70,16 @@ public class ReskillableReimaginedTab extends CustomIconTab {
 
     @Override
     public void initTabOnScreens() {
-        ScreenRegistry.builder()
-            .withStandardDimensions()
-            .withPositioning(TabPositioning.GUI_RELATIVE)
-            .registerAllTabs(SkillScreen.class);
+        try {
+            Class<?> skillScreenClass = Class.forName("net.bandit.reskillable.client.screen.SkillScreen");
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> screenClass = (Class<? extends Screen>) skillScreenClass;
+            ScreenRegistry.builder()
+                .withStandardDimensions()
+                .withPositioning(TabPositioning.GUI_RELATIVE)
+                .registerAllTabs(screenClass);
+        } catch (ClassNotFoundException e) {
+            // Reskillable Reimagined not present, skip registration
+        }
     }
 }

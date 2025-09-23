@@ -1,6 +1,5 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import journeymap.client.ui.UIManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -24,8 +23,18 @@ public class JourneyMapTab extends SimpleTextureTab {
 
     @Override
     public void openTargetScreen(Player player) {
-        Minecraft.getInstance().setScreen(null);
-        UIManager.INSTANCE.openFullscreenMap();
+        if (Config.Baked.journeyMapTabEnabled && player.level().isClientSide) {
+            try {
+                Class<?> uiManagerClass = Class.forName("journeymap.client.ui.UIManager");
+                java.lang.reflect.Field instanceField = uiManagerClass.getField("INSTANCE");
+                Object uiManagerInstance = instanceField.get(null);
+                java.lang.reflect.Method openFullscreenMapMethod = uiManagerClass.getMethod("openFullscreenMap");
+                Minecraft.getInstance().setScreen(null);
+                openFullscreenMapMethod.invoke(uiManagerInstance);
+            } catch (Exception e) {
+                // JourneyMap not present or failed to open map
+            }
+        }
     }
 
     @Override

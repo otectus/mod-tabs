@@ -10,7 +10,6 @@ import net.minecraft.world.item.Items;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
-import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
@@ -58,7 +57,13 @@ public class BodyDamageTab extends SimpleItemTab {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return localizedBodyDamageEnabled && currentScreen instanceof BodyHealthScreen;
+        if (!localizedBodyDamageEnabled) return false;
+        try {
+            Class<?> bodyHealthScreenClass = Class.forName("sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen");
+            return bodyHealthScreenClass.isInstance(currentScreen);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
@@ -68,9 +73,16 @@ public class BodyDamageTab extends SimpleItemTab {
 
     @Override
     public void initTabOnScreens() {
-        ScreenRegistry.builder()
-            .withBodyHealthDimensions()
-            .withPositioning(TabPositioning.GUI_RELATIVE)
-            .registerAllTabs(BodyHealthScreen.class);
+        try {
+            Class<?> bodyHealthScreenClass = Class.forName("sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen");
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> screenClass = (Class<? extends Screen>) bodyHealthScreenClass;
+            ScreenRegistry.builder()
+                .withBodyHealthDimensions()
+                .withPositioning(TabPositioning.GUI_RELATIVE)
+                .registerAllTabs(screenClass);
+        } catch (ClassNotFoundException e) {
+            // Legendary Survival Overhaul not present, skip registration
+        }
     }
 }

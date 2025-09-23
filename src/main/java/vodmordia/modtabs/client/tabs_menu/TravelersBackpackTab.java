@@ -1,12 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import com.tiviacz.travelersbackpack.capability.AttachmentUtils;
-import com.tiviacz.travelersbackpack.inventory.BackpackContainer;
-import com.tiviacz.travelersbackpack.util.Reference;
-import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +15,6 @@ import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 import vodmordia.modtabs.utils.IntegrationUtils;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 @TabConfig(configKey = "travelersBackpackTab", defaultEnabled = true, defaultOrder = 0)
 public class TravelersBackpackTab extends SimpleItemTab {
@@ -44,7 +37,18 @@ public class TravelersBackpackTab extends SimpleItemTab {
                 // Fallback: try the original server-side method if reflection fails
                 if (player instanceof ServerPlayer serverPlayer) {
                     try {
-                        BackpackContainer.openBackpack(serverPlayer, AttachmentUtils.getWearingBackpack(player), Reference.WEARABLE_SCREEN_ID);
+                        Class<?> backpackContainerClass = Class.forName("com.tiviacz.travelersbackpack.inventory.BackpackContainer");
+                        Class<?> attachmentUtilsClass = Class.forName("com.tiviacz.travelersbackpack.capability.AttachmentUtils");
+                        Class<?> referenceClass = Class.forName("com.tiviacz.travelersbackpack.util.Reference");
+
+                        java.lang.reflect.Method getWearingBackpackMethod = attachmentUtilsClass.getMethod("getWearingBackpack", Player.class);
+                        Object wearingBackpack = getWearingBackpackMethod.invoke(null, player);
+
+                        java.lang.reflect.Field wearableScreenIdField = referenceClass.getField("WEARABLE_SCREEN_ID");
+                        int wearableScreenId = wearableScreenIdField.getInt(null);
+
+                        java.lang.reflect.Method openBackpackMethod = backpackContainerClass.getMethod("openBackpack", ServerPlayer.class, ItemStack.class, int.class);
+                        openBackpackMethod.invoke(null, serverPlayer, wearingBackpack, wearableScreenId);
                     } catch (Exception ex) {
                         // Silent fail if both methods don't work
                     }
@@ -108,10 +112,22 @@ public class TravelersBackpackTab extends SimpleItemTab {
             }
 
             // Fallback to original AttachmentUtils check
-            return AttachmentUtils.isWearingBackpack(player);
+            try {
+                Class<?> attachmentUtilsClass = Class.forName("com.tiviacz.travelersbackpack.capability.AttachmentUtils");
+                java.lang.reflect.Method isWearingBackpackMethod = attachmentUtilsClass.getMethod("isWearingBackpack", Player.class);
+                return (Boolean) isWearingBackpackMethod.invoke(null, player);
+            } catch (Exception ex) {
+                return false;
+            }
         } catch (Exception e) {
             // If reflection fails, fall back to original method
-            return AttachmentUtils.isWearingBackpack(player);
+            try {
+                Class<?> attachmentUtilsClass = Class.forName("com.tiviacz.travelersbackpack.capability.AttachmentUtils");
+                java.lang.reflect.Method isWearingBackpackMethod = attachmentUtilsClass.getMethod("isWearingBackpack", Player.class);
+                return (Boolean) isWearingBackpackMethod.invoke(null, player);
+            } catch (Exception ex) {
+                return false;
+            }
         }
     }
 
@@ -137,7 +153,12 @@ public class TravelersBackpackTab extends SimpleItemTab {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return currentScreen instanceof com.tiviacz.travelersbackpack.client.screens.BackpackScreen;
+        try {
+            Class<?> backpackScreenClass = Class.forName("com.tiviacz.travelersbackpack.client.screens.BackpackScreen");
+            return backpackScreenClass.isInstance(currentScreen);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
@@ -147,9 +168,16 @@ public class TravelersBackpackTab extends SimpleItemTab {
 
     @Override
     public void initTabOnScreens() {
-        ScreenRegistry.builder()
-            .withDimensions(IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight)
-            .withPositioning(TabPositioning.GUI_RELATIVE)
-            .registerAllTabs("com.tiviacz.travelersbackpack.client.screens.BackpackScreen");
+        try {
+            Class<?> backpackScreenClass = Class.forName("com.tiviacz.travelersbackpack.client.screens.BackpackScreen");
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> screenClass = (Class<? extends Screen>) backpackScreenClass;
+            ScreenRegistry.builder()
+                .withDimensions(IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight)
+                .withPositioning(TabPositioning.GUI_RELATIVE)
+                .registerAllTabs(screenClass);
+        } catch (ClassNotFoundException e) {
+            // Traveler's Backpack not present, skip registration
+        }
     }
 }

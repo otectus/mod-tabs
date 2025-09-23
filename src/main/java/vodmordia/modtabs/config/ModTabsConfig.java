@@ -247,6 +247,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int sophisticatedBackpacksTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static BackpackSlot sophisticatedBackpacksPreferredSlot = BackpackSlot.DEFAULT;
+
     @Comment(category = "tabs") public static CommentText spacer20;
 
     @Comment(category = "tabs") public static CommentText travelersBackpack;

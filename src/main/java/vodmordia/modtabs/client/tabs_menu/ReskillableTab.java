@@ -1,19 +1,10 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-//import com.illusivesoulworks.diet.client.screen.DietScreen;
-//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
-import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
-import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-//import majik.rereskillable.client.screen.SkillScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-//import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-//import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
@@ -21,7 +12,6 @@ import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 @TabConfig(configKey = "reskillableTab", defaultEnabled = true, defaultOrder = 0)
 public class ReskillableTab extends SimpleTextureTab {
@@ -33,8 +23,14 @@ public class ReskillableTab extends SimpleTextureTab {
 
     @Override
     public void openTargetScreen(Player player) {
-        if (ModIntegrationManager.isModLoaded(ModIntegration.RESKILLABLE)) {
-            // Minecraft.getInstance().setScreen(new SkillScreen());
+        if (Config.Baked.reskillableTabEnabled && player.level().isClientSide && ModIntegrationManager.isModLoaded(ModIntegration.RESKILLABLE)) {
+            try {
+                Class<?> skillScreenClass = Class.forName("majik.rereskillable.client.screen.SkillScreen");
+                Screen skillScreen = (Screen) skillScreenClass.getDeclaredConstructor().newInstance();
+                Minecraft.getInstance().setScreen(skillScreen);
+            } catch (Exception e) {
+                // Reskillable mod not present or failed to open screen
+            }
         }
     }
 
@@ -46,7 +42,12 @@ public class ReskillableTab extends SimpleTextureTab {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return false; // Reskillable mod doesn't have a screen class available for checking
+        try {
+            Class<?> skillScreenClass = Class.forName("majik.rereskillable.client.screen.SkillScreen");
+            return skillScreenClass.isInstance(currentScreen);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
@@ -56,9 +57,17 @@ public class ReskillableTab extends SimpleTextureTab {
 
     @Override
     public void initTabOnScreens() {
-        // Reskillable doesn't have a dedicated screen that can be registered
-        // It opens the skill screen programmatically, so we don't register any screen
-        // All screens will automatically have this tab through the new system
+        try {
+            Class<?> skillScreenClass = Class.forName("majik.rereskillable.client.screen.SkillScreen");
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> screenClass = (Class<? extends Screen>) skillScreenClass;
+            ScreenRegistry.builder()
+                .withStandardDimensions()
+                .withPositioning(vodmordia.modtabs.api.tabs_menu.TabPositioning.GUI_RELATIVE)
+                .registerAllTabs(screenClass);
+        } catch (ClassNotFoundException e) {
+            // Reskillable mod not present, skip registration
+        }
     }
 }
 

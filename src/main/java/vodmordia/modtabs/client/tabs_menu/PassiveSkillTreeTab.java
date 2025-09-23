@@ -1,20 +1,10 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-//import com.illusivesoulworks.diet.client.screen.DietScreen;
-//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
-import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
-//import daripher.skilltree.client.screen.SkillTreeScreen;
-import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-//import majik.rereskillable.client.screen.SkillScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-//import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-//import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
@@ -22,7 +12,6 @@ import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 
 @TabConfig(configKey = "passiveSkillTreeTab", defaultEnabled = true, defaultOrder = 0)
@@ -36,7 +25,15 @@ public class PassiveSkillTreeTab extends SimpleTextureTab {
     @Override
     public void openTargetScreen(Player player) {
         if (Config.Baked.passiveSkillTreeTabEnabled && player.level().isClientSide) {
-            // Minecraft.getInstance().setScreen(new SkillTreeScreen(ResourceLocation.fromNamespaceAndPath("skilltree", "main_tree")));
+            try {
+                Class<?> skillTreeScreenClass = Class.forName("daripher.skilltree.client.screen.SkillTreeScreen");
+                ResourceLocation mainTreeLocation = ResourceLocation.fromNamespaceAndPath("skilltree", "main_tree");
+                Screen skillTreeScreen = (Screen) skillTreeScreenClass.getDeclaredConstructor(ResourceLocation.class)
+                    .newInstance(mainTreeLocation);
+                Minecraft.getInstance().setScreen(skillTreeScreen);
+            } catch (Exception e) {
+                // Passive Skill Tree mod not present or failed to open screen
+            }
         }
     }
 
@@ -48,7 +45,12 @@ public class PassiveSkillTreeTab extends SimpleTextureTab {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return false;
+        try {
+            Class<?> skillTreeScreenClass = Class.forName("daripher.skilltree.client.screen.SkillTreeScreen");
+            return skillTreeScreenClass.isInstance(currentScreen);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
@@ -58,9 +60,17 @@ public class PassiveSkillTreeTab extends SimpleTextureTab {
 
     @Override
     public void initTabOnScreens() {
-        // Passive Skill Tree doesn't have a dedicated screen that can be registered
-        // It opens the skill tree GUI programmatically, so we don't register any screen
-        // All screens will automatically have this tab through the new system
+        try {
+            Class<?> skillTreeScreenClass = Class.forName("daripher.skilltree.client.screen.SkillTreeScreen");
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> screenClass = (Class<? extends Screen>) skillTreeScreenClass;
+            ScreenRegistry.builder()
+                .withStandardDimensions()
+                .withPositioning(vodmordia.modtabs.api.tabs_menu.TabPositioning.GUI_RELATIVE)
+                .registerAllTabs(screenClass);
+        } catch (ClassNotFoundException e) {
+            // Passive Skill Tree mod not present, skip registration
+        }
     }
 }
 

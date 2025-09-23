@@ -1,6 +1,5 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -56,7 +55,12 @@ public class CosmeticArmorTab extends SimpleTextureTab {
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {
-        return currentScreen instanceof GuiCosArmorInventory;
+        try {
+            Class<?> guiCosArmorInventoryClass = Class.forName("lain.mods.cos.impl.client.gui.GuiCosArmorInventory");
+            return guiCosArmorInventoryClass.isInstance(currentScreen);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
@@ -66,9 +70,16 @@ public class CosmeticArmorTab extends SimpleTextureTab {
 
     @Override
     public void initTabOnScreens() {
-        ScreenRegistry.builder()
-            .withStandardDimensions()
-            .withPositioning(TabPositioning.GUI_RELATIVE)
-            .registerAllTabs(GuiCosArmorInventory.class);
+        try {
+            Class<?> guiCosArmorInventoryClass = Class.forName("lain.mods.cos.impl.client.gui.GuiCosArmorInventory");
+            @SuppressWarnings("unchecked")
+            Class<? extends Screen> screenClass = (Class<? extends Screen>) guiCosArmorInventoryClass;
+            ScreenRegistry.builder()
+                .withStandardDimensions()
+                .withPositioning(TabPositioning.GUI_RELATIVE)
+                .registerAllTabs(screenClass);
+        } catch (ClassNotFoundException e) {
+            // Cosmetic Armor not present, skip registration
+        }
     }
 }

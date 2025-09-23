@@ -14,8 +14,6 @@ import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
-import xaero.map.WorldMapSession;
-import xaero.map.gui.GuiMap;
 
 @TabConfig(configKey = "xaerosMapTab", defaultEnabled = true, defaultOrder = 0)
 public class XaerosMapTab extends CustomIconTab {
@@ -34,7 +32,24 @@ public class XaerosMapTab extends CustomIconTab {
 
     @Override
     public void openTargetScreen(Player player) {
-        Minecraft.getInstance().setScreen(new GuiMap((Screen)null, (Screen)null, WorldMapSession.getCurrentSession().getMapProcessor(), Minecraft.getInstance().getCameraEntity()));
+        if (Config.Baked.xaerosMapTabEnabled && player.level().isClientSide) {
+            try {
+                Class<?> worldMapSessionClass = Class.forName("xaero.map.WorldMapSession");
+                java.lang.reflect.Method getCurrentSessionMethod = worldMapSessionClass.getMethod("getCurrentSession");
+                Object currentSession = getCurrentSessionMethod.invoke(null);
+
+                java.lang.reflect.Method getMapProcessorMethod = currentSession.getClass().getMethod("getMapProcessor");
+                Object mapProcessor = getMapProcessorMethod.invoke(currentSession);
+
+                Class<?> guiMapClass = Class.forName("xaero.map.gui.GuiMap");
+                Screen guiMap = (Screen) guiMapClass.getDeclaredConstructor(Screen.class, Screen.class, Object.class, net.minecraft.world.entity.Entity.class)
+                    .newInstance(null, null, mapProcessor, Minecraft.getInstance().getCameraEntity());
+
+                Minecraft.getInstance().setScreen(guiMap);
+            } catch (Exception e) {
+                // Xaero's World Map not present or failed to open map
+            }
+        }
     }
 
     @Override

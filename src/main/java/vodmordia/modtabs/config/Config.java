@@ -54,6 +54,7 @@ public class Config
 		public static int pufferfishSkillsTabOrder;
 		public static int passiveSkillTreeTabOrder;
 		public static int sophisticatedBackpacksTabOrder;
+		public static BackpackSlot sophisticatedBackpacksPreferredSlot;
 		public static int cobblemonTabOrder;
 		public static int modularGolemsTabOrder;
 		public static int arsElixirumTabOrder;
@@ -117,6 +118,8 @@ public class Config
 				pufferfishSkillsTabOrder = ModTabsConfig.pufferfishSkillsTabOrder;
 				passiveSkillTreeTabOrder = ModTabsConfig.passiveSkillTreeTabOrder;
 				sophisticatedBackpacksTabOrder = ModTabsConfig.sophisticatedBackpacksTabOrder;
+				sophisticatedBackpacksPreferredSlot = ModTabsConfig.sophisticatedBackpacksPreferredSlot;
+				ModTabs.LOGGER.info("DEBUG: Baked sophisticated backpacks preferred slot: {}", sophisticatedBackpacksPreferredSlot);
 				cobblemonTabOrder = ModTabsConfig.cobblemonTabOrder;
 				modularGolemsTabOrder = ModTabsConfig.modularGolemsTabOrder;
 				arsElixirumTabOrder = ModTabsConfig.arsElixirumTabOrder;

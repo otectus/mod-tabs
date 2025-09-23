@@ -1,23 +1,10 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-//import com.illusivesoulworks.diet.client.screen.DietScreen;
-//import com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen;
-import com.tiviacz.travelersbackpack.client.screens.AbstractBackpackScreen;
-import lain.mods.cos.impl.client.gui.GuiCosArmorInventory;
-//import majik.rereskillable.client.screen.SkillScreen;
-import net.mehvahdjukaar.moonlight.api.platform.network.NetworkHelper;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-//import org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen;
-import pepjebs.mapatlases.item.MapAtlasItem;
-import pepjebs.mapatlases.networking.C2S2COpenAtlasScreenPacket;
-import pepjebs.mapatlases.utils.MapAtlasesAccessUtils;
-//import sfiomn.legendarysurvivaloverhaul.client.screens.BodyHealthScreen;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
@@ -25,7 +12,6 @@ import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
-import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 
 @TabConfig(configKey = "mapAtlasesTab", defaultEnabled = true, defaultOrder = 0)
@@ -38,15 +24,41 @@ public class MapAtlasesTab extends SimpleTextureTab {
 
     @Override
     public void openTargetScreen(Player player) {
-        ItemStack atlas = MapAtlasesAccessUtils.getAtlasFromPlayerByConfig(player);
-        if (atlas.getItem() instanceof MapAtlasItem) {
-            NetworkHelper.sendToServer(new C2S2COpenAtlasScreenPacket());
+        if (Config.Baked.mapAtlasesTabEnabled && player.level().isClientSide) {
+            try {
+                Class<?> mapAtlasesAccessUtilsClass = Class.forName("pepjebs.mapatlases.utils.MapAtlasesAccessUtils");
+                java.lang.reflect.Method getAtlasMethod = mapAtlasesAccessUtilsClass.getMethod("getAtlasFromPlayerByConfig", Player.class);
+                ItemStack atlas = (ItemStack) getAtlasMethod.invoke(null, player);
+
+                Class<?> mapAtlasItemClass = Class.forName("pepjebs.mapatlases.item.MapAtlasItem");
+                if (mapAtlasItemClass.isInstance(atlas.getItem())) {
+                    Class<?> networkHelperClass = Class.forName("net.mehvahdjukaar.moonlight.api.platform.network.NetworkHelper");
+                    Class<?> packetClass = Class.forName("pepjebs.mapatlases.networking.C2S2COpenAtlasScreenPacket");
+                    Object packet = packetClass.getDeclaredConstructor().newInstance();
+                    java.lang.reflect.Method sendToServerMethod = networkHelperClass.getMethod("sendToServer", Object.class);
+                    sendToServerMethod.invoke(null, packet);
+                }
+            } catch (Exception e) {
+                // Map Atlases not present or failed to open atlas
+            }
         }
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.mapAtlasesTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.MAP_ATLASES) && MapAtlasesAccessUtils.getAtlasFromPlayerByConfig(player).getItem() instanceof MapAtlasItem;
+        if (!Config.Baked.mapAtlasesTabEnabled || !ModIntegrationManager.isModLoaded(ModIntegration.MAP_ATLASES)) {
+            return false;
+        }
+        try {
+            Class<?> mapAtlasesAccessUtilsClass = Class.forName("pepjebs.mapatlases.utils.MapAtlasesAccessUtils");
+            java.lang.reflect.Method getAtlasMethod = mapAtlasesAccessUtilsClass.getMethod("getAtlasFromPlayerByConfig", Player.class);
+            ItemStack atlas = (ItemStack) getAtlasMethod.invoke(null, player);
+
+            Class<?> mapAtlasItemClass = Class.forName("pepjebs.mapatlases.item.MapAtlasItem");
+            return mapAtlasItemClass.isInstance(atlas.getItem());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
