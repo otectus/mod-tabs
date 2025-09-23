@@ -17,6 +17,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int inventoryTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility inventoryTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer1;
 
     @Comment(category = "tabs") public static CommentText advancements;
@@ -26,6 +29,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int advancementsTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility advancementsTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer2;
 
@@ -37,6 +43,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int arsElixirumTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility arsElixirumTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer3;
 
     @Comment(category = "tabs") public static CommentText arsNouveau;
@@ -46,6 +55,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int arsNouveauTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility arsNouveauTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer3b;
 
@@ -57,6 +69,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int backpackedTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility backpackedTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer3c;
 
     @Comment(category = "tabs") public static CommentText backpackOld;
@@ -66,6 +81,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int backpackTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility backpackTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer4;
 
@@ -77,6 +95,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int bodyDamageTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility bodyDamageTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer5;
 
     @Comment(category = "tabs") public static CommentText cobblemon;
@@ -86,6 +107,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int cobblemonTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility cobblemonTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer6;
 
@@ -97,6 +121,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int cosmeticArmorTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility cosmeticArmorTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer7;
 
     @Comment(category = "tabs") public static CommentText draconicEvolution;
@@ -106,6 +133,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int draconicEvolutionTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility draconicEvolutionTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer7b;
 
@@ -117,6 +147,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int dietTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility dietTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer8;
 
     @Comment(category = "tabs") public static CommentText ftbQuests;
@@ -126,6 +159,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int ftbQuestsTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility ftbQuestsTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer9;
 
@@ -137,6 +173,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int ftbTeamsTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility ftbTeamsTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer10;
 
     @Comment(category = "tabs") public static CommentText journeyMap;
@@ -146,6 +185,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int journeyMapTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility journeyMapTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer11;
 
@@ -157,6 +199,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int l2ArtifactsTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility l2ArtifactsTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer12;
 
     @Comment(category = "tabs") public static CommentText l2Attributes;
@@ -166,6 +211,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int l2AttributesTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility l2AttributesTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer13;
 
@@ -177,6 +225,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int l2HostilityTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility l2HostilityTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer14;
 
     @Comment(category = "tabs") public static CommentText mapAtlases;
@@ -186,6 +237,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int mapAtlasesTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility mapAtlasesTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer15;
 
@@ -197,6 +251,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int modularGolemsTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility modularGolemsTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer16;
 
     @Comment(category = "tabs") public static CommentText passiveSkillTree;
@@ -206,6 +263,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int passiveSkillTreeTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility passiveSkillTreeTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer17;
 
@@ -217,6 +277,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int pufferfishSkillsTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility pufferfishSkillsTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer18;
 
     @Comment(category = "tabs") public static CommentText reskillable;
@@ -227,6 +290,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int reskillableTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility reskillableTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer18b;
 
     @Comment(category = "tabs") public static CommentText reskillableReimagined;
@@ -236,6 +302,9 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int reskillableReimaginedTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility reskillableReimaginedTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer19;
 
@@ -250,6 +319,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static BackpackSlot sophisticatedBackpacksPreferredSlot = BackpackSlot.DEFAULT;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility sophisticatedBackpacksTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer20;
 
     @Comment(category = "tabs") public static CommentText travelersBackpack;
@@ -260,6 +332,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static int travelersBackpackTabOrder = 0;
 
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility travelersBackpackTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer21;
 
     @Comment(category = "tabs") public static CommentText xaerosMap;
@@ -269,4 +344,7 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static int xaerosMapTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility xaerosMapTabDisplayVisibility = TabDisplayVisibility.YES;
 }

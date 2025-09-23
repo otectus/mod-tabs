@@ -37,6 +37,34 @@ public class Config
 		public static boolean draconicEvolutionTabEnabled;
 		public static boolean stickyInventoryTab;
 
+		// Tab display visibility settings
+		public static TabDisplayVisibility inventoryTabDisplayVisibility;
+		public static TabDisplayVisibility advancementsTabDisplayVisibility;
+		public static TabDisplayVisibility arsElixirumTabDisplayVisibility;
+		public static TabDisplayVisibility arsNouveauTabDisplayVisibility;
+		public static TabDisplayVisibility backpackedTabDisplayVisibility;
+		public static TabDisplayVisibility backpackTabDisplayVisibility;
+		public static TabDisplayVisibility bodyDamageTabDisplayVisibility;
+		public static TabDisplayVisibility cobblemonTabDisplayVisibility;
+		public static TabDisplayVisibility cosmeticArmorTabDisplayVisibility;
+		public static TabDisplayVisibility draconicEvolutionTabDisplayVisibility;
+		public static TabDisplayVisibility dietTabDisplayVisibility;
+		public static TabDisplayVisibility ftbQuestsTabDisplayVisibility;
+		public static TabDisplayVisibility ftbTeamsTabDisplayVisibility;
+		public static TabDisplayVisibility journeyMapTabDisplayVisibility;
+		public static TabDisplayVisibility l2ArtifactsTabDisplayVisibility;
+		public static TabDisplayVisibility l2AttributesTabDisplayVisibility;
+		public static TabDisplayVisibility l2HostilityTabDisplayVisibility;
+		public static TabDisplayVisibility mapAtlasesTabDisplayVisibility;
+		public static TabDisplayVisibility modularGolemsTabDisplayVisibility;
+		public static TabDisplayVisibility passiveSkillTreeTabDisplayVisibility;
+		public static TabDisplayVisibility pufferfishSkillsTabDisplayVisibility;
+		public static TabDisplayVisibility reskillableTabDisplayVisibility;
+		public static TabDisplayVisibility reskillableReimaginedTabDisplayVisibility;
+		public static TabDisplayVisibility sophisticatedBackpacksTabDisplayVisibility;
+		public static TabDisplayVisibility travelersBackpackTabDisplayVisibility;
+		public static TabDisplayVisibility xaerosMapTabDisplayVisibility;
+
 		// Tab order overrides
 		public static int inventoryTabOrder;
 		public static int backpackedTabOrder;
@@ -119,7 +147,6 @@ public class Config
 				passiveSkillTreeTabOrder = ModTabsConfig.passiveSkillTreeTabOrder;
 				sophisticatedBackpacksTabOrder = ModTabsConfig.sophisticatedBackpacksTabOrder;
 				sophisticatedBackpacksPreferredSlot = ModTabsConfig.sophisticatedBackpacksPreferredSlot;
-				ModTabs.LOGGER.info("DEBUG: Baked sophisticated backpacks preferred slot: {}", sophisticatedBackpacksPreferredSlot);
 				cobblemonTabOrder = ModTabsConfig.cobblemonTabOrder;
 				modularGolemsTabOrder = ModTabsConfig.modularGolemsTabOrder;
 				arsElixirumTabOrder = ModTabsConfig.arsElixirumTabOrder;
@@ -130,6 +157,34 @@ public class Config
 				cosmeticArmorTabOrder = ModTabsConfig.cosmeticArmorTabOrder;
 				advancementsTabOrder = ModTabsConfig.advancementsTabOrder;
 				draconicEvolutionTabOrder = ModTabsConfig.draconicEvolutionTabOrder;
+
+				// Load tab display visibility settings
+				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
+				advancementsTabDisplayVisibility = ModTabsConfig.advancementsTabDisplayVisibility;
+				arsElixirumTabDisplayVisibility = ModTabsConfig.arsElixirumTabDisplayVisibility;
+				arsNouveauTabDisplayVisibility = ModTabsConfig.arsNouveauTabDisplayVisibility;
+				backpackedTabDisplayVisibility = ModTabsConfig.backpackedTabDisplayVisibility;
+				backpackTabDisplayVisibility = ModTabsConfig.backpackTabDisplayVisibility;
+				bodyDamageTabDisplayVisibility = ModTabsConfig.bodyDamageTabDisplayVisibility;
+				cobblemonTabDisplayVisibility = ModTabsConfig.cobblemonTabDisplayVisibility;
+				cosmeticArmorTabDisplayVisibility = ModTabsConfig.cosmeticArmorTabDisplayVisibility;
+				draconicEvolutionTabDisplayVisibility = ModTabsConfig.draconicEvolutionTabDisplayVisibility;
+				dietTabDisplayVisibility = ModTabsConfig.dietTabDisplayVisibility;
+				ftbQuestsTabDisplayVisibility = ModTabsConfig.ftbQuestsTabDisplayVisibility;
+				ftbTeamsTabDisplayVisibility = ModTabsConfig.ftbTeamsTabDisplayVisibility;
+				journeyMapTabDisplayVisibility = ModTabsConfig.journeyMapTabDisplayVisibility;
+				l2ArtifactsTabDisplayVisibility = ModTabsConfig.l2ArtifactsTabDisplayVisibility;
+				l2AttributesTabDisplayVisibility = ModTabsConfig.l2AttributesTabDisplayVisibility;
+				l2HostilityTabDisplayVisibility = ModTabsConfig.l2HostilityTabDisplayVisibility;
+				mapAtlasesTabDisplayVisibility = ModTabsConfig.mapAtlasesTabDisplayVisibility;
+				modularGolemsTabDisplayVisibility = ModTabsConfig.modularGolemsTabDisplayVisibility;
+				passiveSkillTreeTabDisplayVisibility = ModTabsConfig.passiveSkillTreeTabDisplayVisibility;
+				pufferfishSkillsTabDisplayVisibility = ModTabsConfig.pufferfishSkillsTabDisplayVisibility;
+				reskillableTabDisplayVisibility = ModTabsConfig.reskillableTabDisplayVisibility;
+				reskillableReimaginedTabDisplayVisibility = ModTabsConfig.reskillableReimaginedTabDisplayVisibility;
+				sophisticatedBackpacksTabDisplayVisibility = ModTabsConfig.sophisticatedBackpacksTabDisplayVisibility;
+				travelersBackpackTabDisplayVisibility = ModTabsConfig.travelersBackpackTabDisplayVisibility;
+				xaerosMapTabDisplayVisibility = ModTabsConfig.xaerosMapTabDisplayVisibility;
 			}
 			catch (Exception e)
 			{

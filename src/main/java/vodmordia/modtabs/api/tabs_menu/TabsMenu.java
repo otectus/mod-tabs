@@ -10,6 +10,8 @@ import vodmordia.modtabs.client.screens.NextTabsButton;
 import vodmordia.modtabs.client.screens.TabButton;
 import vodmordia.modtabs.client.tabs_menu.InventoryTab;
 import vodmordia.modtabs.config.Config;
+import vodmordia.modtabs.config.ModTabsConfig;
+import vodmordia.modtabs.config.TabDisplayVisibility;
 
 import java.util.*;
 import java.util.function.Function;
@@ -31,6 +33,64 @@ public class TabsMenu {
     private static int preservedStartTabIndex = 0;
 
     private TabsMenu() {
+    }
+
+    private static boolean shouldDisplayTabBarForScreen(Screen screen) {
+        String screenClassName = screen.getClass().getName();
+
+        // Check each screen type and its corresponding display visibility setting
+        switch (screenClassName) {
+            case "net.minecraft.client.gui.screens.inventory.InventoryScreen":
+                return ModTabsConfig.inventoryTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "net.minecraft.client.gui.screens.advancements.AdvancementsScreen":
+                return ModTabsConfig.advancementsTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "com.dhanantry.arsnouveau.client.gui.SpellBookGUI":
+            case "com.dhanantry.arsnouveau.client.gui.SpellBookScreen":
+                return ModTabsConfig.arsNouveauTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "com.jozufozu.flywheel.util.transform.TransformStack":
+            case "net.backpacked.client.screen.BackpackScreen":
+                return ModTabsConfig.backpackedTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "sfiomn.legendarysurvivaloverhaul.client.gui.BodyHealthScreen":
+                return ModTabsConfig.bodyDamageTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "com.cobblemon.mod.common.client.gui.PartyGUI":
+            case "com.cobblemon.mod.common.client.gui.party.PartyGUI":
+                return ModTabsConfig.cobblemonTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "squeek.appleskin.client.gui.screen.FoodStatsScreen":
+                return ModTabsConfig.dietTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "dev.ftb.mods.ftblibrary.ui.ScreenWrapper":
+                // This could be FTB Quests or FTB Teams - we'll default to showing the bar
+                // Individual tabs will handle their own visibility
+                return ModTabsConfig.ftbQuestsTabDisplayVisibility == TabDisplayVisibility.YES ||
+                       ModTabsConfig.ftbTeamsTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "journeymap.client.ui.fullscreen.Fullscreen":
+                return ModTabsConfig.journeyMapTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "com.dhanantry.scguns.client.screen.AttachmentScreen":
+            case "com.brandon3055.draconicevolution.client.gui.GuiDraconicEvolution":
+                return ModTabsConfig.draconicEvolutionTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "pepjebs.mapatlases.client.ui.MapAtlasesAccessUtils":
+                return ModTabsConfig.mapAtlasesTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "xaero.map.gui.GuiMap":
+                return ModTabsConfig.xaerosMapTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "puffish.skillsmod.client.screen.SkillScreen":
+                return ModTabsConfig.pufferfishSkillsTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "net.puffish.skillsmod.client.screen.SkillScreen":
+                return ModTabsConfig.pufferfishSkillsTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "com.dhanantry.scguns.client.screen.PassiveSkillScreen":
+                return ModTabsConfig.passiveSkillTreeTabDisplayVisibility == TabDisplayVisibility.YES;
+            case "net.minecraft.client.gui.screens.inventory.AbstractContainerScreen":
+                // Check if it's a sophisticated backpack screen
+                if (screenClassName.contains("sophisticatedbackpacks")) {
+                    return ModTabsConfig.sophisticatedBackpacksTabDisplayVisibility == TabDisplayVisibility.YES;
+                }
+                // Check if it's a travelers backpack screen
+                if (screenClassName.contains("travelersbackpack")) {
+                    return ModTabsConfig.travelersBackpackTabDisplayVisibility == TabDisplayVisibility.YES;
+                }
+                break;
+        }
+
+        // For unknown screens, default to showing the tab bar
+        return true;
     }
 
     public static boolean hasCustomPositioning(Screen screen) {
@@ -129,6 +189,11 @@ public class TabsMenu {
     public static void initScreenButtons(ScreenEvent.Init.Post event) {
 
         if (tabsScreens.containsKey(event.getScreen().getClass())) {
+
+            // Check if tab bar should be displayed for this screen type
+            if (!shouldDisplayTabBarForScreen(event.getScreen())) {
+                return; // Don't display any tabs for this screen
+            }
 
             // Clear existing tab buttons to prevent duplicates
             var existingTabButtons = event.getScreen().children().stream()

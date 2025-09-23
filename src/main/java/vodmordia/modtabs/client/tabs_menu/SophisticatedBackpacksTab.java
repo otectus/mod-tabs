@@ -35,107 +35,45 @@ public class SophisticatedBackpacksTab extends SimpleItemTab {
 
             Object payload;
 
-            // DEBUG: Log current preference setting
-            BackpackSlot currentPreference = Config.Baked.sophisticatedBackpacksPreferredSlot;
-            ModTabs.LOGGER.info("DEBUG: Sophisticated Backpacks preferred slot setting: {}", currentPreference);
-
-            // DEBUG: Show all inventory slots with backpacks
-            ModTabs.LOGGER.info("DEBUG: === INVENTORY SCAN ===");
-            for (int i = 0; i < 9; i++) {
-                ItemStack stack = player.getInventory().items.get(i);
-                if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
-                    ModTabs.LOGGER.info("DEBUG: Hotbar slot {} contains backpack: {}", i, stack.getDisplayName().getString());
-                }
-            }
-            for (int i = 9; i < player.getInventory().items.size(); i++) {
-                ItemStack stack = player.getInventory().items.get(i);
-                if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
-                    ModTabs.LOGGER.info("DEBUG: Main inventory slot {} contains backpack: {}", i, stack.getDisplayName().getString());
-                }
-            }
-            ItemStack offhandStack = player.getOffhandItem();
-            if (!offhandStack.isEmpty() && backpackItemClass.isInstance(offhandStack.getItem())) {
-                ModTabs.LOGGER.info("DEBUG: Offhand contains backpack: {}", offhandStack.getDisplayName().getString());
-            }
-            ModTabs.LOGGER.info("DEBUG: === END INVENTORY SCAN ===");
-
             // Check if user has a preferred slot and if it contains a backpack
             ItemStack preferredBackpack = getBackpackFromPreferredSlot(player, backpackItemClass);
 
             if (preferredBackpack != null && !preferredBackpack.isEmpty()) {
-                ModTabs.LOGGER.info("DEBUG: Found preferred backpack: {} (display name: {})", preferredBackpack.getItem(), preferredBackpack.getDisplayName().getString());
+                // Get the slot index for the preferred backpack
+                int slotIndex = getSlotIndexForBackpack(player, preferredBackpack);
 
-                // Try to create payload with specific backpack slot/position
-                // First try to find the constructor that takes slot parameters
-                try {
-                    // Get the slot index for the preferred backpack
-                    int slotIndex = getSlotIndexForBackpack(player, preferredBackpack);
-                    ModTabs.LOGGER.info("DEBUG: Slot index for preferred backpack: {}", slotIndex);
+                if (slotIndex != -1) {
+                    // Use the constructor with handlerName and identifier to bypass Sophisticated Backpacks' priority system
+                    String handlerName;
+                    String identifier = ""; // Empty string for single identifier handlers
+                    int adjustedSlotIndex = slotIndex;
 
-                    // Let's check what constructors are available
-                    ModTabs.LOGGER.info("DEBUG: Available constructors for BackpackOpenPayload:");
-                    for (var constructor : payloadClass.getDeclaredConstructors()) {
-                        Class<?>[] paramTypes = constructor.getParameterTypes();
-                        StringBuilder paramInfo = new StringBuilder();
-                        for (int i = 0; i < paramTypes.length; i++) {
-                            if (i > 0) paramInfo.append(", ");
-                            paramInfo.append(paramTypes[i].getSimpleName());
-                        }
-                        ModTabs.LOGGER.info("DEBUG: Constructor with parameters: [{}]", paramInfo.toString());
-                    }
-
-                    if (slotIndex != -1) {
-                        // Try constructor with slot parameter
-                        try {
-                            // Maybe the mod uses a different slot numbering system?
-                            // Let's try to correlate our slot index with what the mod expects
-
-                            // For hotbar slots (0-8), try different mappings
-                            int modSlotIndex = slotIndex;
-                            if (slotIndex <= 8) {
-                                // If it's a hotbar slot, maybe the mod expects it differently
-                                // Some mods use 36-44 for hotbar slots instead of 0-8
-                                int alternativeIndex = slotIndex + 36;
-                                ModTabs.LOGGER.info("DEBUG: Trying alternative hotbar slot mapping: {} -> {}", slotIndex, alternativeIndex);
-                                modSlotIndex = alternativeIndex;
-                            }
-
-                            payload = payloadClass.getDeclaredConstructor(int.class).newInstance(modSlotIndex);
-                            ModTabs.LOGGER.info("DEBUG: Created payload with slot parameter: {} (original: {})", modSlotIndex, slotIndex);
-                        } catch (NoSuchMethodException e) {
-                            ModTabs.LOGGER.info("DEBUG: No constructor with int parameter found, trying other constructors");
-
-                            // Try other possible constructor patterns
-                            try {
-                                // Maybe it takes a boolean and int?
-                                payload = payloadClass.getDeclaredConstructor(boolean.class, int.class).newInstance(true, slotIndex);
-                                ModTabs.LOGGER.info("DEBUG: Created payload with boolean+int parameters: true, {}", slotIndex);
-                            } catch (Exception e2) {
-                                // Try just boolean
-                                try {
-                                    payload = payloadClass.getDeclaredConstructor(boolean.class).newInstance(true);
-                                    ModTabs.LOGGER.info("DEBUG: Created payload with boolean parameter: true");
-                                } catch (Exception e3) {
-                                    // Fall back to default
-                                    payload = payloadClass.getDeclaredConstructor().newInstance();
-                                    ModTabs.LOGGER.info("DEBUG: All specific constructors failed, using default constructor");
-                                }
-                            }
-                        }
+                    // Determine the correct handler name based on the slot
+                    if (slotIndex <= 8) {
+                        // Hotbar or main inventory
+                        handlerName = "main";
+                    } else if (slotIndex == 40) {
+                        // Offhand slot
+                        handlerName = "offhand";
+                        adjustedSlotIndex = 0; // Offhand handler only has slot 0
+                    } else if (slotIndex >= 36 && slotIndex <= 39) {
+                        // Armor slots
+                        handlerName = "armor";
+                        adjustedSlotIndex = 0; // Armor handler only checks chest slot (slot 0)
                     } else {
-                        // Fall back to default constructor
-                        payload = payloadClass.getDeclaredConstructor().newInstance();
-                        ModTabs.LOGGER.info("DEBUG: Failed to find slot index, using default payload constructor");
+                        // Other inventory slots
+                        handlerName = "main";
                     }
-                } catch (Exception e) {
-                    // Fall back to default constructor if specific constructor fails
+
+                    payload = payloadClass.getDeclaredConstructor(int.class, String.class, String.class)
+                            .newInstance(adjustedSlotIndex, identifier, handlerName);
+                } else {
+                    // Fall back to default constructor
                     payload = payloadClass.getDeclaredConstructor().newInstance();
-                    ModTabs.LOGGER.info("DEBUG: Exception creating payload with slot parameter, using default constructor: {}", e.getMessage());
                 }
             } else {
                 // Use the default constructor - let Sophisticated Backpacks handle all the logic
                 payload = payloadClass.getDeclaredConstructor().newInstance();
-                ModTabs.LOGGER.info("DEBUG: No preferred backpack found or preference is DEFAULT, using default payload constructor");
             }
 
             // Find the sendToServer method with 2 parameters
@@ -145,13 +83,11 @@ public class SophisticatedBackpacksTab extends SimpleItemTab {
                     // Create empty array for the second parameter
                     Object[] emptyArray = (Object[]) java.lang.reflect.Array.newInstance(paramTypes[1].getComponentType(), 0);
                     method.invoke(null, payload, emptyArray);
-                    ModTabs.LOGGER.info("DEBUG: Sent backpack open payload to server");
                     return;
                 }
             }
 
         } catch (Exception e) {
-            ModTabs.LOGGER.error("DEBUG: Exception in openTargetScreen: ", e);
         }
     }
 
@@ -162,10 +98,8 @@ public class SophisticatedBackpacksTab extends SimpleItemTab {
 
     private ItemStack getBackpackFromPreferredSlot(Player player, Class<?> backpackItemClass) {
         BackpackSlot preferredSlot = Config.Baked.sophisticatedBackpacksPreferredSlot;
-        ModTabs.LOGGER.info("DEBUG: getBackpackFromPreferredSlot called with preference: {}", preferredSlot);
 
         if (preferredSlot == BackpackSlot.DEFAULT) {
-            ModTabs.LOGGER.info("DEBUG: Preference is DEFAULT, returning null");
             return null; // Use default behavior
         }
 
@@ -180,24 +114,16 @@ public class SophisticatedBackpacksTab extends SimpleItemTab {
                 case QUICKBAR_7:
                 case QUICKBAR_8:
                 case QUICKBAR_9:
-                    // QUICKBAR_1 has ordinal 1, but should map to inventory slot 0
-                    // QUICKBAR_9 has ordinal 9, but should map to inventory slot 8
                     int hotbarIndex = preferredSlot.ordinal() - 1; // Convert QUICKBAR_1 (ordinal 1) to slot 0
-                    ModTabs.LOGGER.info("DEBUG: Checking quickbar slot {} (ordinal: {}, calculated index: {})", preferredSlot, preferredSlot.ordinal(), hotbarIndex);
 
                     if (hotbarIndex < 0 || hotbarIndex >= 9) {
-                        ModTabs.LOGGER.warn("DEBUG: Invalid hotbar index calculated: {}", hotbarIndex);
                         break;
                     }
 
                     ItemStack hotbarStack = player.getInventory().items.get(hotbarIndex);
-                    ModTabs.LOGGER.info("DEBUG: Item in slot {}: {} (isEmpty: {})", hotbarIndex, hotbarStack.getItem(), hotbarStack.isEmpty());
 
                     if (!hotbarStack.isEmpty() && backpackItemClass.isInstance(hotbarStack.getItem())) {
-                        ModTabs.LOGGER.info("DEBUG: Found backpack in preferred quickbar slot {}", hotbarIndex);
                         return hotbarStack;
-                    } else {
-                        ModTabs.LOGGER.info("DEBUG: No backpack found in preferred quickbar slot {}", hotbarIndex);
                     }
                     break;
 
