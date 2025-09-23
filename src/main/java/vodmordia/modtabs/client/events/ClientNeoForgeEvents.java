@@ -24,6 +24,9 @@ public class ClientNeoForgeEvents {
         event.getScreen();
         Screen screen = event.getScreen();
 
+        // Update mouse position for tuck mode hover detection
+        TabsMenu.onMouseMove(event.getMouseX(), event.getMouseY(), screen);
+
         if (screen instanceof AbstractContainerScreen<?> containerScreen) {
             if (!TabsMenu.hasCustomPositioning(screen)) {
                 TabsMenu.updateButtonsPosition(screen, containerScreen.getGuiLeft(), containerScreen.getGuiTop());
@@ -153,6 +156,9 @@ public class ClientNeoForgeEvents {
 
     @SubscribeEvent
     public static void onScreenRenderPost(ScreenEvent.Render.Post event) {
+        // Update mouse position for tuck mode hover detection (for screens that need special handling)
+        TabsMenu.onMouseMove(event.getMouseX(), event.getMouseY(), event.getScreen());
+
         // Special handling for screens that don't call super.render() properly
         String screenClassName = event.getScreen().getClass().getName();
 

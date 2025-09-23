@@ -61,12 +61,27 @@ public class TabButton extends Button {
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partial) {
-        this.tabBase.render(gui, this.getX(), this.getY(), this.isDisabled || this.isMouseOver(mouseX, mouseY), this.displayMode);
+        // Apply animation offset for tuck mode
+        int animatedY = this.getY() + TabsMenu.getAnimatedYOffset();
+
+        // Check if mouse is over the animated position
+        boolean isMouseOverAnimated = mouseX >= this.getX() && mouseX < this.getX() + this.width &&
+                                     mouseY >= animatedY && mouseY < animatedY + this.height;
+
+        this.tabBase.render(gui, this.getX(), animatedY, this.isDisabled || isMouseOverAnimated, this.displayMode);
     }
 
     public void updatePosition(int leftScreenPos, int topScreenPos) {
         int finalX = leftScreenPos + tabPositionIndex * (TAB_WIDTH + 1);
         setX(finalX);
         setY(calculateYPosition(topScreenPos, displayMode));
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        // Override to account for animation offset in tuck mode
+        int animatedY = this.getY() + TabsMenu.getAnimatedYOffset();
+        return mouseX >= this.getX() && mouseX < this.getX() + this.width &&
+               mouseY >= animatedY && mouseY < animatedY + this.height;
     }
 }

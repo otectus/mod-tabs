@@ -12,6 +12,7 @@ import vodmordia.modtabs.client.tabs_menu.InventoryTab;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.config.ModTabsConfig;
 import vodmordia.modtabs.config.TabDisplayVisibility;
+import vodmordia.modtabs.client.animation.TabBarAnimationManager;
 
 import java.util.*;
 import java.util.function.Function;
@@ -32,65 +33,114 @@ public class TabsMenu {
     private static Screen sourceScreen = null;
     private static int preservedStartTabIndex = 0;
 
+    // Animation and hover detection
+    private static TabBarAnimationManager animationManager = null;
+    private static final int HOVER_PADDING = 20; // Pixels of extra hover area around tabs
+    private static boolean isInTuckMode = false;
+
     private TabsMenu() {
     }
 
-    private static boolean shouldDisplayTabBarForScreen(Screen screen) {
+    private static TabDisplayVisibility getTabDisplayVisibilityForScreen(Screen screen) {
         String screenClassName = screen.getClass().getName();
 
         // Check each screen type and its corresponding display visibility setting
         switch (screenClassName) {
             case "net.minecraft.client.gui.screens.inventory.InventoryScreen":
-                return ModTabsConfig.inventoryTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.inventoryTabDisplayVisibility;
             case "net.minecraft.client.gui.screens.advancements.AdvancementsScreen":
-                return ModTabsConfig.advancementsTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.advancementsTabDisplayVisibility;
             case "com.dhanantry.arsnouveau.client.gui.SpellBookGUI":
             case "com.dhanantry.arsnouveau.client.gui.SpellBookScreen":
-                return ModTabsConfig.arsNouveauTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.arsNouveauTabDisplayVisibility;
             case "com.jozufozu.flywheel.util.transform.TransformStack":
             case "net.backpacked.client.screen.BackpackScreen":
-                return ModTabsConfig.backpackedTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.backpackedTabDisplayVisibility;
             case "sfiomn.legendarysurvivaloverhaul.client.gui.BodyHealthScreen":
-                return ModTabsConfig.bodyDamageTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.bodyDamageTabDisplayVisibility;
             case "com.cobblemon.mod.common.client.gui.PartyGUI":
             case "com.cobblemon.mod.common.client.gui.party.PartyGUI":
-                return ModTabsConfig.cobblemonTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.cobblemonTabDisplayVisibility;
             case "squeek.appleskin.client.gui.screen.FoodStatsScreen":
-                return ModTabsConfig.dietTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.dietTabDisplayVisibility;
             case "dev.ftb.mods.ftblibrary.ui.ScreenWrapper":
-                // This could be FTB Quests or FTB Teams - we'll default to showing the bar
-                // Individual tabs will handle their own visibility
-                return ModTabsConfig.ftbQuestsTabDisplayVisibility == TabDisplayVisibility.YES ||
-                       ModTabsConfig.ftbTeamsTabDisplayVisibility == TabDisplayVisibility.YES;
+                // This could be FTB Quests or FTB Teams - use FTB Quests setting as default
+                return ModTabsConfig.ftbQuestsTabDisplayVisibility;
             case "journeymap.client.ui.fullscreen.Fullscreen":
-                return ModTabsConfig.journeyMapTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.journeyMapTabDisplayVisibility;
             case "com.dhanantry.scguns.client.screen.AttachmentScreen":
             case "com.brandon3055.draconicevolution.client.gui.GuiDraconicEvolution":
-                return ModTabsConfig.draconicEvolutionTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.draconicEvolutionTabDisplayVisibility;
             case "pepjebs.mapatlases.client.ui.MapAtlasesAccessUtils":
-                return ModTabsConfig.mapAtlasesTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.mapAtlasesTabDisplayVisibility;
             case "xaero.map.gui.GuiMap":
-                return ModTabsConfig.xaerosMapTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.xaerosMapTabDisplayVisibility;
             case "puffish.skillsmod.client.screen.SkillScreen":
-                return ModTabsConfig.pufferfishSkillsTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.pufferfishSkillsTabDisplayVisibility;
             case "net.puffish.skillsmod.client.screen.SkillScreen":
-                return ModTabsConfig.pufferfishSkillsTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.pufferfishSkillsTabDisplayVisibility;
             case "com.dhanantry.scguns.client.screen.PassiveSkillScreen":
-                return ModTabsConfig.passiveSkillTreeTabDisplayVisibility == TabDisplayVisibility.YES;
+                return ModTabsConfig.passiveSkillTreeTabDisplayVisibility;
             case "net.minecraft.client.gui.screens.inventory.AbstractContainerScreen":
                 // Check if it's a sophisticated backpack screen
                 if (screenClassName.contains("sophisticatedbackpacks")) {
-                    return ModTabsConfig.sophisticatedBackpacksTabDisplayVisibility == TabDisplayVisibility.YES;
+                    return ModTabsConfig.sophisticatedBackpacksTabDisplayVisibility;
                 }
                 // Check if it's a travelers backpack screen
                 if (screenClassName.contains("travelersbackpack")) {
-                    return ModTabsConfig.travelersBackpackTabDisplayVisibility == TabDisplayVisibility.YES;
+                    return ModTabsConfig.travelersBackpackTabDisplayVisibility;
                 }
                 break;
         }
 
         // For unknown screens, default to showing the tab bar
-        return true;
+        return TabDisplayVisibility.YES;
+    }
+
+    public static void onMouseMove(int mouseX, int mouseY, Screen screen) {
+        if (animationManager != null && isInTuckMode) {
+            boolean inHoverZone = isMouseInHoverZone(mouseX, mouseY, screen);
+            boolean wasInHoverState = animationManager.isInHoverState();
+
+            if (inHoverZone && !wasInHoverState) {
+                animationManager.onMouseEnterHoverZone();
+            } else if (!inHoverZone && wasInHoverState) {
+                animationManager.onMouseExitHoverZone();
+            }
+        }
+    }
+
+    private static boolean isMouseInHoverZone(int mouseX, int mouseY, Screen screen) {
+        if (!tabsScreens.containsKey(screen.getClass())) {
+            return false;
+        }
+
+        ScreenInfo screenInfo = tabsScreens.get(screen.getClass());
+
+        // Calculate tab area bounds with padding
+        int tabAreaLeft = leftScreenPos - HOVER_PADDING;
+        int tabAreaRight = leftScreenPos + (currentTabsCount * (TAB_WIDTH + 1)) + HOVER_PADDING;
+
+        int tabAreaTop, tabAreaBottom;
+        if (screenInfo.displayMode == TabDisplayMode.INVERTED) {
+            tabAreaTop = topScreenPos - HOVER_PADDING;
+            tabAreaBottom = topScreenPos + TAB_HEIGHT + HOVER_PADDING;
+        } else {
+            tabAreaTop = topScreenPos - TAB_HEIGHT - HOVER_PADDING;
+            tabAreaBottom = topScreenPos + HOVER_PADDING;
+        }
+
+        return mouseX >= tabAreaLeft && mouseX <= tabAreaRight &&
+               mouseY >= tabAreaTop && mouseY <= tabAreaBottom;
+    }
+
+    private static TabDisplayMode currentDisplayMode = TabDisplayMode.NORMAL;
+
+    public static int getAnimatedYOffset() {
+        if (animationManager != null && isInTuckMode) {
+            return animationManager.getYOffset(TAB_HEIGHT, currentDisplayMode);
+        }
+        return 0;
     }
 
     public static boolean hasCustomPositioning(Screen screen) {
@@ -137,7 +187,7 @@ public class TabsMenu {
 
     public static void registerScreenWithAllTabs(Class<? extends Screen> screen, Function<Player, Integer> screenWidth, Function<Player, Integer> screenHeight, TabDisplayMode displayMode, TabPositioning positioning) {
         // Store the registration for later processing
-        pendingScreenRegistrations.add(new ScreenRegistration(screen, screenWidth, screenHeight, displayMode, positioning, null, null, 5));
+        pendingScreenRegistrations.add(new ScreenRegistration(screen, screenWidth, screenHeight, displayMode, positioning, null, null, 0));
     }
 
     public static void registerScreenWithAllTabs(Class<? extends Screen> screen, Function<Player, Integer> screenWidth, Function<Player, Integer> screenHeight, TabDisplayMode displayMode, TabPositioning positioning, int screenEdgeOffset) {
@@ -149,7 +199,7 @@ public class TabsMenu {
         // Force registration - remove any existing registration for this screen class first
         pendingScreenRegistrations.removeIf(reg -> reg.screenClass.equals(screen));
         // Then add our new registration
-        pendingScreenRegistrations.add(new ScreenRegistration(screen, screenWidth, screenHeight, displayMode, positioning, null, null, 5));
+        pendingScreenRegistrations.add(new ScreenRegistration(screen, screenWidth, screenHeight, displayMode, positioning, null, null, 0));
     }
 
     public static void registerScreenWithCustomPosition(Class<? extends Screen> screen, Function<Player, Integer> screenWidth, Function<Player, Integer> screenHeight, Function<Screen, Integer> customTabX, Function<Screen, Integer> customTabY) {
@@ -190,9 +240,18 @@ public class TabsMenu {
 
         if (tabsScreens.containsKey(event.getScreen().getClass())) {
 
-            // Check if tab bar should be displayed for this screen type
-            if (!shouldDisplayTabBarForScreen(event.getScreen())) {
+            // Check tab display visibility for this screen type
+            TabDisplayVisibility visibility = getTabDisplayVisibilityForScreen(event.getScreen());
+            if (visibility == TabDisplayVisibility.NO) {
                 return; // Don't display any tabs for this screen
+            }
+
+            // Initialize tuck mode if needed
+            isInTuckMode = (visibility == TabDisplayVisibility.TUCK);
+            if (isInTuckMode) {
+                animationManager = new TabBarAnimationManager();
+            } else {
+                animationManager = null;
             }
 
             // Clear existing tab buttons to prevent duplicates
@@ -206,7 +265,8 @@ public class TabsMenu {
 
             ScreenInfo screenInfo = tabsScreens.get(event.getScreen().getClass());
 
-
+            // Store current display mode for animation
+            currentDisplayMode = screenInfo.displayMode;
 
             // Calculate tab position based on positioning mode
             switch (screenInfo.positioning) {
@@ -499,7 +559,7 @@ public class TabsMenu {
             this.positioning = TabPositioning.GUI_RELATIVE; // Default to GUI relative
             this.customTabX = null;
             this.customTabY = null;
-            this.screenEdgeOffset = 5; // Default offset from screen edges
+            this.screenEdgeOffset = 0; // Default offset from screen edges
             this.addTab(priority, newTab);
         }
 
@@ -511,7 +571,7 @@ public class TabsMenu {
             this.positioning = TabPositioning.GUI_RELATIVE; // Default to GUI relative
             this.customTabX = null;
             this.customTabY = null;
-            this.screenEdgeOffset = 5; // Default offset from screen edges
+            this.screenEdgeOffset = 0; // Default offset from screen edges
         }
 
         public ScreenInfo(Function<Player, Integer> width, Function<Player, Integer> height, TabDisplayMode displayMode) {
@@ -522,7 +582,7 @@ public class TabsMenu {
             this.positioning = TabPositioning.GUI_RELATIVE; // Default to GUI relative
             this.customTabX = null;
             this.customTabY = null;
-            this.screenEdgeOffset = 5; // Default offset from screen edges
+            this.screenEdgeOffset = 0; // Default offset from screen edges
         }
 
         public void addTab(int priority, TabBase newTab) {
@@ -554,7 +614,7 @@ public class TabsMenu {
             this.positioning = TabPositioning.GUI_RELATIVE;
             this.customTabX = null;
             this.customTabY = null;
-            this.screenEdgeOffset = 5;
+            this.screenEdgeOffset = 0;
         }
 
         public ScreenRegistration(Class<? extends Screen> screenClass, Function<Player, Integer> screenWidth, Function<Player, Integer> screenHeight, TabDisplayMode displayMode) {
@@ -565,7 +625,7 @@ public class TabsMenu {
             this.positioning = TabPositioning.GUI_RELATIVE;
             this.customTabX = null;
             this.customTabY = null;
-            this.screenEdgeOffset = 5;
+            this.screenEdgeOffset = 0;
         }
 
         public ScreenRegistration(Class<? extends Screen> screenClass, Function<Player, Integer> screenWidth, Function<Player, Integer> screenHeight, TabDisplayMode displayMode, TabPositioning positioning, Function<Screen, Integer> customTabX, Function<Screen, Integer> customTabY, int screenEdgeOffset) {
