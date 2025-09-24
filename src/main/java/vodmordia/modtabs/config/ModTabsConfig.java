@@ -72,18 +72,6 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static TabDisplayVisibility backpackedTabDisplayVisibility = TabDisplayVisibility.YES;
 
-    @Comment(category = "tabs") public static CommentText spacer3c;
-
-    @Comment(category = "tabs") public static CommentText backpackOld;
-
-    @Entry(category = "tabs")
-    public static boolean backpackTabEnabled = true;
-
-    @Entry(category = "tabs")
-    public static int backpackTabOrder = 0;
-
-    @Entry(category = "tabs")
-    public static TabDisplayVisibility backpackTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer4;
 
@@ -282,19 +270,6 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Comment(category = "tabs") public static CommentText spacer18;
 
-    @Comment(category = "tabs") public static CommentText reskillable;
-
-    @Entry(category = "tabs")
-    public static boolean reskillableTabEnabled = true;
-
-    @Entry(category = "tabs")
-    public static int reskillableTabOrder = 0;
-
-    @Entry(category = "tabs")
-    public static TabDisplayVisibility reskillableTabDisplayVisibility = TabDisplayVisibility.YES;
-
-    @Comment(category = "tabs") public static CommentText spacer18b;
-
     @Comment(category = "tabs") public static CommentText reskillableReimagined;
 
     @Entry(category = "tabs")
@@ -347,4 +322,14 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static TabDisplayVisibility xaerosMapTabDisplayVisibility = TabDisplayVisibility.YES;
+
+    @Comment(category = "customTabs") public static CommentText spacer22;
+
+    @Comment(category = "customTabs") public static CommentText customTabs;
+
+    @Entry(category = "customTabs")
+    public static boolean customTabsEnabled = true;
+
+    @Entry(category = "customTabs")
+    public static boolean customTabsDebugLogging = false;
 }

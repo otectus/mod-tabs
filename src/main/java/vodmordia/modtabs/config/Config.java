@@ -11,13 +11,11 @@ public class Config
 		// Tab enable/disable settings
 		public static boolean inventoryTabEnabled;
 		public static boolean backpackedTabEnabled;
-		public static boolean backpackTabEnabled;
 		public static boolean travelersBackpackTabEnabled;
 		public static boolean mapAtlasesTabEnabled;
 		public static boolean xaerosMapTabEnabled;
 		public static boolean journeyMapTabEnabled;
 		public static boolean bodyDamageTabEnabled;
-		public static boolean reskillableTabEnabled;
 		public static boolean reskillableReimaginedTabEnabled;
 		public static boolean ftbQuestsTabEnabled;
 		public static boolean ftbTeamsTabEnabled;
@@ -37,13 +35,16 @@ public class Config
 		public static boolean draconicEvolutionTabEnabled;
 		public static boolean stickyInventoryTab;
 
+		// Custom tabs settings
+		public static boolean customTabsEnabled;
+		public static boolean customTabsDebugLogging;
+
 		// Tab display visibility settings
 		public static TabDisplayVisibility inventoryTabDisplayVisibility;
 		public static TabDisplayVisibility advancementsTabDisplayVisibility;
 		public static TabDisplayVisibility arsElixirumTabDisplayVisibility;
 		public static TabDisplayVisibility arsNouveauTabDisplayVisibility;
 		public static TabDisplayVisibility backpackedTabDisplayVisibility;
-		public static TabDisplayVisibility backpackTabDisplayVisibility;
 		public static TabDisplayVisibility bodyDamageTabDisplayVisibility;
 		public static TabDisplayVisibility cobblemonTabDisplayVisibility;
 		public static TabDisplayVisibility cosmeticArmorTabDisplayVisibility;
@@ -59,7 +60,6 @@ public class Config
 		public static TabDisplayVisibility modularGolemsTabDisplayVisibility;
 		public static TabDisplayVisibility passiveSkillTreeTabDisplayVisibility;
 		public static TabDisplayVisibility pufferfishSkillsTabDisplayVisibility;
-		public static TabDisplayVisibility reskillableTabDisplayVisibility;
 		public static TabDisplayVisibility reskillableReimaginedTabDisplayVisibility;
 		public static TabDisplayVisibility sophisticatedBackpacksTabDisplayVisibility;
 		public static TabDisplayVisibility travelersBackpackTabDisplayVisibility;
@@ -68,10 +68,8 @@ public class Config
 		// Tab order overrides
 		public static int inventoryTabOrder;
 		public static int backpackedTabOrder;
-		public static int backpackTabOrder;
 		public static int travelersBackpackTabOrder;
 		public static int bodyDamageTabOrder;
-		public static int reskillableTabOrder;
 		public static int reskillableReimaginedTabOrder;
 		public static int ftbQuestsTabOrder;
 		public static int ftbTeamsTabOrder;
@@ -101,10 +99,8 @@ public class Config
 				// Read from MidnightConfig fields
 				inventoryTabEnabled = ModTabsConfig.inventoryTabEnabled;
 				backpackedTabEnabled = ModTabsConfig.backpackedTabEnabled;
-				backpackTabEnabled = ModTabsConfig.backpackTabEnabled;
 				travelersBackpackTabEnabled = ModTabsConfig.travelersBackpackTabEnabled;
 				bodyDamageTabEnabled = ModTabsConfig.bodyDamageTabEnabled;
-				reskillableTabEnabled = ModTabsConfig.reskillableTabEnabled;
 				reskillableReimaginedTabEnabled = ModTabsConfig.reskillableReimaginedTabEnabled;
 				ftbQuestsTabEnabled = ModTabsConfig.ftbQuestsTabEnabled;
 				mapAtlasesTabEnabled = ModTabsConfig.mapAtlasesTabEnabled;
@@ -129,13 +125,15 @@ public class Config
 				draconicEvolutionTabEnabled = ModTabsConfig.draconicEvolutionTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
+				// Load custom tabs settings
+				customTabsEnabled = ModTabsConfig.customTabsEnabled;
+				customTabsDebugLogging = ModTabsConfig.customTabsDebugLogging;
+
 				// Load tab order overrides
 				inventoryTabOrder = ModTabsConfig.inventoryTabOrder;
 				backpackedTabOrder = ModTabsConfig.backpackedTabOrder;
-				backpackTabOrder = ModTabsConfig.backpackTabOrder;
 				travelersBackpackTabOrder = ModTabsConfig.travelersBackpackTabOrder;
 				bodyDamageTabOrder = ModTabsConfig.bodyDamageTabOrder;
-				reskillableTabOrder = ModTabsConfig.reskillableTabOrder;
 				reskillableReimaginedTabOrder = ModTabsConfig.reskillableReimaginedTabOrder;
 				ftbQuestsTabOrder = ModTabsConfig.ftbQuestsTabOrder;
 				ftbTeamsTabOrder = ModTabsConfig.ftbTeamsTabOrder;
@@ -164,7 +162,6 @@ public class Config
 				arsElixirumTabDisplayVisibility = ModTabsConfig.arsElixirumTabDisplayVisibility;
 				arsNouveauTabDisplayVisibility = ModTabsConfig.arsNouveauTabDisplayVisibility;
 				backpackedTabDisplayVisibility = ModTabsConfig.backpackedTabDisplayVisibility;
-				backpackTabDisplayVisibility = ModTabsConfig.backpackTabDisplayVisibility;
 				bodyDamageTabDisplayVisibility = ModTabsConfig.bodyDamageTabDisplayVisibility;
 				cobblemonTabDisplayVisibility = ModTabsConfig.cobblemonTabDisplayVisibility;
 				cosmeticArmorTabDisplayVisibility = ModTabsConfig.cosmeticArmorTabDisplayVisibility;
@@ -180,7 +177,6 @@ public class Config
 				modularGolemsTabDisplayVisibility = ModTabsConfig.modularGolemsTabDisplayVisibility;
 				passiveSkillTreeTabDisplayVisibility = ModTabsConfig.passiveSkillTreeTabDisplayVisibility;
 				pufferfishSkillsTabDisplayVisibility = ModTabsConfig.pufferfishSkillsTabDisplayVisibility;
-				reskillableTabDisplayVisibility = ModTabsConfig.reskillableTabDisplayVisibility;
 				reskillableReimaginedTabDisplayVisibility = ModTabsConfig.reskillableReimaginedTabDisplayVisibility;
 				sophisticatedBackpacksTabDisplayVisibility = ModTabsConfig.sophisticatedBackpacksTabDisplayVisibility;
 				travelersBackpackTabDisplayVisibility = ModTabsConfig.travelersBackpackTabDisplayVisibility;

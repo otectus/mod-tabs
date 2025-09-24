@@ -542,6 +542,13 @@ public class TabsMenu {
         preservedStartTabIndex = 0;
     }
 
+    /**
+     * Check if a screen class has tabs registered for it
+     */
+    public static boolean hasTabsForScreen(Class<? extends Screen> screenClass) {
+        return tabsScreens.containsKey(screenClass);
+    }
+
     public static class ScreenInfo {
         public Function<Player, Integer> width;
         public Function<Player, Integer> height;
@@ -586,9 +593,15 @@ public class TabsMenu {
         }
 
         public void addTab(int priority, TabBase newTab) {
-            if (this.tabs.containsKey(priority))
-                this.tabs.get(priority).add(newTab);
-            else {
+            if (this.tabs.containsKey(priority)) {
+                List<TabBase> existingTabs = this.tabs.get(priority);
+                // Check for duplicate tabs of the same class
+                boolean alreadyExists = existingTabs.stream()
+                    .anyMatch(tab -> tab.getClass().equals(newTab.getClass()));
+                if (!alreadyExists) {
+                    existingTabs.add(newTab);
+                }
+            } else {
                 ArrayList<TabBase> newTabsForPriority = new ArrayList<>();
                 newTabsForPriority.add(newTab);
                 this.tabs.put(priority, newTabsForPriority);

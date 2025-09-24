@@ -91,7 +91,7 @@ public class DynamicTabConfig {
         updateTabConfig("advancementsTab", ModTabsConfig.advancementsTabEnabled, ModTabsConfig.advancementsTabOrder);
         updateTabConfig("arsElixirumTab", ModTabsConfig.arsElixirumTabEnabled, ModTabsConfig.arsElixirumTabOrder);
         updateTabConfig("arsNouveauTab", ModTabsConfig.arsNouveauTabEnabled, ModTabsConfig.arsNouveauTabOrder);
-        updateTabConfig("backpackTab", ModTabsConfig.backpackTabEnabled, ModTabsConfig.backpackTabOrder);
+        updateTabConfig("backpackedTab", ModTabsConfig.backpackedTabEnabled, ModTabsConfig.backpackedTabOrder);
         updateTabConfig("bodyDamageTab", ModTabsConfig.bodyDamageTabEnabled, ModTabsConfig.bodyDamageTabOrder);
         updateTabConfig("cobblemonTab", ModTabsConfig.cobblemonTabEnabled, ModTabsConfig.cobblemonTabOrder);
         updateTabConfig("cosmeticArmorTab", ModTabsConfig.cosmeticArmorTabEnabled, ModTabsConfig.cosmeticArmorTabOrder);
@@ -106,7 +106,7 @@ public class DynamicTabConfig {
         updateTabConfig("modularGolemsTab", ModTabsConfig.modularGolemsTabEnabled, ModTabsConfig.modularGolemsTabOrder);
         updateTabConfig("passiveSkillTreeTab", ModTabsConfig.passiveSkillTreeTabEnabled, ModTabsConfig.passiveSkillTreeTabOrder);
         updateTabConfig("pufferfishSkillsTab", ModTabsConfig.pufferfishSkillsTabEnabled, ModTabsConfig.pufferfishSkillsTabOrder);
-        updateTabConfig("reskillableTab", ModTabsConfig.reskillableTabEnabled, ModTabsConfig.reskillableTabOrder);
+        updateTabConfig("reskillableReimaginedTab", ModTabsConfig.reskillableReimaginedTabEnabled, ModTabsConfig.reskillableReimaginedTabOrder);
         updateTabConfig("sophisticatedBackpacksTab", ModTabsConfig.sophisticatedBackpacksTabEnabled, ModTabsConfig.sophisticatedBackpacksTabOrder);
         updateTabConfig("travelersBackpackTab", ModTabsConfig.travelersBackpackTabEnabled, ModTabsConfig.travelersBackpackTabOrder);
         updateTabConfig("xaerosMapTab", ModTabsConfig.xaerosMapTabEnabled, ModTabsConfig.xaerosMapTabOrder);
