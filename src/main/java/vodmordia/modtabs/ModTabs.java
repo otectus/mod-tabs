@@ -125,6 +125,7 @@ public class ModTabs
 
             TabsMenu.register(new ArsNouveauTab());
             TabsMenu.register(new AdvancementsTab());
+            TabsMenu.register(new BrassworksMissionsTab());
 
             // Wait for Patchouli books to load, then load custom tabs
             waitForPatchouliAndLoadCustomTabs();

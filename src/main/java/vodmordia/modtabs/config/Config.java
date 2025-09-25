@@ -33,6 +33,7 @@ public class Config
 		public static boolean modularGolemsTabEnabled;
 		public static boolean advancementsTabEnabled;
 		public static boolean draconicEvolutionTabEnabled;
+		public static boolean brassworksMissionsTabEnabled;
 		public static boolean stickyInventoryTab;
 
 		// Custom tabs settings
@@ -64,6 +65,7 @@ public class Config
 		public static TabDisplayVisibility sophisticatedBackpacksTabDisplayVisibility;
 		public static TabDisplayVisibility travelersBackpackTabDisplayVisibility;
 		public static TabDisplayVisibility xaerosMapTabDisplayVisibility;
+		public static TabDisplayVisibility brassworksMissionsTabDisplayVisibility;
 
 		// Tab order overrides
 		public static int inventoryTabOrder;
@@ -91,6 +93,7 @@ public class Config
 		public static int cosmeticArmorTabOrder;
 		public static int advancementsTabOrder;
 		public static int draconicEvolutionTabOrder;
+		public static int brassworksMissionsTabOrder;
 
 		public static void bakeClient()
 		{
@@ -123,6 +126,7 @@ public class Config
 				modularGolemsTabEnabled = ModTabsConfig.modularGolemsTabEnabled;
 				advancementsTabEnabled = ModTabsConfig.advancementsTabEnabled;
 				draconicEvolutionTabEnabled = ModTabsConfig.draconicEvolutionTabEnabled;
+				brassworksMissionsTabEnabled = ModTabsConfig.brassworksMissionsTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
 				// Load custom tabs settings
@@ -155,6 +159,7 @@ public class Config
 				cosmeticArmorTabOrder = ModTabsConfig.cosmeticArmorTabOrder;
 				advancementsTabOrder = ModTabsConfig.advancementsTabOrder;
 				draconicEvolutionTabOrder = ModTabsConfig.draconicEvolutionTabOrder;
+				brassworksMissionsTabOrder = ModTabsConfig.brassworksMissionsTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -163,6 +168,7 @@ public class Config
 				arsNouveauTabDisplayVisibility = ModTabsConfig.arsNouveauTabDisplayVisibility;
 				backpackedTabDisplayVisibility = ModTabsConfig.backpackedTabDisplayVisibility;
 				bodyDamageTabDisplayVisibility = ModTabsConfig.bodyDamageTabDisplayVisibility;
+				brassworksMissionsTabDisplayVisibility = ModTabsConfig.brassworksMissionsTabDisplayVisibility;
 				cobblemonTabDisplayVisibility = ModTabsConfig.cobblemonTabDisplayVisibility;
 				cosmeticArmorTabDisplayVisibility = ModTabsConfig.cosmeticArmorTabDisplayVisibility;
 				draconicEvolutionTabDisplayVisibility = ModTabsConfig.draconicEvolutionTabDisplayVisibility;

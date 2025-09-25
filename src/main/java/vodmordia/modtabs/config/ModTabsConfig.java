@@ -86,6 +86,19 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static TabDisplayVisibility bodyDamageTabDisplayVisibility = TabDisplayVisibility.YES;
 
+    @Comment(category = "tabs") public static CommentText spacer4b;
+
+    @Comment(category = "tabs") public static CommentText brassworksMissions;
+
+    @Entry(category = "tabs")
+    public static boolean brassworksMissionsTabEnabled = true;
+
+    @Entry(category = "tabs")
+    public static int brassworksMissionsTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility brassworksMissionsTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer5;
 
     @Comment(category = "tabs") public static CommentText cobblemon;

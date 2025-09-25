@@ -192,6 +192,10 @@ dependencies {
     implementation("curse.maven:codechicken-lib-1-8-242818:6583751")
     implementation("curse.maven:draconic-evolution-223565:6943035")
 
+    // Create: Brassworks Missions
+    implementation("curse.maven:create-brassworks-missions-1348982:7030551")
+    implementation("curse.maven:create-328085:6641610")
+
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

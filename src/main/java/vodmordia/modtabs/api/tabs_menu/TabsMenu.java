@@ -81,6 +81,8 @@ public class TabsMenu {
                 return ModTabsConfig.pufferfishSkillsTabDisplayVisibility;
             case "com.dhanantry.scguns.client.screen.PassiveSkillScreen":
                 return ModTabsConfig.passiveSkillTreeTabDisplayVisibility;
+            case "net.swzo.brassworksmissions.client.gui.UiScreen":
+                return ModTabsConfig.brassworksMissionsTabDisplayVisibility;
             case "net.minecraft.client.gui.screens.inventory.AbstractContainerScreen":
                 // Check if it's a sophisticated backpack screen
                 if (screenClassName.contains("sophisticatedbackpacks")) {
