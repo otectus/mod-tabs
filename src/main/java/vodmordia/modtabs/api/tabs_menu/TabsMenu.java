@@ -549,6 +549,87 @@ public class TabsMenu {
         return tabsScreens.containsKey(screenClass);
     }
 
+    /**
+     * Cycle to the next tab when the tab cycle keybind is pressed
+     */
+    public static void cycleToNextTab(Screen currentScreen) {
+        if (currentScreen == null) {
+            return;
+        }
+
+        if (!tabsScreens.containsKey(currentScreen.getClass())) {
+            return; // No tabs registered for this screen
+        }
+
+        if (enabledTabs == null || enabledTabs.isEmpty()) {
+            return; // No enabled tabs to cycle through
+        }
+
+        // Find the currently active tab (the one that matches the current screen)
+        TabBase currentTab = null;
+        int currentTabIndex = -1;
+
+        for (int i = 0; i < enabledTabs.size(); i++) {
+            TabBase tab = enabledTabs.get(i);
+            if (tab.isCurrentlyUsed(currentScreen)) {
+                currentTab = tab;
+                currentTabIndex = i;
+                break;
+            }
+        }
+
+        // If no current tab was found, default to cycling from the first tab
+        if (currentTab == null) {
+            currentTabIndex = -1; // This will make next index 0
+        }
+
+        // Calculate the next tab index
+        int nextTabIndex = (currentTabIndex + 1) % enabledTabs.size();
+        TabBase nextTab = enabledTabs.get(nextTabIndex);
+
+        // Calculate which page the next tab should be on and update startTabIndex
+        if (Config.Baked.stickyInventoryTab) {
+            // Handle sticky inventory tab pagination
+            TabBase inventoryTab = null;
+            List<TabBase> nonInventoryTabs = new ArrayList<>();
+
+            for (TabBase tab : enabledTabs) {
+                if (tab instanceof InventoryTab) {
+                    inventoryTab = tab;
+                } else {
+                    nonInventoryTabs.add(tab);
+                }
+            }
+
+            // If the next tab is the inventory tab, no pagination needed
+            if (!(nextTab instanceof InventoryTab)) {
+                // Find the index of the next tab in the non-inventory tabs list
+                int nextNonInventoryIndex = nonInventoryTabs.indexOf(nextTab);
+                if (nextNonInventoryIndex != -1) {
+                    // Calculate available slots (minus inventory tab slot if present)
+                    int availableSlots = inventoryTab != null ? currentTabsCount - 1 : currentTabsCount;
+
+                    // Calculate which page this tab should be on
+                    int targetPage = nextNonInventoryIndex / availableSlots;
+                    startTabIndex = targetPage * availableSlots;
+                }
+            } else {
+                // If cycling to inventory tab, reset to first page
+                startTabIndex = 0;
+            }
+        } else {
+            // Calculate which page the next tab should be on for non-sticky mode
+            int targetPage = nextTabIndex / currentTabsCount;
+            startTabIndex = targetPage * currentTabsCount;
+        }
+
+        // Mark screen opened via tab to preserve the updated pagination
+        markScreenOpenedViaTab(currentScreen);
+
+        // Open the next tab
+        nextTab.openTargetScreen(Minecraft.getInstance().player);
+    }
+
     public static class ScreenInfo {
         public Function<Player, Integer> width;
         public Function<Player, Integer> height;

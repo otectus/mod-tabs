@@ -13,6 +13,7 @@ import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.client.screens.NextTabsButton;
 import vodmordia.modtabs.client.screens.TabButton;
+import vodmordia.modtabs.client.keybinds.ModKeybinds;
 import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
@@ -62,9 +63,19 @@ public class ClientNeoForgeEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event) {
-        if (TabsMenu.wasScreenOpenedViaTab()) {
-            Minecraft minecraft = Minecraft.getInstance();
+        Minecraft minecraft = Minecraft.getInstance();
 
+        // Handle tab cycling keybind
+        if (ModKeybinds.TAB_CYCLE.matches(event.getKeyCode(), event.getScanCode()) && Screen.hasShiftDown()) {
+            Screen currentScreen = event.getScreen();
+            if (currentScreen != null && TabsMenu.hasTabsForScreen(currentScreen.getClass())) {
+                TabsMenu.cycleToNextTab(currentScreen);
+                event.setCanceled(true);
+                return;
+            }
+        }
+
+        if (TabsMenu.wasScreenOpenedViaTab()) {
             if (minecraft.options.keyInventory.matches(event.getKeyCode(), event.getScanCode())) {
                 if (minecraft.player != null && minecraft.gameMode != null) {
                     // Before switching to inventory, properly close any open container (like backpack)
@@ -164,7 +175,8 @@ public class ClientNeoForgeEvents {
 
         if (screenClassName.equals("net.puffish.skillsmod.client.gui.SkillsScreen") ||
             screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
-            screenClassName.equals("xaero.map.gui.GuiMap")) {
+            screenClassName.equals("xaero.map.gui.GuiMap") ||
+            screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen")) {
 
             // Find and render all TabButton and NextTabsButton widgets for this screen - this renders AFTER the screen content including blur
             for (var child : event.getScreen().children()) {
@@ -187,7 +199,8 @@ public class ClientNeoForgeEvents {
 
         if (screenClassName.equals("net.puffish.skillsmod.client.gui.SkillsScreen") ||
             screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
-            screenClassName.equals("xaero.map.gui.GuiMap")) {
+            screenClassName.equals("xaero.map.gui.GuiMap") ||
+            screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen")) {
 
             // Check if the click is within any tab button bounds and forward the click
             for (var child : event.getScreen().children()) {
@@ -208,5 +221,6 @@ public class ClientNeoForgeEvents {
             }
         }
     }
+
 
 }

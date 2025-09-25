@@ -16,12 +16,14 @@ import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.client.tabs_menu.*;
 import vodmordia.modtabs.client.tabs_menu.AdvancementsTab;
 import vodmordia.modtabs.client.tabs_menu.CustomJsonTab;
+import vodmordia.modtabs.client.keybinds.ModKeybinds;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.config.ModTabsConfig;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 import vodmordia.modtabs.utils.CustomTabLoader;
 import vodmordia.modtabs.config.CustomTabDefinition;
 import eu.midnightdust.lib.config.MidnightConfig;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -56,9 +58,14 @@ public class ModTabs
     // Old config event handlers removed - MidnightConfig handles reloading automatically
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents
     {
+        @SubscribeEvent
+        public static void registerKeys(RegisterKeyMappingsEvent event) {
+            event.register(ModKeybinds.TAB_CYCLE);
+        }
+
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {

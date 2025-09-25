@@ -16,7 +16,7 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "mapAtlasesTab", defaultEnabled = true, defaultOrder = 0)
 public class MapAtlasesTab extends SimpleTextureTab {
-    private static final ResourceLocation MAP_ATLAS_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/map_atlas.png");
+    private static final ResourceLocation MAP_ATLAS_ICON = ResourceLocation.fromNamespaceAndPath("map_atlases", "textures/item/atlas_generic.png");
 
     public MapAtlasesTab() {
         super(MAP_ATLAS_ICON);
@@ -34,8 +34,10 @@ public class MapAtlasesTab extends SimpleTextureTab {
                 if (mapAtlasItemClass.isInstance(atlas.getItem())) {
                     Class<?> networkHelperClass = Class.forName("net.mehvahdjukaar.moonlight.api.platform.network.NetworkHelper");
                     Class<?> packetClass = Class.forName("pepjebs.mapatlases.networking.C2S2COpenAtlasScreenPacket");
+                    Class<?> customPacketPayloadClass = Class.forName("net.minecraft.network.protocol.common.custom.CustomPacketPayload");
+
                     Object packet = packetClass.getDeclaredConstructor().newInstance();
-                    java.lang.reflect.Method sendToServerMethod = networkHelperClass.getMethod("sendToServer", Object.class);
+                    java.lang.reflect.Method sendToServerMethod = networkHelperClass.getMethod("sendToServer", customPacketPayloadClass);
                     sendToServerMethod.invoke(null, packet);
                 }
             } catch (Exception e) {
@@ -74,8 +76,7 @@ public class MapAtlasesTab extends SimpleTextureTab {
 
     @Override
     public void initTabOnScreens() {
-        // Map Atlases doesn't have a dedicated screen that can be registered
-        // It opens the atlas GUI programmatically, so we don't register any screen
-        // All screens will automatically have this tab through the new system
+        // Register Map Atlases screen with inverted tabs at the top
+        ScreenRegistry.registerInvertedScreens("pepjebs.mapatlases.client.screen.AtlasOverviewScreen");
     }
 }

@@ -201,5 +201,8 @@
 
   "tooltip.modtabs.custom_tab.default": "Custom Tab",
   "tooltip.modtabs.custom_tab.error": "Custom Tab (Error)",
-  "tooltip.modtabs.custom_tab.patchouli_book": "Patchouli Book"
+  "tooltip.modtabs.custom_tab.patchouli_book": "Patchouli Book",
+
+  "key.categories.modtabs": "Mod Tabs",
+  "key.modtabs.tab_cycle": "Tab Cycle"
 }
