@@ -138,6 +138,19 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static TabDisplayVisibility draconicEvolutionTabDisplayVisibility = TabDisplayVisibility.YES;
 
+    @Comment(category = "tabs") public static CommentText spacer7a;
+
+    @Comment(category = "tabs") public static CommentText eccentricTome;
+
+    @Entry(category = "tabs")
+    public static boolean eccentricTomeTabEnabled = true;
+
+    @Entry(category = "tabs")
+    public static int eccentricTomeTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility eccentricTomeTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer7b;
 
     @Comment(category = "tabs") public static CommentText diet;

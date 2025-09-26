@@ -196,6 +196,9 @@ dependencies {
     implementation("curse.maven:create-brassworks-missions-1348982:7030551")
     implementation("curse.maven:create-328085:6641610")
 
+    // Eccentric Tome
+    implementation("curse.maven:eccentric-tome-597522:6008768")
+
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

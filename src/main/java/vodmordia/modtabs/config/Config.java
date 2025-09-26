@@ -34,6 +34,7 @@ public class Config
 		public static boolean advancementsTabEnabled;
 		public static boolean draconicEvolutionTabEnabled;
 		public static boolean brassworksMissionsTabEnabled;
+		public static boolean eccentricTomeTabEnabled;
 		public static boolean stickyInventoryTab;
 
 		// Custom tabs settings
@@ -66,6 +67,7 @@ public class Config
 		public static TabDisplayVisibility travelersBackpackTabDisplayVisibility;
 		public static TabDisplayVisibility xaerosMapTabDisplayVisibility;
 		public static TabDisplayVisibility brassworksMissionsTabDisplayVisibility;
+		public static TabDisplayVisibility eccentricTomeTabDisplayVisibility;
 
 		// Tab order overrides
 		public static int inventoryTabOrder;
@@ -94,6 +96,7 @@ public class Config
 		public static int advancementsTabOrder;
 		public static int draconicEvolutionTabOrder;
 		public static int brassworksMissionsTabOrder;
+		public static int eccentricTomeTabOrder;
 
 		public static void bakeClient()
 		{
@@ -127,6 +130,7 @@ public class Config
 				advancementsTabEnabled = ModTabsConfig.advancementsTabEnabled;
 				draconicEvolutionTabEnabled = ModTabsConfig.draconicEvolutionTabEnabled;
 				brassworksMissionsTabEnabled = ModTabsConfig.brassworksMissionsTabEnabled;
+				eccentricTomeTabEnabled = ModTabsConfig.eccentricTomeTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
 				// Load custom tabs settings
@@ -160,6 +164,7 @@ public class Config
 				advancementsTabOrder = ModTabsConfig.advancementsTabOrder;
 				draconicEvolutionTabOrder = ModTabsConfig.draconicEvolutionTabOrder;
 				brassworksMissionsTabOrder = ModTabsConfig.brassworksMissionsTabOrder;
+				eccentricTomeTabOrder = ModTabsConfig.eccentricTomeTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -172,6 +177,7 @@ public class Config
 				cobblemonTabDisplayVisibility = ModTabsConfig.cobblemonTabDisplayVisibility;
 				cosmeticArmorTabDisplayVisibility = ModTabsConfig.cosmeticArmorTabDisplayVisibility;
 				draconicEvolutionTabDisplayVisibility = ModTabsConfig.draconicEvolutionTabDisplayVisibility;
+				eccentricTomeTabDisplayVisibility = ModTabsConfig.eccentricTomeTabDisplayVisibility;
 				dietTabDisplayVisibility = ModTabsConfig.dietTabDisplayVisibility;
 				ftbQuestsTabDisplayVisibility = ModTabsConfig.ftbQuestsTabDisplayVisibility;
 				ftbTeamsTabDisplayVisibility = ModTabsConfig.ftbTeamsTabDisplayVisibility;
