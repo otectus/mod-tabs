@@ -42,7 +42,9 @@ public class XaerosMapTab extends CustomIconTab {
                 Object mapProcessor = getMapProcessorMethod.invoke(currentSession);
 
                 Class<?> guiMapClass = Class.forName("xaero.map.gui.GuiMap");
-                Screen guiMap = (Screen) guiMapClass.getDeclaredConstructor(Screen.class, Screen.class, Object.class, net.minecraft.world.entity.Entity.class)
+                Class<?> mapProcessorClass = Class.forName("xaero.map.MapProcessor");
+
+                Screen guiMap = (Screen) guiMapClass.getDeclaredConstructor(Screen.class, Screen.class, mapProcessorClass, net.minecraft.world.entity.Entity.class)
                     .newInstance(null, null, mapProcessor, Minecraft.getInstance().getCameraEntity());
 
                 Minecraft.getInstance().setScreen(guiMap);
