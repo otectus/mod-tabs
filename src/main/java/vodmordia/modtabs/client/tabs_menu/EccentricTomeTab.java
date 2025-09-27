@@ -1,6 +1,7 @@
 package vodmordia.modtabs.client.tabs_menu;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -35,24 +36,35 @@ public class EccentricTomeTab extends SimpleItemTab {
                 return; // No tome found
             }
 
-            // Create TomeScreen
+            // Create original TomeScreen
             Class<?> tomeScreenClass = Class.forName("website.eccentric.tome.client.TomeScreen");
-            Object tomeScreen = tomeScreenClass.getDeclaredConstructor(ItemStack.class)
+            Object originalTomeScreen = tomeScreenClass.getDeclaredConstructor(ItemStack.class)
                 .newInstance(tomeStack);
 
+            // Initialize the original screen properly (set minecraft instance)
+            Method initMethod = Screen.class.getDeclaredMethod("init", net.minecraft.client.Minecraft.class, int.class, int.class);
+            initMethod.setAccessible(true);
+            var minecraft = Minecraft.getInstance();
+            initMethod.invoke(originalTomeScreen, minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
+
+            // Create a wrapper that delegates to original but overrides mouseClicked
+            TomeScreenWrapper wrapper = new TomeScreenWrapper((Screen) originalTomeScreen, player);
+
             // Open the GUI
-            Minecraft.getInstance().setScreen((Screen) tomeScreen);
+            Minecraft.getInstance().setScreen(wrapper);
 
         } catch (Exception e) {
-            // Silently ignore errors - mod may not be available
+            ModTabs.LOGGER.error("Error opening TomeScreen", e);
         }
     }
 
     @Override
     public boolean isEnabled(Player player) {
-        return Config.Baked.eccentricTomeTabEnabled &&
-               ModIntegrationManager.isModLoaded(ModIntegration.ECCENTRIC_TOME) &&
-               hasTome(player);
+        boolean configEnabled = Config.Baked.eccentricTomeTabEnabled;
+        boolean modLoaded = ModIntegrationManager.isModLoaded(ModIntegration.ECCENTRIC_TOME);
+        boolean hasTheTome = hasTome(player);
+
+        return configEnabled && modLoaded && hasTheTome;
     }
 
     private boolean hasTome(Player player) {
@@ -207,5 +219,127 @@ public class EccentricTomeTab extends SimpleItemTab {
             .inverted()
             .atTop()
             .registerAllTabs("website.eccentric.tome.client.TomeScreen");
+    }
+
+    // Wrapper that delegates to original TomeScreen but overrides mouseClicked for custom conversion
+    private static class TomeScreenWrapper extends Screen {
+        private final Screen originalTomeScreen;
+        private final Player player;
+
+        public TomeScreenWrapper(Screen originalTomeScreen, Player player) {
+            super(Component.empty());
+            this.originalTomeScreen = originalTomeScreen;
+            this.player = player;
+        }
+
+        @Override
+        protected void init() {
+            super.init();
+            // Make sure the original screen is also initialized
+            try {
+                Method initMethod = originalTomeScreen.getClass().getMethod("init");
+                initMethod.invoke(originalTomeScreen);
+            } catch (Exception e) {
+                ModTabs.LOGGER.error("Error initializing original screen", e);
+            }
+        }
+
+        @Override
+        public boolean mouseClicked(double x, double y, int button) {
+            if (button == 0) { // LEFT_CLICK
+                try {
+                    // Get the selected book by calling mouseClicked and checking state
+                    boolean originalResult = originalTomeScreen.mouseClicked(x, y, button);
+
+                    Field bookField = originalTomeScreen.getClass().getDeclaredField("book");
+                    bookField.setAccessible(true);
+                    ItemStack selectedBook = (ItemStack) bookField.get(originalTomeScreen);
+
+                    if (selectedBook != null) {
+                        // Convert the tome to the selected book
+                        sendConvertMessage(selectedBook);
+
+                        this.onClose();
+                        return true;
+                    }
+
+                    return originalResult;
+                } catch (Exception e) {
+                    ModTabs.LOGGER.error("Error in custom mouseClicked", e);
+                }
+            }
+
+            return originalTomeScreen.mouseClicked(x, y, button);
+        }
+
+        private void sendConvertMessage(ItemStack selectedBook) {
+            try {
+                // Find the tome in the player's inventory
+                EccentricTomeTab tab = new EccentricTomeTab();
+                ItemStack tomeStack = tab.findTomeInInventory(player);
+                if (tomeStack.isEmpty()) {
+                    return;
+                }
+
+                // Use the TomeUtils.convert method
+                Class<?> tomeUtilsClass = Class.forName("website.eccentric.tome.TomeUtils");
+                Method convertMethod = tomeUtilsClass.getMethod("convert", net.minecraft.world.item.ItemStack.class, net.minecraft.world.item.ItemStack.class);
+
+                // Call the convert method with the tome and selected book
+                ItemStack convertedStack = (ItemStack) convertMethod.invoke(null, tomeStack, selectedBook);
+
+                // Find the slot where the tome was and replace it with the converted stack
+                for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                    ItemStack slotStack = player.getInventory().getItem(i);
+                    if (!slotStack.isEmpty() && tab.isTome(slotStack)) {
+                        player.getInventory().setItem(i, convertedStack);
+                        break;
+                    }
+                }
+
+                // Also check offhand
+                if (tab.isTome(player.getOffhandItem())) {
+                    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, convertedStack);
+                }
+
+            } catch (Exception e) {
+                ModTabs.LOGGER.error("Failed to convert tome", e);
+            }
+        }
+
+        private boolean isTome(ItemStack stack) {
+            try {
+                Class<?> tomeItemClass = Class.forName("website.eccentric.tome.TomeItem");
+                return tomeItemClass.isInstance(stack.getItem());
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        // Delegate all other methods to the original screen
+        @Override
+        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+            try {
+                originalTomeScreen.render(guiGraphics, mouseX, mouseY, partialTick);
+            } catch (Exception e) {
+                ModTabs.LOGGER.error("Error in original screen render", e);
+            }
+        }
+
+        @Override
+        public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+            return originalTomeScreen.keyPressed(keyCode, scanCode, modifiers);
+        }
+
+        @Override
+        public boolean isPauseScreen() {
+            return originalTomeScreen.isPauseScreen();
+        }
+
+        @Override
+        public void onClose() {
+            originalTomeScreen.onClose();
+            super.onClose();
+        }
     }
 }
