@@ -75,7 +75,8 @@ public class ClientNeoForgeEvents {
             }
         }
 
-        if (TabsMenu.wasScreenOpenedViaTab()) {
+        // Only handle inventory keybind if screen was opened via tab AND current screen has tab integration
+        if (TabsMenu.wasScreenOpenedViaTab() && TabsMenu.hasTabsForScreen(event.getScreen().getClass())) {
             if (minecraft.options.keyInventory.matches(event.getKeyCode(), event.getScanCode())) {
                 if (minecraft.player != null && minecraft.gameMode != null) {
                     // Before switching to inventory, properly close any open container (like backpack)
