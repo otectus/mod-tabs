@@ -64,13 +64,13 @@ public class ModTabsConfig extends MidnightConfig {
     @Comment(category = "tabs") public static CommentText backpacked;
 
     @Entry(category = "tabs")
-    public static boolean backpackedTabEnabled = false;
+    public static boolean backpackedTabEnabled = true;
 
     @Entry(category = "tabs")
     public static int backpackedTabOrder = 0;
 
     @Entry(category = "tabs")
-    public static TabDisplayVisibility backpackedTabDisplayVisibility = TabDisplayVisibility.YES;
+    public static TabDisplayVisibility backpackedTabDisplayVisibility = TabDisplayVisibility.TUCK;
 
 
     @Comment(category = "tabs") public static CommentText spacer4;

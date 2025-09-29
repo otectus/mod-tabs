@@ -55,6 +55,7 @@ public class TabsMenu {
                 return ModTabsConfig.arsNouveauTabDisplayVisibility;
             case "com.jozufozu.flywheel.util.transform.TransformStack":
             case "net.backpacked.client.screen.BackpackScreen":
+            case "com.mrcrayfish.backpacked.client.gui.screen.inventory.BackpackScreen":
                 return ModTabsConfig.backpackedTabDisplayVisibility;
             case "sfiomn.legendarysurvivaloverhaul.client.gui.BodyHealthScreen":
                 return ModTabsConfig.bodyDamageTabDisplayVisibility;
