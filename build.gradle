@@ -108,7 +108,7 @@ repositories {
         }
     }
     // curios repository
-    
+
     maven {
         name = "CurseForge"
         url = "https://minecraft.curseforge.com/api/maven/"
@@ -119,6 +119,12 @@ repositories {
     // Midnight Lib repository
     maven {
         url "https://maven.terraformersmc.com/releases/"
+    }
+
+    // Sinytra repository
+    maven {
+        name = "Sinytra"
+        url = "https://maven.sinytra.org/releases"
     }
 
     // Local flat directory for external JARs
@@ -134,7 +140,7 @@ dependencies {
     implementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
     implementation("curse.maven:curios-309927:6529130")
-    
+
     implementation(name: 'legendarysurvivaloverhaul-1.21.1-2.3.22', version: null)
     implementation("curse.maven:reskillable-reimagined-1170464:6599973")
     implementation("curse.maven:architectury-api-419699:5786327")
@@ -161,7 +167,7 @@ dependencies {
     implementation("curse.maven:xaeros-world-map-317780:6778114")
     implementation("curse.maven:journeymap-32274:6689206")
     implementation("curse.maven:cosmetic-armor-reworked-237307:5610814")
-    
+
     // L2 Hostility compatibility dependencies
     implementation("curse.maven:l2hostility-909207:6610946")
     implementation("curse.maven:l2library-620203:6820079")
@@ -200,6 +206,18 @@ dependencies {
     // Eccentric Tome
     implementation("curse.maven:eccentric-tome-597522:6008768")
 
+    // Sinytra Connector (for Fabric mod compatibility)
+    runtimeOnly "curse.maven:sinytra-connector-890127:6944771"
+
+    // Forgified Fabric API (required by Sinytra Connector)
+    runtimeOnly "curse.maven:forgified-fabric-api-889079:7009993"
+
+    // RPG Crafting (Fabric mod) and its dependencies
+    runtimeOnly "curse.maven:rpg-crafting-1081787:7029233"
+    runtimeOnly "curse.maven:fzzy-config-1005914:6843479"
+    runtimeOnly "curse.maven:slot-customization-api-1061163:6726624"
+    runtimeOnly "curse.maven:fabric-language-kotlin-308769:6985480"
+
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -233,6 +251,35 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Vendor'   : mod_authors,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
+    }
+}
+
+// Task to download runtime mods for dev environment
+configurations {
+    devMods
+}
+
+dependencies {
+    devMods "curse.maven:sinytra-connector-890127:6944771"
+    devMods "curse.maven:forgified-fabric-api-889079:7009993"
+    devMods "curse.maven:rpg-crafting-1081787:7029233"
+    devMods "curse.maven:fzzy-config-1005914:6843479"
+    devMods "curse.maven:slot-customization-api-1061163:6726624"
+    devMods "curse.maven:fabric-language-kotlin-308769:6985480"
+}
+
+task copyDevMods(type: Copy) {
+    from configurations.devMods
+    into file('run/mods')
+    doFirst {
+        file('run/mods').mkdirs()
+    }
+}
+
+// Run copyDevMods before running the client (will auto-run when needed)
+tasks.whenTaskAdded { task ->
+    if (task.name == 'runClient' || task.name == 'prepareRun') {
+        task.dependsOn copyDevMods
     }
 }
 

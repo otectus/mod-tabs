@@ -24,6 +24,7 @@
   "tooltip.modtabs.tab.advancements.description": "Advancements",
   "tooltip.modtabs.tab.brassworks_missions.description": "Brassworks Missions",
   "tooltip.modtabs.tab.eccentric_tome.description": "Eccentric Tome",
+  "tooltip.modtabs.tab.rpgcrafting.description": "Hand Crafting",
 
   "modtabs.midnightconfig.category.tabs": "Mod Tabs Settings",
   "modtabs.midnightconfig.category.customTabs": "Custom Tabs Settings",
@@ -53,7 +54,9 @@
   "modtabs.midnightconfig.l2Attributes": "L2 Attributes Tab",
   "modtabs.midnightconfig.l2Artifacts": "L2 Artifacts Tab",
   "modtabs.midnightconfig.cosmeticArmor": "Cosmetic Armor Tab",
+  "modtabs.midnightconfig.advancements_and_rpg_crafting": "=== Advancements & RPG Crafting ===",
   "modtabs.midnightconfig.advancements": "Advancements Tab",
+  "modtabs.midnightconfig.rpgCrafting": "RPG Crafting Tab (shares visibility with Advancements)",
   "modtabs.midnightconfig.inventoryTabEnabled": "Enable Inventory Tab",
   "modtabs.midnightconfig.inventoryTabOrder": "Inventory Tab Order",
   "modtabs.midnightconfig.inventoryTabOrder.tooltip": "Override order for Inventory Tab (0 = default alphabetical order, 1+ = custom order)",
@@ -145,6 +148,9 @@
   "modtabs.midnightconfig.advancementsTabEnabled": "Enable Advancements Tab",
   "modtabs.midnightconfig.advancementsTabOrder": "Advancements Tab Order",
   "modtabs.midnightconfig.advancementsTabOrder.tooltip": "Override order for Advancements Tab (0 = default alphabetical order, 1+ = custom order)",
+  "modtabs.midnightconfig.rpgCraftingTabEnabled": "Enable RPG Crafting Tab",
+  "modtabs.midnightconfig.rpgCraftingTabOrder": "RPG Crafting Tab Order",
+  "modtabs.midnightconfig.rpgCraftingTabOrder.tooltip": "Override order for RPG Crafting Tab (0 = default alphabetical order, 1+ = custom order)",
 
   "modtabs.midnightconfig.inventoryTabDisplayVisibility": "Display Tab Bar in Inventory",
   "modtabs.midnightconfig.inventoryTabDisplayVisibility.tooltip": "Yes: Always show tab bar, No: Hide tab bar, Tuck: Hide tab bar partially with hover animation",

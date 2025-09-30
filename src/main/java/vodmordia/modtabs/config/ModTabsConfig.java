@@ -22,6 +22,8 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Comment(category = "tabs") public static CommentText spacer1;
 
+    @Comment(category = "tabs") public static CommentText advancements_and_rpg_crafting;
+
     @Comment(category = "tabs") public static CommentText advancements;
 
     @Entry(category = "tabs")
@@ -32,6 +34,16 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs")
     public static TabDisplayVisibility advancementsTabDisplayVisibility = TabDisplayVisibility.TUCK;
+
+    @Comment(category = "tabs") public static CommentText spacer1b;
+
+    @Comment(category = "tabs") public static CommentText rpgCrafting;
+
+    @Entry(category = "tabs")
+    public static boolean rpgCraftingTabEnabled = true;
+
+    @Entry(category = "tabs")
+    public static int rpgCraftingTabOrder = 0;
 
     @Comment(category = "tabs") public static CommentText spacer2;
 

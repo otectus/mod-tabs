@@ -35,6 +35,7 @@ public class Config
 		public static boolean draconicEvolutionTabEnabled;
 		public static boolean brassworksMissionsTabEnabled;
 		public static boolean eccentricTomeTabEnabled;
+		public static boolean rpgCraftingTabEnabled;
 		public static boolean stickyInventoryTab;
 
 		// Custom tabs settings
@@ -68,6 +69,7 @@ public class Config
 		public static TabDisplayVisibility xaerosMapTabDisplayVisibility;
 		public static TabDisplayVisibility brassworksMissionsTabDisplayVisibility;
 		public static TabDisplayVisibility eccentricTomeTabDisplayVisibility;
+		public static TabDisplayVisibility rpgCraftingTabDisplayVisibility;
 
 		// Tab order overrides
 		public static int inventoryTabOrder;
@@ -97,6 +99,7 @@ public class Config
 		public static int draconicEvolutionTabOrder;
 		public static int brassworksMissionsTabOrder;
 		public static int eccentricTomeTabOrder;
+		public static int rpgCraftingTabOrder;
 
 		public static void bakeClient()
 		{
@@ -131,6 +134,7 @@ public class Config
 				draconicEvolutionTabEnabled = ModTabsConfig.draconicEvolutionTabEnabled;
 				brassworksMissionsTabEnabled = ModTabsConfig.brassworksMissionsTabEnabled;
 				eccentricTomeTabEnabled = ModTabsConfig.eccentricTomeTabEnabled;
+				rpgCraftingTabEnabled = ModTabsConfig.rpgCraftingTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
 				// Load custom tabs settings
@@ -165,6 +169,7 @@ public class Config
 				draconicEvolutionTabOrder = ModTabsConfig.draconicEvolutionTabOrder;
 				brassworksMissionsTabOrder = ModTabsConfig.brassworksMissionsTabOrder;
 				eccentricTomeTabOrder = ModTabsConfig.eccentricTomeTabOrder;
+				rpgCraftingTabOrder = ModTabsConfig.rpgCraftingTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -193,6 +198,7 @@ public class Config
 				sophisticatedBackpacksTabDisplayVisibility = ModTabsConfig.sophisticatedBackpacksTabDisplayVisibility;
 				travelersBackpackTabDisplayVisibility = ModTabsConfig.travelersBackpackTabDisplayVisibility;
 				xaerosMapTabDisplayVisibility = ModTabsConfig.xaerosMapTabDisplayVisibility;
+				rpgCraftingTabDisplayVisibility = ModTabsConfig.advancementsTabDisplayVisibility; // Shares config with advancements
 			}
 			catch (Exception e)
 			{

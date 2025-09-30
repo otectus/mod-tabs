@@ -33,7 +33,8 @@ public enum ModIntegration {
     DRACONIC_EVOLUTION("draconicevolution", "Draconic Evolution"),
     BRASSWORKS_MISSIONS("brassworksmissions", "Create: Brassworks Missions"),
     ECCENTRIC_TOME("eccentrictome", "Eccentric Tome"),
-    BETTER_ADVANCEMENTS("betteradvancements", "Better Advancements");
+    BETTER_ADVANCEMENTS("betteradvancements", "Better Advancements"),
+    RPG_CRAFTING("rpgcrafting", "RPG Crafting");
 
     private final String modId;
     private final String displayName;

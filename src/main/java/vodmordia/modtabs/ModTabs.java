@@ -127,6 +127,7 @@ public class ModTabs
             TabsMenu.register(new AdvancementsTab());
             TabsMenu.register(new BrassworksMissionsTab());
             TabsMenu.register(new EccentricTomeTab());
+            TabsMenu.register(new RpgCraftingTab());
 
             // Wait for Patchouli books to load, then load custom tabs
             waitForPatchouliAndLoadCustomTabs();
