@@ -32,7 +32,8 @@ public enum ModIntegration {
     ARS_NOUVEAU("ars_nouveau", "Ars Nouveau"),
     DRACONIC_EVOLUTION("draconicevolution", "Draconic Evolution"),
     BRASSWORKS_MISSIONS("brassworksmissions", "Create: Brassworks Missions"),
-    ECCENTRIC_TOME("eccentrictome", "Eccentric Tome");
+    ECCENTRIC_TOME("eccentrictome", "Eccentric Tome"),
+    BETTER_ADVANCEMENTS("betteradvancements", "Better Advancements");
 
     private final String modId;
     private final String displayName;

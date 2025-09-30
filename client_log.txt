@@ -1,0 +1,254 @@
+Reusing configuration cache.
+> Task :writeClientLegacyClasspath UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :downloadAssets UP-TO-DATE
+> Task :createMinecraftArtifacts UP-TO-DATE
+> Task :prepareClientRun UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+> Task :classes UP-TO-DATE
+
+> Task :runClient
+WARN StatusConsoleListener Advanced terminal features are not available in this environment
+[08:59:18] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.193, --assetIndex, 17, --assetsDir, C:\\Users\\Josh\\.gradle\\caches\\neoformruntime\\assets, --gameDir, ., --fml.fmlVersion, 4.0.41, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.193, --fml.neoFormVersion, 20240808.144430]
+[08:59:18] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: JVM identified as Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 21.0.6+8-LTS-188
+[08:59:18] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.6 by Oracle Corporation; OS Windows 11 arch amd64 version 10.0
+[08:59:18] [main/INFO] [ne.ne.fm.lo.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[08:59:18] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[08:59:18] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[08:59:19] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/Josh/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23138!/ Service=ModLauncher Env=CLIENT
+[08:59:19] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 3070/PCIe/SSE2 GL version 4.6.0 NVIDIA 581.15, NVIDIA Corporation
+[08:59:20] [main/INFO] [ne.ne.fm.lo.mo.lo.JarInJarDependencyLocator/]: Found 32 dependencies adding them to mods collection
+[08:59:20] [main/INFO] [ne.ne.fm.lo.mo.ModDiscoverer/]: 
+     Mod List:
+		Name Version (Mod Id)
+
+		Architectury 13.0.8 (architectury)
+		Ars Elixirum 0.2.2 (elixirum)
+		Ars Nouveau 5.10.4 (ars_nouveau)
+		Backpacked 3.0.0-beta.15 (backpacked)
+		Better Advancements 0.4.3.21 (betteradvancements)
+		Brandon's Core 3.2.1.307 (brandonscore)
+		Cobblemon 1.6.1+1.21.1 (cobblemon)
+		CodeChicken Lib 4.6.1.524 (codechickenlib)
+		Common Networking 1.0.18-1.21.1 (commonnetworking)
+		CosmeticArmorReworked 1.21.1-v1-neoforge (cosmeticarmorreworked)
+		Create 6.0.6 (create)
+		Create Brassworks Missions 1.3 (brassworksmissions)
+		Curios API 9.5.1+1.21.1 (curios)
+		Draconic Evolution 3.1.3.627 (draconicevolution)
+		Eccentric Tome 1.21.1-1.1.0 (eccentrictome)
+		Fast Projectile API 3.0.2+1 (fast_projectile_api)
+		Flywheel 1.0.4 (flywheel)
+		Fragmentum 0.0.13 (fragmentum)
+		Framework 0.9.6 (framework)
+		FTB Library 2101.1.17 (ftblibrary)
+		FTB Quests 2101.1.12 (ftbquests)
+		FTB Teams 2101.1.2 (ftbteams)
+		GeckoLib 4 4.8.1 (geckolib)
+		Journeymap 1.21.1-6.0.0-beta.52 (journeymap)
+		JourneyMap API 2.0.0 (journeymap_api)
+		Kotlin For Forge 5.10.0 (kotlinforforge)
+		L2Artifacts 3.0.5 (l2artifacts)
+		L2Complements 3.0.18 (l2complements)
+		L2Core 3.0.8+15 (l2core)
+		L2DamageTracker 3.0.8 (l2damagetracker)
+		L2Hostility 3.0.12 (l2hostility)
+		L2ItemSelector 3.0.8 (l2itemselector)
+		L2Library 3.0.7 (l2library)
+		L2Magic 3.0.2+14 (l2magic)
+		L2MenuStacker 3.0.10 (l2menustacker)
+		L2Tabs 3.0.5+7 (l2tabs)
+		Legendary Survival Overhaul 2.3.22 (legendarysurvivaloverhaul)
+		Map Atlases 1.21-6.3.6 (map_atlases)
+		MidnightLib 1.7.5 (midnightlib)
+		Minecraft 1.21.1 (minecraft)
+		Mob Weapon API 3.0.5 (mob_weapon_api)
+		Mod Tabs 1.21.1-2.2.4-Neoforge (modtabs)
+		Modular Golems 3.1.5 (modulargolems)
+		Moonlight Lib 1.21-2.20.3 (moonlight)
+		NeoForge 21.1.193 (neoforge)
+		Nuggets 1.0.10.41 (nuggets)
+		Pandora API 1.0.5 (pandora)
+		Patchouli 1.21.1-92-NEOFORGE (patchouli)
+		Ponder 1.0.56 (ponder)
+		Pufferfish's Skills 0.16.4 (puffish_skills)
+		Reskillable 1.1.0-1.21.1 (reskillable)
+		Sophisticated Backpacks 3.25.5 (sophisticatedbackpacks)
+		Sophisticated Core 1.3.71 (sophisticatedcore)
+		Traveler's Backpack 10.1.22 (travelersbackpack)
+		Xaero's World Map 1.39.12 (xaeroworldmap)
+[08:59:20] [main/INFO] [ne.ne.fm.lo.FMLServiceProvider/CORE]: Loading coremod script-engine for [xaeroworldmap]
+[08:59:22] [main/INFO] [mixin/]: Compatibility level set to JAVA_21
+[08:59:22] [main/INFO] [cp.mo.mo.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientdev' with arguments [--version, 21.1.193, --gameDir, ., --assetsDir, C:\Users\Josh\.gradle\caches\neoformruntime\assets, --assetIndex, 17]
+[08:59:22] [main/WARN] [mixin/]: Reference map 'l2artifacts.refmap.json' for l2artifacts.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'geckolib.refmap.json' for geckolib.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'fragmentum.refmap.json' for fragmentum.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'fragmentum.refmap.json' for fragmentum.neoforge.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'journeymap-refmap.json' for journeymap.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'xaeroworldmap.refmap.json' for xaeroworldmap.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'travelersbackpack.mixins.refmap.json' for META-INF/travelersbackpack.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'nuggets.refmap.json' for nuggets.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'ponder.refmap.json' for ponder.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'ponder.refmap.json' for ponder-common.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'create.refmap.json' for create.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'patchouli.refmap.json' for patchouli_xplat.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'reskillable.refmap.json' for reskillable.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'backpacked.refmap.json' for backpacked.common.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'brassworksmissions.refmap.json' for brassworksmissions.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'curios.refmap.json' for curios.neoforge.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'curios.refmap.json' for curios.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'ars_nouveau.refmap.json' for ars_nouveau.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'elixirum.refmap.json' for elixirum.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'elixirum.refmap.json' for elixirum.neoforge.mixins.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'mixins.brandonscore.refmap.json' for mixins.brandonscore.json could not be read. If this is a development environment you can ignore this message
+[08:59:22] [main/WARN] [mixin/]: Reference map 'mixins.draconicevolution.refmap.json' for mixins.draconicevolution.json could not be read. If this is a development environment you can ignore this message
+[08:59:23] [main/WARN] [mixin/]: Error loading class: twilightforest/network/MagicMapPacket$1 (java.lang.ClassNotFoundException: twilightforest.network.MagicMapPacket$1)
+[08:59:23] [main/WARN] [mixin/]: Error loading class: twilightforest/network/MagicMapPacket (java.lang.ClassNotFoundException: twilightforest.network.MagicMapPacket)
+[08:59:23] [main/WARN] [mixin/]: Error loading class: twilightforest/network/MazeMapPacket$1 (java.lang.ClassNotFoundException: twilightforest.network.MazeMapPacket$1)
+[08:59:23] [main/WARN] [mixin/]: Error loading class: twilightforest/network/MazeMapPacket (java.lang.ClassNotFoundException: twilightforest.network.MazeMapPacket)
+[08:59:23] [main/WARN] [mixin/]: Error loading class: twilightforest/client/renderer/map/MagicMapPlayerIconRenderer (java.lang.ClassNotFoundException: twilightforest.client.renderer.map.MagicMapPlayerIconRenderer)
+[08:59:23] [main/WARN] [mixin/]: Error loading class: com/bobmowzie/mowziesmobs/server/entity/effects/EntityAxeAttack (java.lang.ClassNotFoundException: com.bobmowzie.mowziesmobs.server.entity.effects.EntityAxeAttack)
+[08:59:23] [main/WARN] [mixin/]: Error loading class: juuxel/adorn/block/variant/BlockVariantSets (java.lang.ClassNotFoundException: juuxel.adorn.block.variant.BlockVariantSets)
+[08:59:23] [main/WARN] [mixin/]: @Mixin target juuxel.adorn.block.variant.BlockVariantSets was not found mixins.cobblemon-common.json:invoker.AdornRegisterInvoker from mod cobblemon
+[08:59:23] [main/WARN] [mixin/]: Error loading class: org/embeddedt/embeddium/compat/ccl/CCLCompat (java.lang.ClassNotFoundException: org.embeddedt.embeddium.compat.ccl.CCLCompat)
+[08:59:23] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.4.1).
+[08:59:26] [Datafixer Bootstrap/INFO] [mojang/DataFixerBuilder]: 229 Datafixer optimizations took 380 milliseconds
+[08:59:31] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[08:59:31] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[08:59:31] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[08:59:31] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[08:59:31] [main/WARN] [minecraft/Commands]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[08:59:31] [Render thread/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/D:/MinecraftMods/Neoport%20Mods/LegendaryTabsNeoforged/build/moddev/artifacts/neoforge-21.1.193-minecraft.jar%23189!/assets/.mcassetsroot' uses unexpected schema
+[08:59:31] [Render thread/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/D:/MinecraftMods/Neoport%20Mods/LegendaryTabsNeoforged/build/moddev/artifacts/neoforge-21.1.193-minecraft.jar%23189!/data/.mcassetsroot' uses unexpected schema
+[08:59:31] [Render thread/INFO] [mojang/YggdrasilAuthenticationService]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[08:59:31] [Render thread/INFO] [minecraft/Minecraft]: Setting user: Dev
+[08:59:31] [Render thread/INFO] [minecraft/Minecraft]: Backend library: LWJGL version 3.3.3+5
+[08:59:32] [modloading-worker-0/INFO] [ne.ne.ne.co.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.193, for MC 1.21.1
+[08:59:32] [modloading-worker-0/INFO] [de.xk.fa.FastProjectileAPI/]: HashMap test result: hash=127, L2O=37
+[08:59:32] [modloading-worker-0/INFO] [journeymap/]: Loaded null for service interface journeymap.api.services.WebMapService
+[08:59:32] [modloading-worker-0/INFO] [journeymap/]: Loaded journeymap.common.helpers.NeoForgeClientHooks@471a12fe for service interface journeymap.api.services.ClientPlatformService
+[08:59:32] [modloading-worker-0/INFO] [journeymap/]: Loaded journeymap.common.helpers.NeoForgeHooks@1adb4352 for service interface journeymap.api.services.CommonPlatformService
+[08:59:32] [modloading-worker-0/INFO] [mixin/]: mixins.codechickenlib.json:ShaderInstanceMixin from mod (unknown)->@Invoker[METHOD_PROXY]::callGetOrCreate(Lnet/minecraft/server/packs/resources/ResourceProvider;Lcom/mojang/blaze3d/shaders/Program$Type;Ljava/lang/String;)Lcom/mojang/blaze3d/shaders/Program; should be static as its target is
+[08:59:33] [modloading-worker-0/INFO] [co.si.cr.Create/]: Create 6.0.6 initializing! Commit hash: 20ad05b5e525166018d21e88c96986f867c7088f
+[08:59:33] [modloading-worker-0/INFO] [BrandonsCore/]: Knock Knock...
+[08:59:33] [modloading-worker-0/WARN] [draconicevolution/]: Reactor detonation initiated.
+[08:59:33] [modloading-worker-0/INFO] [BrandonsCore/]: Wait... NO! What?
+[08:59:33] [modloading-worker-0/INFO] [BrandonsCore/]: Stop That! That's not how this works!
+[08:59:33] [modloading-worker-0/WARN] [draconicevolution/]: Calculating explosion ETA
+[08:59:33] [modloading-worker-0/INFO] [BrandonsCore/]: Ahh... NO... NONONO! DONT DO THAT!!! STOP THIS NOW!
+[08:59:33] [modloading-worker-0/WARN] [draconicevolution/]: **Explosion Imminent!!!**
+[08:59:33] [modloading-worker-0/INFO] [BrandonsCore/]: Well...... fork...
+[08:59:34] [modloading-worker-0/INFO] [th.ko.ne.te.KotlinForForge/]: Kotlin For Forge Enabled!
+[08:59:34] [modloading-worker-0/INFO] [co.co.mo.co.Cobblemon/]: Booting LaxPermissionValidator, permissions will be checked using Minecrafts permission level system, see https://minecraft.fandom.com/wiki/Permission_level
+[08:59:34] [modloading-worker-0/INFO] [co.co.mo.co.Cobblemon/]: Launching Cobblemon 1.6.1 
+[08:59:34] [modloading-worker-0/INFO] [co.co.mo.co.Cobblemon/]: Booting ForgePermissionApiPermissionValidator, player permissions will be checked using MinecraftForge' PermissionAPI, non player command sources will use Minecraft' permission level system, see https://docs.minecraftforge.net/en/latest/ and https://minecraft.fandom.com/wiki/Permission_level
+[08:59:35] [modloading-worker-0/INFO] [co.co.mo.co.Cobblemon/]: Starting the Best Spawner...
+[08:59:35] [modloading-worker-0/INFO] [co.co.mo.co.Cobblemon/]: Loaded 7 spawning condition types.
+[08:59:35] [modloading-worker-0/INFO] [co.co.mo.co.Cobblemon/]: Loaded 6 spawning context types.
+[08:59:35] [modloading-worker-0/INFO] [co.co.mo.co.Cobblemon/]: Loaded 2 spawn detail types.
+[08:59:37] [modloading-sync-worker/INFO] [Moonlight/]: Initialized block sets in 7ms
+[08:59:38] [modloading-sync-worker/WARN] [ne.ne.fm.co.ConfigTracker/]: Opening a config that was already loaded with value LoadedConfig[config=SynchronizedConfig{DataHolder:{general=SynchronizedConfig{DataHolder:{merge_dynamic_packs=true, lazy_map_upload=true, maps_mipmap=3, consistent_entity_renderer_shading=NO_GUI}}}}, path=D:\MinecraftMods\Neoport Mods\LegendaryTabsNeoforged\run\config\moonlight-client.toml, modConfig=net.neoforged.fml.config.ModConfig@4f47080b] at path moonlight-client.toml
+[08:59:38] [modloading-sync-worker/INFO] [eccentrictome/]: Successfully downloaded 3 entries from items.txt
+[08:59:38] [modloading-sync-worker/INFO] [eccentrictome/]: Successfully downloaded 0 entries from aliases.txt
+[08:59:38] [modloading-sync-worker/INFO] [eccentrictome/]: Loaded 34 items and 13 aliases
+[08:59:38] [modloading-sync-worker/WARN] [ne.ne.fm.co.ConfigTracker/CONFIG]: Configuration file D:\MinecraftMods\Neoport Mods\LegendaryTabsNeoforged\run\config\legendarysurvivaloverhaul\legendarysurvivaloverhaul-common.toml is not correct. Correcting
+[08:59:38] [modloading-sync-worker/WARN] [ne.ne.ne.co.ModConfigSpec/CORE]: Configuration LoadedConfig[config=SynchronizedConfig{DataHolder:{core=SynchronizedConfig{DataHolder:{Temperature Enabled=true, Thirst Enabled=true, Health Overhaul Enabled=true, Localized Body Damage Enabled=true, Temperature Difficulty Mode=HARD, advanced=SynchronizedConfig{DataHolder:{Routine Packet Sync=30}}, misc=SynchronizedConfig{DataHolder:{Compass Info Mode=FULL, Show Coordinate On Filled Map=true, Hide Info From Debug=true, Natural Regeneration Enabled=true, Vanilla Freeze Enabled=false, Initial Player Health=20.0}}}}, food=SynchronizedConfig{DataHolder:{Base Food Exhaustion=0.05, Sprinting Food Exhaustion=0.1, On Attack Food Exhaustion=0.1}}, temperature=SynchronizedConfig{DataHolder:{Dangerous Heat Temperature Effects=true, Dangerous Cold Temperature Effects=true, Gold Fern Chance=0.01, Player On Fire Modifier=12.5, Player Sprint Modifier=1.5, Altitude Modifier=-6.0, temperature-immunity=SynchronizedConfig{DataHolder:{Temperature Immunity On Death Enabled=true, Temperature Immunity On Death Time=1800, Temperature Immunity On First Spawn Enabled=true, Temperature Immunity On First Spawn Time=1800}}, secondary_effects=SynchronizedConfig{DataHolder:{Heat Temperature Secondary Effects=true, Cold Temperature Secondary Effects=true, Heat Thirst Effect Modifier=0.2, Cold Hunger Modifier=0.1}}, wetness=SynchronizedConfig{DataHolder:{Wetness Enabled=true, Wetness Immunity Mounts=[alexscaves:submarine, immersive_machinery:bamboo_bee, immersive_machinery:tunnel_digger, immersive_machinery:redstone_sheep, immersive_machinery:copperfin], Wetness Modifier=-10.0, Wetness Tick Timer=10, Wetness Decrease=-3, Wetness Under Rain Increase=7, Wetness In Fluid Increase=10}}, huddling=SynchronizedConfig{DataHolder:{Player Huddling Modifier=0.5, Player Huddling Radius=1}}, biomes=SynchronizedConfig{DataHolder:{Biome Temperature Multiplier=16.0, Biomes affect Temperature=true, Biome's Dryness Multiplier=0.2}}, underground=SynchronizedConfig{DataHolder:{Underground Biome Temperature Multiplier=0.8, Start Distance To World Surface For Underground Effect=10, End Distance To World Surface For Underground Effect=16}}, weather=SynchronizedConfig{DataHolder:{Rain Temperature Modifier=-2.0, Snow Temperature Modifier=-6.0}}, freeze=SynchronizedConfig{DataHolder:{Max Freeze Temperature Modifier=-10.0, Max Freeze Effect Tick=400}}, time=SynchronizedConfig{DataHolder:{Time Based Temperature Modifier=2.0, Biome Time Multiplier=1.75, Shade Time Modifier=-6.0, Shade Time Modifier Threshold=9.0}}, coat=SynchronizedConfig{DataHolder:{heating=SynchronizedConfig{DataHolder:{Heating Coat I=2.0, Heating Coat II=3.0, Heating Coat III=4.0}}, cooling=SynchronizedConfig{DataHolder:{Cooling Coat I=2.0, Cooling Coat II=3.0, Cooling Coat III=4.0}}, thermal=SynchronizedConfig{DataHolder:{Thermal Coat I=2.0, Thermal Coat II=3.0, Thermal Coat III=4.0}}}}, advanced=SynchronizedConfig{DataHolder:{Temperature Influence Maximum Distance=20, Temperature Influence Up Distance Multiplier=0.75, Temperature Influence Outside Distance Multiplier=0.5, temperature-modification=SynchronizedConfig{DataHolder:{Temperature Tick Time=20, Maximum Temperature Modification=1.0, Minimum Temperature Modification=0.2}}}}, integration=SynchronizedConfig{DataHolder:{terrafirmacraft=SynchronizedConfig{DataHolder:{TerraFirmaCraft Item Heat Multiplier=0.01, TerraFirmaCraft Temperature Multiplier=1.0}}, serene-seasons=SynchronizedConfig{DataHolder:{Serene Seasons Enabled=true, Tropical Seasons Enabled=false, Season Cards Enabled=false, Default Season Enabled=true, temperate=SynchronizedConfig{DataHolder:{spring=SynchronizedConfig{DataHolder:{Early Spring Modifier=-3.0, Mid Spring Modifier=0.0, Late Spring Modifier=3.0}}, summer=SynchronizedConfig{DataHolder:{Early Summer Modifier=6.0, Mid Summer Modifier=10.0, Late Summer Modifier=6.0}}, autumn=SynchronizedConfig{DataHolder:{Early Autumn Modifier=3.0, Mid Autumn Modifier=0.0, Late Autumn Modifier=-3.0}}, winter=SynchronizedConfig{DataHolder:{Early Winter Modifier=-7.0, Mid Winter Modifier=-12.0, Late Winter Modifier=-7.0}}}}, tropical=SynchronizedConfig{DataHolder:{wet-season=SynchronizedConfig{DataHolder:{Early Wet Season Modifier=-1.0, Mid Wet Season Modifier=-5.0, Late Wet Season Modifier=-1.0}}, dry-season=SynchronizedConfig{DataHolder:{Early Dry Season Modifier=3.0, Mid Dry Season Modifier=7.0, Late Dry Season Modifier=3.0}}}}}}, ecliptic-seasons=SynchronizedConfig{DataHolder:{Ecliptic Seasons Enabled=true, temperature=SynchronizedConfig{DataHolder:{Spring Modifier=[-10.0, -7.0, -5.0, -3.0, -1.0, 0.0], Summer Modifier=[1.0, 3.0, 5.0, 7.0, 9.0, 10.0], Autumn Modifier=[9.0, 7.0, 5.0, 3.0, 1.0, 0.0], Winter Modifier=[-1.0, -3.0, -5.0, -7.0, -10.0, -12.0]}}}}}}}}, thirst=SynchronizedConfig{DataHolder:{Dangerous Dehydration=true, Cumulative Thirst Effect Duration=true, Dehydration Damage Scaling=0.3, Thirst Effect Modifier=0.25, exhaustion=SynchronizedConfig{DataHolder:{Base Thirst Exhaustion=0.03, Sprinting Thirst Exhaustion=0.1, On Jump Thirst Exhaustion=0.15, On Block Break Thirst Exhaustion=0.07, On Attack Thirst Exhaustion=0.3}}, canteen=SynchronizedConfig{DataHolder:{Self Watering Canteen Enabled=true, Self Watering Canteen Wetness=400, Canteen Capacity=10, Large Canteen Capacity=20, Allow Override Purified Water=true}}, nether_chalice=SynchronizedConfig{DataHolder:{Lava Hydration=6, Lava Saturation=4.0}}, juices=SynchronizedConfig{DataHolder:{Glass Bottle Loot After Drinking A Juice=true}}, integration=SynchronizedConfig{DataHolder:{origins=SynchronizedConfig{DataHolder:{blazeborn=SynchronizedConfig{DataHolder:{Lava Hydration For Blazeborn=3, Lava Saturation For Blazeborn=1.0}}, shulk=SynchronizedConfig{DataHolder:{Extra Thirst Exhaustion For Shulk=0.1}}, phantom=SynchronizedConfig{DataHolder:{Extra Thirst Exhaustion For Phantom=0.1}}}}, vampirism=SynchronizedConfig{DataHolder:{Thirst Enabled If Vampire=false}}}}}}, health-overhaul=SynchronizedConfig{DataHolder:{Maximum Additional Health=20.0, shield-health=SynchronizedConfig{DataHolder:{Maximum Shield Health=20.0, Absorption Effect Override=true}}, heart-loss=SynchronizedConfig{DataHolder:{Hearts Lost On Death=0, Permanent Hearts=10}}, broken-hearts=SynchronizedConfig{DataHolder:{Minimum Amount Of Player's Heart With Broken Hearts (Broken Heart Resilience)=2, Added Broken Hearts Per Injured Limb=0.1, Broken Hearts Per Injured Limb Mode=PLAYER_DYNAMIC}}}}, body-damage=SynchronizedConfig{DataHolder:{Headshot Multiplier=2.0, Body Damage Multiplier=1.0, Body Part Health Ratio Recovered=1.0, Health Ratio Recovered=1.0, Body Healing Food Exhaustion=0.5, Minimum Food On Body Healing=0, Painkiller Addiction Duration=3600, healing-limbs=SynchronizedConfig{DataHolder:{passive-regeneration=SynchronizedConfig{DataHolder:{ Passive Limb Regeneration On Full Health=true, Passive Limb Regeneration On Effects=[minecraft:regeneration], Passive Limb Regeneration Amplification Enabled=true, Passive Limb Health Regenerated=0.5, Passive Limb Regeneration Tick Timer=50}}, first-aid-supplies=SynchronizedConfig{DataHolder:{First Aid Supplies Limb Health Regenerated=0.25, First Aid Supplies Limb Regeneration Mode=LIMB_DYNAMIC, First Aid Supplies Healing Overflow=false, First Aid Supplies Tick Timer=300, First Aid Supplies Exhausts Food=true, First Aid Supplies Boosted On Effects=[minecraft:regeneration], First Aid Supplies Tick Timer Multiplier=0.75}}, healing-items=SynchronizedConfig{DataHolder:{Recovery Effect Healing Amount=0.1, Healing Herbs Use Time=20, Plaster Use Time=20, Bandage Use Time=30, Tonic Use Time=50, Medkit Use Time=50}}, morphine=SynchronizedConfig{DataHolder:{Morphine Use Time=30, Morphine Painkiller Duration=1800}}}}, body-parts-health=SynchronizedConfig{DataHolder:{Body Part Health Mode=DYNAMIC, Head Part Health=0.4, Arms Part Health=0.4, Chest Part Health=0.6, Legs Part Health=0.6, Feet Part Health=0.4}}, body-parts-effects=SynchronizedConfig{DataHolder:{head=SynchronizedConfig{DataHolder:{Head Part Effects=[legendarysurvivaloverhaul:headache], Head Part Effect Amplifiers=[0], Head Part Effect Thresholds=[0.2]}}, arms=SynchronizedConfig{DataHolder:{Arms Part Effects=[minecraft:mining_fatigue], Arms Part Effect Amplifiers=[0], Arms Part Effect Thresholds=[0.2], Both Arms Part Effects=[minecraft:weakness], Both Arms Part Effect Amplifiers=[0], Both Arms Part Effect Thresholds=[0.2]}}, chest=SynchronizedConfig{DataHolder:{Chest Part Effects=[legendarysurvivaloverhaul:vulnerability], Chest Part Effect Amplifier=[0], Chest Part Effect Thresholds=[0.2]}}, legs=SynchronizedConfig{DataHolder:{Legs Part Effects=[legendarysurvivaloverhaul:hard_falling], Legs Part Effect Amplifiers=[0], Legs Part Effect Thresholds=[0.2], Both Legs Part Effects=[legendarysurvivaloverhaul:hard_falling], Both Legs Part Effect Amplifiers=[1], Both Legs Part Effect Thresholds=[0.2]}}, feet=SynchronizedConfig{DataHolder:{Feet Part Effects=[minecraft:slowness], Feet Part Effect Amplifiers=[0], Feet Part Effect Thresholds=[0.2], Both Feet Part Effects=[minecraft:slowness], Both Feet Part Effect Amplifiers=[1], Both Feet Part Effect Thresholds=[0.2]}}}}, integration=SynchronizedConfig{DataHolder:{meds_and_herbs=SynchronizedConfig{DataHolder:{Syringe Morphine Apply Painkiller Addiction=true}}}}}}}}, path=D:\MinecraftMods\Neoport Mods\LegendaryTabsNeoforged\run\config\legendarysurvivaloverhaul\legendarysurvivaloverhaul-common.toml, modConfig=net.neoforged.fml.config.ModConfig@6e166e64] is not correct. Correcting
+[08:59:38] [modloading-sync-worker/WARN] [ne.ne.ne.co.ModConfigSpec/CORE]: Incorrect key temperature.wetness.Wetness Immunity Mounts was corrected from [alexscaves:submarine, immersive_machinery:bamboo_bee, immersive_machinery:tunnel_digger, immersive_machinery:redstone_sheep, immersive_machinery:copperfin] to its default, [alexscaves:submarine, immersive_machinery:bamboo_bee, immersive_machinery:tunnel_digger, immersive_machinery:redstone_sheep, immersive_machinery:copperfin]. 
+[08:59:38] [Render thread/WARN] [mixin/]: Method overwrite conflict for getChildren in journeymap.mixins.json:client.ModelPartMixin from mod journeymap, previously written by com.cobblemon.mod.common.mixin.ModelPartMixin. Skipping method.
+[08:59:38] [Render thread/INFO] [ne.ne.ne.ga.GameTestHooks/]: Enabled Gametest Namespaces: [modtabs]
+[08:59:39] [Render thread/INFO] [journeymap/]: Registering Keybinds
+[08:59:39] [Render thread/INFO] [minecraft/ReloadableResourceManager]: Reloading ResourceManager: vanilla, mod_resources, mod/fast_projectile_api, mod/puffish_skills, mod/l2tabs, mod/l2magic, mod/l2artifacts, mod/geckolib, mod/commonnetworking, mod/l2complements, mod/map_atlases, mod/sophisticatedcore, mod/fragmentum, mod/journeymap, mod/xaeroworldmap, mod/neoforge, mod/travelersbackpack, mod/sophisticatedbackpacks, mod/midnightlib, mod/modtabs, mod/nuggets, mod/l2damagetracker, mod/moonlight, mod/eccentrictome, mod/modulargolems, mod/kotlinforforge, mod/flywheel, mod/ponder, mod/create, mod/patchouli, mod/reskillable, mod/cobblemon, mod/l2core, mod/l2hostility, mod/backpacked, mod/brassworksmissions, mod/legendarysurvivaloverhaul, mod/curios, mod/ars_nouveau, mod/mob_weapon_api, mod/elixirum, mod/pandora, mod/architectury, mod/ftblibrary, mod/ftbteams, mod/ftbquests, mod/l2itemselector, mod/framework, mod/l2library, mod/codechickenlib, mod/brandonscore, mod/draconicevolution, mod/cosmeticarmorreworked, mod/l2menustacker, mod/journeymap_api, mod/betteradvancements, moonlight:mods_dynamic_assets
+[08:59:39] [Render thread/INFO] [Moonlight/]: Reloading dynamic packs before reloading data packs for CLIENT_RESOURCES
+[08:59:39] [Render thread/INFO] [Moonlight/]: Generated runtime CLIENT_RESOURCES for pack moonlight:mods_dynamic_assets (moonlight) in: 2 ms (debug resource dump on) (multithreaded)
+[08:59:39] [Render thread/INFO] [Moonlight/]: Generated runtime resources for 1 packs in a total of: 4 ms
+[08:59:39] [Worker-Main-12/INFO] [co.co.mo.co.Cobblemon/]: Initializing...
+[08:59:39] [Cobblemon Showdown/INFO] [co.co.mo.co.Cobblemon/]: Starting showdown service...
+[08:59:39] [NeoForge Version Check/INFO] [ne.ne.fm.VersionChecker/]: [journeymap] Starting version check at https://neoforge.curseupdate.com/32274/journeymap
+[08:59:39] [Worker-Main-17/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/agronomic_sourcelink_animation.json'
+[08:59:39] [Worker-Main-1/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/amethyst_golem_animations.json'
+[08:59:39] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/alteration_apparatus_animations.json'
+[08:59:39] [Worker-Main-16/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/alchemical_sourcelink_animation.json'
+[08:59:39] [Worker-Main-6/INFO] [journeymap/]: Found @JourneyMapPlugin: journeymap.api.plugins.LoadedChunkOverlayPlugin
+[08:59:39] [Worker-Main-6/INFO] [journeymap/]: Found @JourneyMapPlugin: com.simibubi.create.compat.trainmap.JourneyTrainMap
+[08:59:39] [Worker-Main-8/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/animated_block_animations.json'
+[08:59:39] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/arcane_core_animations.json'
+[08:59:39] [NeoForge Version Check/INFO] [ne.ne.fm.VersionChecker/]: [journeymap] Found status: BETA Current: 1.21.1-6.0.0-beta.52 Target: 1.21.1-6.0.0-beta.52
+[08:59:39] [NeoForge Version Check/INFO] [ne.ne.fm.VersionChecker/]: [travelersbackpack] Starting version check at https://gist.githubusercontent.com/Tiviacz1337/906937677aa472285dff9d6c2a189d5e/raw
+[08:59:39] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/arcane_pedestal_animations.json'
+[08:59:39] [NeoForge Version Check/INFO] [ne.ne.fm.VersionChecker/]: [travelersbackpack] Found status: BETA Current: 10.1.22 Target: null
+[08:59:39] [NeoForge Version Check/INFO] [ne.ne.fm.VersionChecker/]: [eccentrictome] Starting version check at https://api.modrinth.com/updates/eccentric-tome/forge_updates.json
+[08:59:39] [Worker-Main-18/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/basic_spell_turret_animations.json'
+[08:59:39] [Worker-Main-6/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/book_wyrm_animation.json'
+[08:59:39] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/book_wyrm_lectern_animations.json'
+[08:59:39] [Worker-Main-4/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/decor_blossom_animations.json'
+[08:59:39] [Worker-Main-8/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/empty.json'
+[08:59:39] [Worker-Main-6/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/mana_splitter_animation.json'
+[08:59:39] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/imbuement_chamber_animations.json'
+[08:59:39] [Worker-Main-18/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/nook_animation.json'
+[08:59:39] [Worker-Main-17/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/drygmy_animations.json'
+[08:59:39] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/lily_animations.json'
+[08:59:39] [Worker-Main-4/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/enchanting_apparatus_animations.json'
+[08:59:39] [Worker-Main-16/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/mana_relay_animation.json'
+[08:59:39] [Worker-Main-1/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/potion_melder_animation.json'
+[08:59:39] [Worker-Main-6/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/press_animations.json'
+[08:59:39] [Worker-Main-16/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/redstone_relay_animations.json'
+[08:59:39] [Worker-Main-1/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/ritual.json'
+[08:59:39] [Worker-Main-16/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/rune.json'
+[08:59:39] [Worker-Main-6/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/scribes_table_animations.json'
+[08:59:39] [Worker-Main-17/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/scryers_eye_animation.json'
+[08:59:39] [Worker-Main-10/INFO] [minecraft/UnihexProvider]: Found unifont_all_no_pua-15.1.05.hex, loading
+[08:59:39] [NeoForge Version Check/INFO] [ne.ne.fm.VersionChecker/]: [eccentrictome] Found status: AHEAD Current: 1.21.1-1.1.0 Target: null
+[08:59:39] [NeoForge Version Check/INFO] [ne.ne.fm.VersionChecker/]: [codechickenlib] Starting version check at https://version-check.covers1624.net/check/?mod=CodeChickenLib&mc=1.21.1
+[08:59:39] [Render thread/INFO] [minecraft/Minecraft]: Stopping!
+[08:59:39] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_deposit_animations.json'
+[08:59:39] [Worker-Main-4/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_relay_animations.json'
+[08:59:39] [Worker-Main-17/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_collector_animations.json'
+[08:59:39] [Worker-Main-16/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_splitter_animations.json'
+[08:59:39] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_warp_animations.json'
+[08:59:39] [Worker-Main-1/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spell_turret_animations.json'
+[08:59:39] [Worker-Main-8/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spell_turret_timer_animations.json'
+[08:59:39] [Worker-Main-16/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/starbuncle_animations.json'
+[08:59:39] [Worker-Main-17/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spike_animations.json'
+[08:59:39] [Worker-Main-4/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/storage_catalog_animations.json'
+[08:59:39] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/vitalic_sourcelink_animation.json'
+[08:59:39] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/volcanic_sourcelink_animations.json'
+[08:59:39] [Worker-Main-1/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wand_animation.json'
+[08:59:39] [Worker-Main-8/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/weald_waddler_animations.json'
+[08:59:39] [Worker-Main-17/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/weald_walker_animations.json'
+[08:59:39] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/whirlisprig_animations.json'
+[08:59:39] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/whirlisprig_blossom_animations.json'
+[08:59:39] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_chimera_animations.json'
+[08:59:39] [Worker-Main-1/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_defender_animations.json'
+[08:59:39] [Worker-Main-4/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_hunter_animations.json'
+[08:59:39] [Worker-Main-8/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_stalker_animations.json'
+[08:59:39] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wixie_animations.json'
+[08:59:39] [Worker-Main-11/INFO] [minecraft/UnihexProvider]: Found unifont_jp_patch-15.1.05.hex, loading
+[08:59:39] [Render thread/ERROR] [minecraft/Minecraft]: Shutdown failure!
+java.util.ConcurrentModificationException: null
+	at java.base/java.util.HashMap.forEach(HashMap.java:1432) ~[?:?] {re:mixin}
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.close(TextureManager.java:167) ~[neoforge-21.1.193-minecraft.jar%23189!/:?] {re:mixin,pl:runtimedistcleaner:A,re:classloading,pl:mixin:APP:geckolib.mixins.json:client.TextureManagerMixin from mod geckolib,pl:mixin:A,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.close(Minecraft.java:1128) ~[neoforge-21.1.193-minecraft.jar%23189!/:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.destroy(Minecraft.java:1100) ~[neoforge-21.1.193-minecraft.jar%23189!/:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:A,pl:runtimedistcleaner:A}
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:236) ~[neoforge-21.1.193-minecraft.jar%23189!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.41/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.41.jar%23146!/:4.0] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.41/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.41.jar%23146!/:4.0] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.41/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.41.jar%23146!/:4.0] {}
+	at MC-BOOTSTRAP/fml_loader@4.0.41/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.41.jar%23146!/:4.0] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?] {}
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?] {}
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?] {}
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?] {}
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?] {}
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?] {}
+	at net.neoforged.devlaunch.Main.main(Main.java:55) [DevLaunch-1.0.1.jar:?] {}
+
+BUILD SUCCESSFUL in 25s
+7 actionable tasks: 1 executed, 6 up-to-date
+Configuration cache entry reused.

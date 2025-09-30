@@ -49,6 +49,7 @@ public class TabsMenu {
             case "net.minecraft.client.gui.screens.inventory.InventoryScreen":
                 return ModTabsConfig.inventoryTabDisplayVisibility;
             case "net.minecraft.client.gui.screens.advancements.AdvancementsScreen":
+            case "betteradvancements.common.gui.BetterAdvancementsScreen":
                 return ModTabsConfig.advancementsTabDisplayVisibility;
             case "com.dhanantry.arsnouveau.client.gui.SpellBookGUI":
             case "com.dhanantry.arsnouveau.client.gui.SpellBookScreen":

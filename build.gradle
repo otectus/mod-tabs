@@ -144,6 +144,7 @@ dependencies {
     implementation("curse.maven:framework-549225:6531439")
     implementation("curse.maven:map-atlases-forge-519759:6782726")
     implementation("curse.maven:selene-499980:6800719")
+    implementation("curse.maven:better-advancements-272515:5850587")
     //implementation("curse.maven:diet-443570:4813904") // Not updated to NeoForge 1.21.1 yet
     //implementation("curse.maven:passiveskill-850298:5715659") // Not updated to NeoForge 1.21.1 yet
     //implementation("curse.maven:itemproductionlib-950401:5114036") // Not updated to NeoForge 1.21.1 yet

@@ -177,7 +177,8 @@ public class ClientNeoForgeEvents {
         if (screenClassName.equals("net.puffish.skillsmod.client.gui.SkillsScreen") ||
             screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
             screenClassName.equals("xaero.map.gui.GuiMap") ||
-            screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen")) {
+            screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen") ||
+            screenClassName.equals("betteradvancements.common.gui.BetterAdvancementsScreen")) {
 
             // Find and render all TabButton and NextTabsButton widgets for this screen - this renders AFTER the screen content including blur
             for (var child : event.getScreen().children()) {
@@ -201,7 +202,8 @@ public class ClientNeoForgeEvents {
         if (screenClassName.equals("net.puffish.skillsmod.client.gui.SkillsScreen") ||
             screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
             screenClassName.equals("xaero.map.gui.GuiMap") ||
-            screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen")) {
+            screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen") ||
+            screenClassName.equals("betteradvancements.common.gui.BetterAdvancementsScreen")) {
 
             // Check if the click is within any tab button bounds and forward the click
             for (var child : event.getScreen().children()) {

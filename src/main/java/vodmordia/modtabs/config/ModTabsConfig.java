@@ -31,7 +31,7 @@ public class ModTabsConfig extends MidnightConfig {
     public static int advancementsTabOrder = 0;
 
     @Entry(category = "tabs")
-    public static TabDisplayVisibility advancementsTabDisplayVisibility = TabDisplayVisibility.YES;
+    public static TabDisplayVisibility advancementsTabDisplayVisibility = TabDisplayVisibility.TUCK;
 
     @Comment(category = "tabs") public static CommentText spacer2;
 
