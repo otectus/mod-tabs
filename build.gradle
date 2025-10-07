@@ -133,6 +133,11 @@ repositories {
     }
 }
 
+// Define configurations before dependencies
+configurations {
+    fabricMods
+}
+
 dependencies {
     // External libraries.
 
@@ -212,11 +217,11 @@ dependencies {
     // Forgified Fabric API (required by Sinytra Connector)
     runtimeOnly "curse.maven:forgified-fabric-api-889079:7009993"
 
-    // RPG Crafting (Fabric mod) and its dependencies
-    runtimeOnly "curse.maven:rpg-crafting-1081787:7029233"
-    runtimeOnly "curse.maven:fzzy-config-1005914:6843479"
-    runtimeOnly "curse.maven:slot-customization-api-1061163:6726624"
-    runtimeOnly "curse.maven:fabric-language-kotlin-308769:6985480"
+    // RPG Crafting (Fabric mod) and its dependencies - production only
+    fabricMods "curse.maven:rpg-crafting-1081787:7029233"
+    fabricMods "curse.maven:fzzy-config-1005914:6843479"
+    fabricMods "curse.maven:slot-customization-api-1061163:6726624"
+    fabricMods "curse.maven:fabric-language-kotlin-308769:6985480"
 
 }
 
@@ -262,10 +267,7 @@ configurations {
 dependencies {
     devMods "curse.maven:sinytra-connector-890127:6944771"
     devMods "curse.maven:forgified-fabric-api-889079:7009993"
-    devMods "curse.maven:rpg-crafting-1081787:7029233"
-    devMods "curse.maven:fzzy-config-1005914:6843479"
-    devMods "curse.maven:slot-customization-api-1061163:6726624"
-    devMods "curse.maven:fabric-language-kotlin-308769:6985480"
+    // Fabric mods removed from devMods - they're in fabricMods configuration instead
 }
 
 task copyDevMods(type: Copy) {
@@ -281,6 +283,14 @@ tasks.whenTaskAdded { task ->
     if (task.name == 'runClient' || task.name == 'prepareRun') {
         task.dependsOn copyDevMods
     }
+}
+
+// Note: Fabric mods are NOT bundled in the jar for production
+// They should be installed separately alongside Sinytra Connector
+// Bundling them causes class loading issues with intermediary mappings
+tasks.named('jar', Jar).configure {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    // Don't bundle fabricMods - they need to be separate mods
 }
 
 // NeoForge 1.21.1 doesn't require reobfuscation like older Forge versions
