@@ -34,7 +34,8 @@ public enum ModIntegration {
     BRASSWORKS_MISSIONS("brassworksmissions", "Create: Brassworks Missions"),
     ECCENTRIC_TOME("eccentrictome", "Eccentric Tome"),
     BETTER_ADVANCEMENTS("betteradvancements", "Better Advancements"),
-    RPG_CRAFTING("rpgcrafting", "RPG Crafting");
+    RPG_CRAFTING("rpgcrafting", "RPG Crafting"),
+    MOTP("memory_of_the_past", "MOTP - RPG Player Leveling");
 
     private final String modId;
     private final String displayName;

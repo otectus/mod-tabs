@@ -31,6 +31,7 @@ public class Config
 		public static boolean l2ArtifactsTabEnabled;
 		public static boolean cosmeticArmorTabEnabled;
 		public static boolean modularGolemsTabEnabled;
+		public static boolean motpTabEnabled;
 		public static boolean advancementsTabEnabled;
 		public static boolean draconicEvolutionTabEnabled;
 		public static boolean brassworksMissionsTabEnabled;
@@ -61,6 +62,7 @@ public class Config
 		public static TabDisplayVisibility l2HostilityTabDisplayVisibility;
 		public static TabDisplayVisibility mapAtlasesTabDisplayVisibility;
 		public static TabDisplayVisibility modularGolemsTabDisplayVisibility;
+		public static TabDisplayVisibility motpTabDisplayVisibility;
 		public static TabDisplayVisibility passiveSkillTreeTabDisplayVisibility;
 		public static TabDisplayVisibility pufferfishSkillsTabDisplayVisibility;
 		public static TabDisplayVisibility reskillableReimaginedTabDisplayVisibility;
@@ -89,6 +91,7 @@ public class Config
 		public static BackpackSlot sophisticatedBackpacksPreferredSlot;
 		public static int cobblemonTabOrder;
 		public static int modularGolemsTabOrder;
+		public static int motpTabOrder;
 		public static int arsElixirumTabOrder;
 		public static int arsNouveauTabOrder;
 		public static int l2HostilityTabOrder;
@@ -130,6 +133,7 @@ public class Config
 				l2ArtifactsTabEnabled = ModTabsConfig.l2ArtifactsTabEnabled;
 				cosmeticArmorTabEnabled = ModTabsConfig.cosmeticArmorTabEnabled;
 				modularGolemsTabEnabled = ModTabsConfig.modularGolemsTabEnabled;
+				motpTabEnabled = ModTabsConfig.motpTabEnabled;
 				advancementsTabEnabled = ModTabsConfig.advancementsTabEnabled;
 				draconicEvolutionTabEnabled = ModTabsConfig.draconicEvolutionTabEnabled;
 				brassworksMissionsTabEnabled = ModTabsConfig.brassworksMissionsTabEnabled;
@@ -159,6 +163,7 @@ public class Config
 				sophisticatedBackpacksPreferredSlot = ModTabsConfig.sophisticatedBackpacksPreferredSlot;
 				cobblemonTabOrder = ModTabsConfig.cobblemonTabOrder;
 				modularGolemsTabOrder = ModTabsConfig.modularGolemsTabOrder;
+				motpTabOrder = ModTabsConfig.motpTabOrder;
 				arsElixirumTabOrder = ModTabsConfig.arsElixirumTabOrder;
 				arsNouveauTabOrder = ModTabsConfig.arsNouveauTabOrder;
 				l2HostilityTabOrder = ModTabsConfig.l2HostilityTabOrder;
@@ -192,6 +197,7 @@ public class Config
 				l2HostilityTabDisplayVisibility = ModTabsConfig.l2HostilityTabDisplayVisibility;
 				mapAtlasesTabDisplayVisibility = ModTabsConfig.mapAtlasesTabDisplayVisibility;
 				modularGolemsTabDisplayVisibility = ModTabsConfig.modularGolemsTabDisplayVisibility;
+				motpTabDisplayVisibility = ModTabsConfig.motpTabDisplayVisibility;
 				passiveSkillTreeTabDisplayVisibility = ModTabsConfig.passiveSkillTreeTabDisplayVisibility;
 				pufferfishSkillsTabDisplayVisibility = ModTabsConfig.pufferfishSkillsTabDisplayVisibility;
 				reskillableReimaginedTabDisplayVisibility = ModTabsConfig.reskillableReimaginedTabDisplayVisibility;

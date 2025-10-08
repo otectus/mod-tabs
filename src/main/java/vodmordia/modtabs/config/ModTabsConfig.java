@@ -282,6 +282,19 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Comment(category = "tabs") public static CommentText spacer16;
 
+    @Comment(category = "tabs") public static CommentText motp;
+
+    @Entry(category = "tabs")
+    public static boolean motpTabEnabled = true;
+
+    @Entry(category = "tabs")
+    public static int motpTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility motpTabDisplayVisibility = TabDisplayVisibility.YES;
+
+    @Comment(category = "tabs") public static CommentText spacer16a;
+
     @Comment(category = "tabs") public static CommentText passiveSkillTree;
 
     @Entry(category = "tabs")

@@ -143,6 +143,7 @@ public class ModTabs
             TabsMenu.register(new BrassworksMissionsTab());
             TabsMenu.register(new EccentricTomeTab());
             TabsMenu.register(new RpgCraftingTab());
+            TabsMenu.register(new MotpTab());
 
             // Wait for Patchouli books to load, then load custom tabs
             waitForPatchouliAndLoadCustomTabs();

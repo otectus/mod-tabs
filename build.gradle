@@ -211,6 +211,10 @@ dependencies {
     // Eccentric Tome
     implementation("curse.maven:eccentric-tome-597522:6008768")
 
+    // MOTP - RPG Player Leveling System
+    implementation("curse.maven:memories-of-the-past-1079687:6990820")
+    implementation("curse.maven:jauml-1281310:6928711")
+
     // Sinytra Connector (for Fabric mod compatibility)
     runtimeOnly "curse.maven:sinytra-connector-890127:6944771"
 
