@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -9,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -20,10 +21,25 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 @TabConfig(configKey = "arsNouveauTab", defaultEnabled = true, defaultOrder = 0)
-public class ArsNouveauTab extends SimpleItemTab {
+public class ArsNouveauTab extends ConfigurableItemTab {
 
     public ArsNouveauTab() {
-        super(() -> getArchmageSpellbook());
+        super(() -> getArchmageSpellbook(), Config.Baked.arsNouveauTabCustomIcon, "arsNouveau");
+    }
+
+    private static ItemStack getArchmageSpellbook() {
+        // Try to get Ars Nouveau's Archmage Spellbook item via reflection, fallback to vanilla item
+        try {
+            Class<?> itemsRegistryClass = Class.forName("com.hollingsworth.arsnouveau.setup.registry.ItemsRegistry");
+            Field archmageSpellbookField = itemsRegistryClass.getField("ARCHMAGE_SPELLBOOK");
+            Object registryWrapper = archmageSpellbookField.get(null);
+            Method getMethod = registryWrapper.getClass().getMethod("get");
+            Item archmageSpellbook = (Item) getMethod.invoke(registryWrapper);
+            return new ItemStack(archmageSpellbook);
+        } catch (Exception e) {
+            // Fallback to vanilla item
+            return new ItemStack(Items.ENCHANTED_BOOK);
+        }
     }
 
     @Override
@@ -201,22 +217,6 @@ public class ArsNouveauTab extends SimpleItemTab {
             return spellBookClass.isInstance(stack.getItem());
         } catch (Exception e) {
             return false;
-        }
-    }
-
-
-    private static ItemStack getArchmageSpellbook() {
-        // Try to get Ars Nouveau's Archmage Spellbook item via reflection, fallback to vanilla item
-        try {
-            Class<?> itemsRegistryClass = Class.forName("com.hollingsworth.arsnouveau.setup.registry.ItemsRegistry");
-            Field archmageSpellbookField = itemsRegistryClass.getField("ARCHMAGE_SPELLBOOK");
-            Object registryWrapper = archmageSpellbookField.get(null);
-            Method getMethod = registryWrapper.getClass().getMethod("get");
-            Item archmageSpellbook = (Item) getMethod.invoke(registryWrapper);
-            return new ItemStack(archmageSpellbook);
-        } catch (Exception e) {
-            // Fallback to vanilla item
-            return new ItemStack(Items.ENCHANTED_BOOK);
         }
     }
 

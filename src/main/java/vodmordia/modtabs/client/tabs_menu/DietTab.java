@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -16,11 +16,11 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 
 
 @TabConfig(configKey = "dietTab", defaultEnabled = false, defaultOrder = 0)
-public class DietTab extends SimpleTextureTab {
+public class DietTab extends ConfigurableIconTab {
     private static final ResourceLocation DIET_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/diet.png");
 
     public DietTab() {
-        super(DIET_ICON);
+        super(DIET_ICON, Config.Baked.dietTabCustomIcon, "diet");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 // import dev.xkmc.l2artifacts.content.client.tab.SetEffectScreen; // Available at runtime only
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -9,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -21,10 +22,25 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 @TabConfig(configKey = "l2ArtifactsTab", defaultEnabled = true, defaultOrder = 0)
-public class L2ArtifactsTab extends SimpleItemTab {
+public class L2ArtifactsTab extends ConfigurableItemTab {
 
     public L2ArtifactsTab() {
-        super(() -> getSelectItem());
+        super(() -> getSelectItem(), Config.Baked.l2ArtifactsTabCustomIcon, "l2Artifacts");
+    }
+
+    private static ItemStack getSelectItem() {
+        // Try to get L2 Artifacts' SELECT item via reflection, fallback to vanilla item
+        try {
+            Class<?> itemsClass = Class.forName("dev.xkmc.l2artifacts.init.registrate.items.ArtifactItems");
+            Field selectField = itemsClass.getField("SELECT");
+            Object registryObject = selectField.get(null);
+            Method getMethod = registryObject.getClass().getMethod("get");
+            Item selectItem = (Item) getMethod.invoke(registryObject);
+            return new ItemStack(selectItem);
+        } catch (Exception e) {
+            // Fallback to vanilla item
+            return new ItemStack(Items.NETHER_STAR);
+        }
     }
 
     @Override
@@ -76,21 +92,6 @@ public class L2ArtifactsTab extends SimpleItemTab {
         return Config.Baked.l2ArtifactsTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.L2_ARTIFACTS);
     }
 
-
-    private static ItemStack getSelectItem() {
-        // Try to get L2 Artifacts' SELECT item via reflection, fallback to vanilla item
-        try {
-            Class<?> itemsClass = Class.forName("dev.xkmc.l2artifacts.init.registrate.items.ArtifactItems");
-            Field selectField = itemsClass.getField("SELECT");
-            Object registryObject = selectField.get(null);
-            Method getMethod = registryObject.getClass().getMethod("get");
-            Item selectItem = (Item) getMethod.invoke(registryObject);
-            return new ItemStack(selectItem);
-        } catch (Exception e) {
-            // Fallback to vanilla item
-            return new ItemStack(Items.NETHER_STAR);
-        }
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {

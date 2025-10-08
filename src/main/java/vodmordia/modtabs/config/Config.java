@@ -39,6 +39,36 @@ public class Config
 		public static boolean rpgCraftingTabEnabled;
 		public static boolean stickyInventoryTab;
 
+		// Custom icon settings
+		public static String inventoryTabCustomIcon;
+		public static String advancementsTabCustomIcon;
+		public static String rpgCraftingTabCustomIcon;
+		public static String arsElixirumTabCustomIcon;
+		public static String arsNouveauTabCustomIcon;
+		public static String backpackedTabCustomIcon;
+		public static String bodyDamageTabCustomIcon;
+		public static String brassworksMissionsTabCustomIcon;
+		public static String cobblemonTabCustomIcon;
+		public static String cosmeticArmorTabCustomIcon;
+		public static String draconicEvolutionTabCustomIcon;
+		public static String eccentricTomeTabCustomIcon;
+		public static String dietTabCustomIcon;
+		public static String ftbQuestsTabCustomIcon;
+		public static String ftbTeamsTabCustomIcon;
+		public static String journeyMapTabCustomIcon;
+		public static String l2ArtifactsTabCustomIcon;
+		public static String l2AttributesTabCustomIcon;
+		public static String l2HostilityTabCustomIcon;
+		public static String mapAtlasesTabCustomIcon;
+		public static String modularGolemsTabCustomIcon;
+		public static String motpTabCustomIcon;
+		public static String passiveSkillTreeTabCustomIcon;
+		public static String pufferfishSkillsTabCustomIcon;
+		public static String reskillableReimaginedTabCustomIcon;
+		public static String sophisticatedBackpacksTabCustomIcon;
+		public static String travelersBackpackTabCustomIcon;
+		public static String xaerosMapTabCustomIcon;
+
 		// Custom tabs settings
 		public static boolean customTabsEnabled;
 		public static boolean customTabsDebugLogging;
@@ -205,6 +235,36 @@ public class Config
 				travelersBackpackTabDisplayVisibility = ModTabsConfig.travelersBackpackTabDisplayVisibility;
 				xaerosMapTabDisplayVisibility = ModTabsConfig.xaerosMapTabDisplayVisibility;
 				rpgCraftingTabDisplayVisibility = ModTabsConfig.advancementsTabDisplayVisibility; // Shares config with advancements
+
+				// Load custom icon settings
+				inventoryTabCustomIcon = ModTabsConfig.inventoryTabCustomIcon;
+				advancementsTabCustomIcon = ModTabsConfig.advancementsTabCustomIcon;
+				rpgCraftingTabCustomIcon = ModTabsConfig.rpgCraftingTabCustomIcon;
+				arsElixirumTabCustomIcon = ModTabsConfig.arsElixirumTabCustomIcon;
+				arsNouveauTabCustomIcon = ModTabsConfig.arsNouveauTabCustomIcon;
+				backpackedTabCustomIcon = ModTabsConfig.backpackedTabCustomIcon;
+				bodyDamageTabCustomIcon = ModTabsConfig.bodyDamageTabCustomIcon;
+				brassworksMissionsTabCustomIcon = ModTabsConfig.brassworksMissionsTabCustomIcon;
+				cobblemonTabCustomIcon = ModTabsConfig.cobblemonTabCustomIcon;
+				cosmeticArmorTabCustomIcon = ModTabsConfig.cosmeticArmorTabCustomIcon;
+				draconicEvolutionTabCustomIcon = ModTabsConfig.draconicEvolutionTabCustomIcon;
+				eccentricTomeTabCustomIcon = ModTabsConfig.eccentricTomeTabCustomIcon;
+				dietTabCustomIcon = ModTabsConfig.dietTabCustomIcon;
+				ftbQuestsTabCustomIcon = ModTabsConfig.ftbQuestsTabCustomIcon;
+				ftbTeamsTabCustomIcon = ModTabsConfig.ftbTeamsTabCustomIcon;
+				journeyMapTabCustomIcon = ModTabsConfig.journeyMapTabCustomIcon;
+				l2ArtifactsTabCustomIcon = ModTabsConfig.l2ArtifactsTabCustomIcon;
+				l2AttributesTabCustomIcon = ModTabsConfig.l2AttributesTabCustomIcon;
+				l2HostilityTabCustomIcon = ModTabsConfig.l2HostilityTabCustomIcon;
+				mapAtlasesTabCustomIcon = ModTabsConfig.mapAtlasesTabCustomIcon;
+				modularGolemsTabCustomIcon = ModTabsConfig.modularGolemsTabCustomIcon;
+				motpTabCustomIcon = ModTabsConfig.motpTabCustomIcon;
+				passiveSkillTreeTabCustomIcon = ModTabsConfig.passiveSkillTreeTabCustomIcon;
+				pufferfishSkillsTabCustomIcon = ModTabsConfig.pufferfishSkillsTabCustomIcon;
+				reskillableReimaginedTabCustomIcon = ModTabsConfig.reskillableReimaginedTabCustomIcon;
+				sophisticatedBackpacksTabCustomIcon = ModTabsConfig.sophisticatedBackpacksTabCustomIcon;
+				travelersBackpackTabCustomIcon = ModTabsConfig.travelersBackpackTabCustomIcon;
+				xaerosMapTabCustomIcon = ModTabsConfig.xaerosMapTabCustomIcon;
 			}
 			catch (Exception e)
 			{

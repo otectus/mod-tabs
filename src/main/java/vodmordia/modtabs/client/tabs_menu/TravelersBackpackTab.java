@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -7,7 +8,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
+import net.minecraft.world.item.Item;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -17,10 +21,29 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 import vodmordia.modtabs.utils.IntegrationUtils;
 
 @TabConfig(configKey = "travelersBackpackTab", defaultEnabled = true, defaultOrder = 0)
-public class TravelersBackpackTab extends SimpleItemTab {
+public class TravelersBackpackTab extends ConfigurableItemTab {
 
     public TravelersBackpackTab() {
-        super(() -> getStandardBackpackItem());
+        super(() -> getStandardBackpackItem(), Config.Baked.travelersBackpackTabCustomIcon, "travelersBackpack");
+    }
+
+    private static ItemStack getStandardBackpackItem() {
+        try {
+            // Use reflection to get the standard travelers backpack item
+            Class<?> modItemsClass = Class.forName("com.tiviacz.travelersbackpack.init.ModItems");
+            Field standardBackpackField = modItemsClass.getDeclaredField("STANDARD_TRAVELERS_BACKPACK");
+            standardBackpackField.setAccessible(true);
+
+            Object deferredItem = standardBackpackField.get(null);
+            // DeferredItem.get() returns the actual item
+            Method getMethod = deferredItem.getClass().getMethod("get");
+            Object item = getMethod.invoke(deferredItem);
+
+            return new ItemStack((Item) item);
+        } catch (Exception e) {
+            // Fallback to a generic backpack-like item if reflection fails
+            return new ItemStack(Items.LEATHER_CHESTPLATE);
+        }
     }
 
     @Override
@@ -131,25 +154,6 @@ public class TravelersBackpackTab extends SimpleItemTab {
         }
     }
 
-
-    private static ItemStack getStandardBackpackItem() {
-        try {
-            // Use reflection to get the standard travelers backpack item
-            Class<?> modItemsClass = Class.forName("com.tiviacz.travelersbackpack.init.ModItems");
-            java.lang.reflect.Field standardBackpackField = modItemsClass.getDeclaredField("STANDARD_TRAVELERS_BACKPACK");
-            standardBackpackField.setAccessible(true);
-
-            Object deferredItem = standardBackpackField.get(null);
-            // DeferredItem.get() returns the actual item
-            java.lang.reflect.Method getMethod = deferredItem.getClass().getMethod("get");
-            Object item = getMethod.invoke(deferredItem);
-
-            return new ItemStack((net.minecraft.world.item.Item) item);
-        } catch (Exception e) {
-            // Fallback to a generic backpack-like item if reflection fails
-            return new ItemStack(Items.LEATHER_CHESTPLATE);
-        }
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {

@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -7,7 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -16,10 +17,15 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 import vodmordia.modtabs.utils.FTBQuestsInspector;
 
 @TabConfig(configKey = "ftbQuestsTab", defaultEnabled = true, defaultOrder = 0)
-public class FtbQuestsTab extends SimpleItemTab {
+public class FtbQuestsTab extends ConfigurableItemTab {
 
     public FtbQuestsTab() {
-        super(FtbQuestsTab::getQuestBookItem);
+        super(FtbQuestsTab::getQuestBookItem, Config.Baked.ftbQuestsTabCustomIcon, "ftbQuests");
+    }
+
+    private static ItemStack getQuestBookItem() {
+        Item bookItem = FTBQuestsInspector.tryGetBookItem();
+        return new ItemStack(bookItem != null ? bookItem : Items.BOOK);
     }
 
     @Override
@@ -38,11 +44,6 @@ public class FtbQuestsTab extends SimpleItemTab {
     @Override
     public boolean isEnabled(Player player) {
         return Config.Baked.ftbQuestsTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.FTB_QUESTS);
-    }
-
-    private static ItemStack getQuestBookItem() {
-        Item bookItem = FTBQuestsInspector.tryGetBookItem();
-        return new ItemStack(bookItem != null ? bookItem : Items.BOOK);
     }
 
     @Override

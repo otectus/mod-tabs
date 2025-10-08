@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -9,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -21,10 +22,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 @TabConfig(configKey = "eccentricTomeTab", defaultEnabled = true, defaultOrder = 0)
-public class EccentricTomeTab extends SimpleItemTab {
+public class EccentricTomeTab extends ConfigurableItemTab {
 
     public EccentricTomeTab() {
-        super(() -> getCurrentTomeOrBookItem());
+        super(() -> getCurrentTomeOrBookItem(), Config.Baked.eccentricTomeTabCustomIcon, "eccentricTome");
     }
 
     // Returns the tome if unconverted, or the converted book if converted
@@ -45,6 +46,21 @@ public class EccentricTomeTab extends SimpleItemTab {
             return getTomeItem();
         } catch (Exception e) {
             return getTomeItem();
+        }
+    }
+
+    private static ItemStack getTomeItem() {
+        // Try to get Eccentric Tome's tome item via reflection, fallback to vanilla item
+        try {
+            Class<?> eccentricTomeClass = Class.forName("website.eccentric.tome.EccentricTome");
+            Field tomeField = eccentricTomeClass.getField("TOME");
+            Object registryObject = tomeField.get(null);
+            Method getMethod = registryObject.getClass().getMethod("get");
+            Item tomeItem = (Item) getMethod.invoke(registryObject);
+            return new ItemStack(tomeItem);
+        } catch (Exception e) {
+            // Fallback to vanilla item
+            return new ItemStack(Items.BOOK);
         }
     }
 
@@ -260,21 +276,6 @@ public class EccentricTomeTab extends SimpleItemTab {
             return tomeItemClass.isInstance(stack.getItem());
         } catch (Exception e) {
             return false;
-        }
-    }
-
-    private static ItemStack getTomeItem() {
-        // Try to get Eccentric Tome's tome item via reflection, fallback to vanilla item
-        try {
-            Class<?> eccentricTomeClass = Class.forName("website.eccentric.tome.EccentricTome");
-            Field tomeField = eccentricTomeClass.getField("TOME");
-            Object registryObject = tomeField.get(null);
-            Method getMethod = registryObject.getClass().getMethod("get");
-            Item tomeItem = (Item) getMethod.invoke(registryObject);
-            return new ItemStack(tomeItem);
-        } catch (Exception e) {
-            // Fallback to vanilla item
-            return new ItemStack(Items.BOOK);
         }
     }
 

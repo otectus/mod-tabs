@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -15,11 +15,11 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "advancementsTab", defaultEnabled = true, defaultOrder = 0)
-public class AdvancementsTab extends SimpleTextureTab {
+public class AdvancementsTab extends ConfigurableIconTab {
     private static final ResourceLocation ADVANCEMENTS_ICON = ResourceLocation.fromNamespaceAndPath("minecraft", "textures/gui/sprites/advancements/challenge_frame_obtained.png");
 
     public AdvancementsTab() {
-        super(ADVANCEMENTS_ICON);
+        super(ADVANCEMENTS_ICON, Config.Baked.advancementsTabCustomIcon, "advancements");
     }
 
     @Override

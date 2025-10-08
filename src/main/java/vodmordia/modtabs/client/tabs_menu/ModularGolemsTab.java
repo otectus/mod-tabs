@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -8,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -20,10 +21,25 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 @TabConfig(configKey = "modularGolemsTab", defaultEnabled = true, defaultOrder = 0)
-public class ModularGolemsTab extends SimpleItemTab {
+public class ModularGolemsTab extends ConfigurableItemTab {
 
     public ModularGolemsTab() {
-        super(ModularGolemsTab::getHolderGolemItem);
+        super(ModularGolemsTab::getHolderGolemItem, Config.Baked.modularGolemsTabCustomIcon, "modularGolems");
+    }
+
+    private static ItemStack getHolderGolemItem() {
+        // Try to get Modular Golems' HOLDER_GOLEM item via reflection, fallback to vanilla item
+        try {
+            Class<?> itemsClass = Class.forName("dev.xkmc.modulargolems.init.registrate.GolemItems");
+            Field holderGolemField = itemsClass.getField("HOLDER_GOLEM");
+            Object registryObject = holderGolemField.get(null);
+            Method getMethod = registryObject.getClass().getMethod("get");
+            Item holderGolem = (Item) getMethod.invoke(registryObject);
+            return new ItemStack(holderGolem);
+        } catch (Exception e) {
+            // Fallback to iron golem spawn egg
+            return new ItemStack(Items.IRON_GOLEM_SPAWN_EGG);
+        }
     }
 
     @Override
@@ -62,21 +78,6 @@ public class ModularGolemsTab extends SimpleItemTab {
         return Config.Baked.modularGolemsTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.MODULAR_GOLEMS);
     }
 
-
-    private static ItemStack getHolderGolemItem() {
-        // Try to get Modular Golems' HOLDER_GOLEM item via reflection, fallback to vanilla item
-        try {
-            Class<?> itemsClass = Class.forName("dev.xkmc.modulargolems.init.registrate.GolemItems");
-            Field holderGolemField = itemsClass.getField("HOLDER_GOLEM");
-            Object registryObject = holderGolemField.get(null);
-            Method getMethod = registryObject.getClass().getMethod("get");
-            Item holderGolem = (Item) getMethod.invoke(registryObject);
-            return new ItemStack(holderGolem);
-        } catch (Exception e) {
-            // Fallback to iron golem spawn egg
-            return new ItemStack(Items.IRON_GOLEM_SPAWN_EGG);
-        }
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {

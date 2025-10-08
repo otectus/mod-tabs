@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.puffish.skillsmod.client.SkillsClientMod;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -16,11 +16,11 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 import java.util.Optional;
 
 @TabConfig(configKey = "pufferfishSkillsTab", defaultEnabled = true, defaultOrder = 0)
-public class PufferfishsSkillsTab extends SimpleTextureTab {
+public class PufferfishsSkillsTab extends ConfigurableIconTab {
     private static final ResourceLocation PUFFER_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/puffer.png");
 
     public PufferfishsSkillsTab() {
-        super(PUFFER_ICON);
+        super(PUFFER_ICON, Config.Baked.pufferfishSkillsTabCustomIcon, "pufferfishSkills");
     }
 
     @Override

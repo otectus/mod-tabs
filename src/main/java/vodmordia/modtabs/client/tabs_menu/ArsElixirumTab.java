@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -8,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -20,10 +21,24 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 @TabConfig(configKey = "arsElixirumTab", defaultEnabled = true, defaultOrder = 0)
-public class ArsElixirumTab extends SimpleItemTab {
+public class ArsElixirumTab extends ConfigurableItemTab {
 
     public ArsElixirumTab() {
-        super(() -> getGlassCauldronItem());
+        super(() -> getGlassCauldronItem(), Config.Baked.arsElixirumTabCustomIcon, "arsElixirum");
+    }
+
+    private static ItemStack getGlassCauldronItem() {
+        // Try to get Ars Elixirum glass cauldron item via reflection using inspector
+        try {
+            Item glassCauldronItem = ArsElixirumInspector.tryGetGlassCauldronItem();
+            if (glassCauldronItem != null) {
+                return new ItemStack(glassCauldronItem);
+            }
+        } catch (Exception e) {
+            // Fall through to fallback
+        }
+        // Fallback to brewing stand
+        return new ItemStack(Items.BREWING_STAND);
     }
 
     @Override
@@ -54,22 +69,6 @@ public class ArsElixirumTab extends SimpleItemTab {
     @Override
     public boolean isEnabled(Player player) {
         return Config.Baked.arsElixirumTabEnabled && ModIntegrationManager.isModLoaded(ModIntegration.ARS_ELIXIRUM);
-    }
-
-
-    private static ItemStack getGlassCauldronItem() {
-        // Try to get Ars Elixirum glass cauldron item via reflection using inspector
-        try {
-            Item glassCauldronItem = ArsElixirumInspector.tryGetGlassCauldronItem();
-
-            if (glassCauldronItem != null) {
-                return new ItemStack(glassCauldronItem);
-            }
-        } catch (Exception e) {
-            // Fall through to fallback
-        }
-        // Fallback to brewing stand
-        return new ItemStack(Items.BREWING_STAND);
     }
 
     @Override

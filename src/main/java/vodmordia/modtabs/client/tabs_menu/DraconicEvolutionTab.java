@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,11 +15,11 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "draconicEvolutionTab", defaultEnabled = true, defaultOrder = 0)
-public class DraconicEvolutionTab extends SimpleTextureTab {
+public class DraconicEvolutionTab extends ConfigurableIconTab {
     private static final ResourceLocation INFO_TABLET_ICON = ResourceLocation.fromNamespaceAndPath("draconicevolution", "textures/item/info_tablet.png");
 
     public DraconicEvolutionTab() {
-        super(INFO_TABLET_ICON);
+        super(INFO_TABLET_ICON, Config.Baked.draconicEvolutionTabCustomIcon, "draconicEvolution");
     }
 
     @Override

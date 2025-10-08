@@ -5,7 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -15,11 +15,11 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 import java.lang.reflect.Method;
 
 @TabConfig(configKey = "cobblemonTab", defaultEnabled = true, defaultOrder = 0)
-public class CobblemonTab extends SimpleTextureTab {
+public class CobblemonTab extends ConfigurableIconTab {
     private static final ResourceLocation POKEBALL_ICON = ResourceLocation.fromNamespaceAndPath("cobblemon", "textures/item/poke_balls/poke_ball.png");
 
     public CobblemonTab() {
-        super(POKEBALL_ICON);
+        super(POKEBALL_ICON, Config.Baked.cobblemonTabCustomIcon, "cobblemon");
     }
 
     @Override

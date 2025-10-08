@@ -5,7 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -14,11 +14,11 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "cosmeticArmorTab", defaultEnabled = true, defaultOrder = 0)
-public class CosmeticArmorTab extends SimpleTextureTab {
+public class CosmeticArmorTab extends ConfigurableIconTab {
     private static final ResourceLocation COSMETIC_ARMOR_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/cosmeticarmor.png");
 
     public CosmeticArmorTab() {
-        super(COSMETIC_ARMOR_ICON);
+        super(COSMETIC_ARMOR_ICON, Config.Baked.cosmeticArmorTabCustomIcon, "cosmeticArmor");
     }
 
     @Override

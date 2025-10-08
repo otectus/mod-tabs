@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 // import dev.xkmc.l2hostility.content.menu.tab.DifficultyScreen; // Available at runtime only
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -8,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -17,10 +18,10 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "l2HostilityTab", defaultEnabled = true, defaultOrder = 0)
-public class L2HostilityDifficultyTab extends SimpleItemTab {
+public class L2HostilityDifficultyTab extends ConfigurableItemTab {
 
     public L2HostilityDifficultyTab() {
-        super(() -> new ItemStack(Items.ZOMBIE_HEAD));
+        super(new ItemStack(Items.ZOMBIE_HEAD), Config.Baked.l2HostilityTabCustomIcon, "l2Hostility");
     }
 
     @Override

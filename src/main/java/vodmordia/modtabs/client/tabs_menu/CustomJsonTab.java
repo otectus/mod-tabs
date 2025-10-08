@@ -16,6 +16,7 @@ import vodmordia.modtabs.api.tabs_menu.TabBase;
 import vodmordia.modtabs.api.tabs_menu.TabRenderer;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.config.CustomTabDefinition;
+import vodmordia.modtabs.utils.DynamicTextureLoader;
 import vodmordia.modtabs.utils.ItemUseSimulator;
 import vodmordia.modtabs.utils.PatchouliIntegration;
 
@@ -28,6 +29,8 @@ public class CustomJsonTab extends TabBase {
     private final ItemStack iconItem;
     private final ItemStack fallbackItem;
     private final ItemStack patchouliBookItem;
+    private final ResourceLocation customTexture;
+    private final boolean useCustomTexture;
 
     public CustomJsonTab(CustomTabDefinition definition) {
         this.definition = definition;
@@ -45,11 +48,47 @@ public class CustomJsonTab extends TabBase {
         } else {
             this.patchouliBookItem = ItemStack.EMPTY;
         }
+
+        // Load custom texture if specified
+        ResourceLocation loadedTexture = null;
+        boolean customTextureLoaded = false;
+
+        // Try loading from customTexturePath first (file-based)
+        if (definition.icon.customTexturePath != null && !definition.icon.customTexturePath.trim().isEmpty()) {
+            loadedTexture = DynamicTextureLoader.loadTextureFromFile(
+                definition.icon.customTexturePath,
+                "custom_tab_" + definition.tabId
+            );
+            if (loadedTexture != null) {
+                customTextureLoaded = true;
+                ModTabs.LOGGER.info("Loaded custom texture from file for tab " + definition.tabId);
+            }
+        }
+
+        // Try loading from customTexture (resource-based) if file-based failed
+        if (!customTextureLoaded && definition.icon.customTexture != null && !definition.icon.customTexture.trim().isEmpty()) {
+            try {
+                loadedTexture = ResourceLocation.parse(definition.icon.customTexture);
+                // Validate the texture exists
+                if (DynamicTextureLoader.validateResourceTexture(loadedTexture)) {
+                    customTextureLoaded = true;
+                    ModTabs.LOGGER.info("Loaded custom texture from resources for tab " + definition.tabId);
+                } else {
+                    loadedTexture = null;
+                }
+            } catch (Exception e) {
+                ModTabs.LOGGER.error("Invalid customTexture ResourceLocation for tab " + definition.tabId + ": " + e.getMessage());
+                loadedTexture = null;
+            }
+        }
+
+        this.customTexture = loadedTexture;
+        this.useCustomTexture = customTextureLoaded;
     }
 
     private ItemStack createItemStack(String itemId) {
         if (itemId == null || itemId.trim().isEmpty()) {
-            return new ItemStack(Items.BOOK);
+            return ItemStack.EMPTY;
         }
 
         try {
@@ -60,11 +99,11 @@ public class CustomJsonTab extends TabBase {
                 return new ItemStack(item);
             } else {
                 ModTabs.LOGGER.warn("Item not found for custom tab " + definition.tabId + ": " + itemId);
-                return new ItemStack(Items.BOOK);
+                return ItemStack.EMPTY;
             }
         } catch (Exception e) {
             ModTabs.LOGGER.error("Error creating item stack for " + itemId + " in tab " + definition.tabId + ": " + e.getMessage());
-            return new ItemStack(Items.BOOK);
+            return ItemStack.EMPTY;
         }
     }
 
@@ -105,7 +144,12 @@ public class CustomJsonTab extends TabBase {
             }
         }
 
-        // Check if the icon item exists (use fallback if main item doesn't exist)
+        // If using custom texture, always return true (texture already validated)
+        if (useCustomTexture) {
+            return true;
+        }
+
+        // Otherwise check if the icon item exists (use fallback if main item doesn't exist)
         return !getCurrentIconItem().isEmpty();
     }
 
@@ -120,24 +164,42 @@ public class CustomJsonTab extends TabBase {
 
     @Override
     public void render(GuiGraphics gui, int x, int y, boolean hover) {
-        ItemStack renderItem = getCurrentIconItem();
-        float scale = definition.icon.scale;
+        if (useCustomTexture && customTexture != null) {
+            // Render with custom texture
+            TabRenderer.builder()
+                .withBackground()
+                .withTextureIcon(customTexture, 5, 4, 16, 16)
+                .render(gui, x, y, hover, false);
+        } else {
+            // Render with item icon
+            ItemStack renderItem = getCurrentIconItem();
+            float scale = definition.icon.scale;
 
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(renderItem, 5, 4, scale)
-            .render(gui, x, y, hover, false);
+            TabRenderer.builder()
+                .withBackground()
+                .withItemIcon(renderItem, 5, 4, scale)
+                .render(gui, x, y, hover, false);
+        }
     }
 
     @Override
     protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
-        ItemStack renderItem = getCurrentIconItem();
-        float scale = definition.icon.scale;
+        if (useCustomTexture && customTexture != null) {
+            // Render with custom texture
+            TabRenderer.builder()
+                .withBackground()
+                .withTextureIcon(customTexture, 5, 4, 16, 16)
+                .render(gui, x, y, hover, true);
+        } else {
+            // Render with item icon
+            ItemStack renderItem = getCurrentIconItem();
+            float scale = definition.icon.scale;
 
-        TabRenderer.builder()
-            .withBackground()
-            .withItemIcon(renderItem, 5, 4, scale)
-            .render(gui, x, y, hover, true);
+            TabRenderer.builder()
+                .withBackground()
+                .withItemIcon(renderItem, 5, 4, scale)
+                .render(gui, x, y, hover, true);
+        }
     }
 
     /**
@@ -155,7 +217,12 @@ public class CustomJsonTab extends TabBase {
         }
 
         // Fall back to fallback item
-        return fallbackItem;
+        if (!fallbackItem.isEmpty()) {
+            return fallbackItem;
+        }
+
+        // Ultimate fallback
+        return new ItemStack(Items.BOOK);
     }
 
     @Override
@@ -200,6 +267,7 @@ public class CustomJsonTab extends TabBase {
                 "tabId='" + definition.tabId + '\'' +
                 ", enabled=" + definition.enabled +
                 ", order=" + definition.order +
+                ", useCustomTexture=" + useCustomTexture +
                 '}';
     }
 }

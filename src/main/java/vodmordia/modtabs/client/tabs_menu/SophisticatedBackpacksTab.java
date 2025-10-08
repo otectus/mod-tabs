@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -7,7 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -20,10 +21,23 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 @TabConfig(configKey = "sophisticatedBackpacksTab", defaultEnabled = true, defaultOrder = 0)
-public class SophisticatedBackpacksTab extends SimpleItemTab {
+public class SophisticatedBackpacksTab extends ConfigurableItemTab {
 
     public SophisticatedBackpacksTab() {
-        super(() -> getBackpackItem());
+        super(() -> getBackpackItem(), Config.Baked.sophisticatedBackpacksTabCustomIcon, "sophisticatedBackpacks");
+    }
+
+    private static ItemStack getBackpackItem() {
+        try {
+            Class<?> itemsClass = Class.forName("net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems");
+            Field backpackField = itemsClass.getField("BACKPACK");
+            Object supplier = backpackField.get(null);
+            Method getMethod = supplier.getClass().getMethod("get");
+            Item backpackItem = (Item) getMethod.invoke(supplier);
+            return new ItemStack(backpackItem);
+        } catch (Exception e) {
+            return new ItemStack(Items.BUNDLE);
+        }
     }
 
     @Override
@@ -283,19 +297,6 @@ public class SophisticatedBackpacksTab extends SimpleItemTab {
         }
     }
 
-
-    private static ItemStack getBackpackItem() {
-        try {
-            Class<?> itemsClass = Class.forName("net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems");
-            Field backpackField = itemsClass.getField("BACKPACK");
-            Object supplier = backpackField.get(null);
-            Method getMethod = supplier.getClass().getMethod("get");
-            Item backpackItem = (Item) getMethod.invoke(supplier);
-            return new ItemStack(backpackItem);
-        } catch (Exception e) {
-            return new ItemStack(Items.BUNDLE);
-        }
-    }
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {

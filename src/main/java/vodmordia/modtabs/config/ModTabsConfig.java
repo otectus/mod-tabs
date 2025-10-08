@@ -14,6 +14,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean inventoryTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String inventoryTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int inventoryTabOrder = 0;
 
@@ -29,6 +32,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean advancementsTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String advancementsTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int advancementsTabOrder = 0;
 
@@ -42,6 +48,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean rpgCraftingTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String rpgCraftingTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int rpgCraftingTabOrder = 0;
 
@@ -52,6 +61,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean arsElixirumTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String arsElixirumTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int arsElixirumTabOrder = 0;
 
@@ -65,6 +77,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean arsNouveauTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String arsNouveauTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int arsNouveauTabOrder = 0;
 
@@ -78,6 +93,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean backpackedTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String backpackedTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int backpackedTabOrder = 0;
 
@@ -92,6 +110,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean bodyDamageTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String bodyDamageTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int bodyDamageTabOrder = 0;
 
@@ -105,6 +126,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean brassworksMissionsTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String brassworksMissionsTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int brassworksMissionsTabOrder = 0;
 
@@ -118,6 +142,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean cobblemonTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String cobblemonTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int cobblemonTabOrder = 0;
 
@@ -131,6 +158,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean cosmeticArmorTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String cosmeticArmorTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int cosmeticArmorTabOrder = 0;
 
@@ -144,6 +174,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean draconicEvolutionTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String draconicEvolutionTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int draconicEvolutionTabOrder = 0;
 
@@ -157,6 +190,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean eccentricTomeTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String eccentricTomeTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int eccentricTomeTabOrder = 0;
 
@@ -170,6 +206,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean dietTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String dietTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int dietTabOrder = 0;
 
@@ -183,6 +222,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean ftbQuestsTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String ftbQuestsTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int ftbQuestsTabOrder = 0;
 
@@ -196,6 +238,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean ftbTeamsTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String ftbTeamsTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int ftbTeamsTabOrder = 0;
 
@@ -209,6 +254,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean journeyMapTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String journeyMapTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int journeyMapTabOrder = 0;
 
@@ -222,6 +270,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean l2ArtifactsTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String l2ArtifactsTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int l2ArtifactsTabOrder = 0;
 
@@ -235,6 +286,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean l2AttributesTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String l2AttributesTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int l2AttributesTabOrder = 0;
 
@@ -248,6 +302,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean l2HostilityTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String l2HostilityTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int l2HostilityTabOrder = 0;
 
@@ -261,6 +318,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean mapAtlasesTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String mapAtlasesTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int mapAtlasesTabOrder = 0;
 
@@ -274,6 +334,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean modularGolemsTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String modularGolemsTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int modularGolemsTabOrder = 0;
 
@@ -287,6 +350,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean motpTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String motpTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int motpTabOrder = 0;
 
@@ -300,6 +366,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean passiveSkillTreeTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String passiveSkillTreeTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int passiveSkillTreeTabOrder = 0;
 
@@ -313,6 +382,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean pufferfishSkillsTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String pufferfishSkillsTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int pufferfishSkillsTabOrder = 0;
 
@@ -326,6 +398,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean reskillableReimaginedTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String reskillableReimaginedTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int reskillableReimaginedTabOrder = 0;
 
@@ -339,6 +414,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean sophisticatedBackpacksTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String sophisticatedBackpacksTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int sophisticatedBackpacksTabOrder = 0;
 
@@ -355,6 +433,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean travelersBackpackTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String travelersBackpackTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int travelersBackpackTabOrder = 0;
 
@@ -368,6 +449,9 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean xaerosMapTabEnabled = true;
 
+
+    @Entry(category = "tabs")
+    public static String xaerosMapTabCustomIcon = "";
     @Entry(category = "tabs")
     public static int xaerosMapTabOrder = 0;
 

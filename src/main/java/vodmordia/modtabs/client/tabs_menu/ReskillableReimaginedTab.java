@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.CustomIconTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableCustomIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -15,7 +15,7 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "reskillableReimaginedTab", defaultEnabled = true, defaultOrder = 0)
-public class ReskillableReimaginedTab extends CustomIconTab {
+public class ReskillableReimaginedTab extends ConfigurableCustomIconTab {
 
     public ReskillableReimaginedTab() {
         super((context) -> {
@@ -32,7 +32,7 @@ public class ReskillableReimaginedTab extends CustomIconTab {
                 context.gui.fill(context.x + 7, context.y + 5, context.x + 19, context.y + 17, 0xFF8B4513);
                 context.gui.fill(context.x + 9, context.y + 7, context.x + 17, context.y + 15, 0xFFFFF8DC);
             }
-        });
+        }, Config.Baked.reskillableReimaginedTabCustomIcon, "reskillableReimagined");
     }
 
     @Override

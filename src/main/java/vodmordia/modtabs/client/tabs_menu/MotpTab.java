@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -15,11 +15,11 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "motpTab", defaultEnabled = true, defaultOrder = 0)
-public class MotpTab extends SimpleTextureTab {
+public class MotpTab extends ConfigurableIconTab {
     private static final ResourceLocation MOTP_ICON = ResourceLocation.fromNamespaceAndPath("memory_of_the_past", "textures/item/book_02f.png");
 
     public MotpTab() {
-        super(MOTP_ICON);
+        super(MOTP_ICON, Config.Baked.motpTabCustomIcon, "motp");
     }
 
     @Override

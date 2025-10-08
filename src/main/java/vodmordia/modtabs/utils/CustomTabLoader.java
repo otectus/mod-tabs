@@ -149,6 +149,52 @@ public class CustomTabLoader {
             Files.writeString(patchouliFile, patchouliJson);
             ModTabs.LOGGER.info("Created example Patchouli book tab file: " + patchouliFile);
 
+            // Create custom texture example (file-based)
+            CustomTabDefinition customTextureExample = new CustomTabDefinition();
+            customTextureExample.tabId = "example_custom_texture";
+            customTextureExample.enabled = false;
+            customTextureExample.tooltip = "Example Custom Texture Tab";
+            customTextureExample.order = 102;
+
+            customTextureExample.icon = new CustomTabDefinition.IconDefinition();
+            customTextureExample.icon.customTexturePath = "config/modtabs/icons/my_custom_icon.png";
+            customTextureExample.icon.fallbackItem = "minecraft:compass";
+
+            customTextureExample.action = new CustomTabDefinition.ActionDefinition();
+            customTextureExample.action.type = "use_item";
+            customTextureExample.action.item = "minecraft:compass";
+
+            customTextureExample.requiredMods = new String[]{};
+
+            String customTextureJson = GSON.toJson(customTextureExample);
+            Path customTextureFile = customTabsPath.resolve("example_custom_texture.json");
+
+            Files.writeString(customTextureFile, customTextureJson);
+            ModTabs.LOGGER.info("Created example custom texture tab file: " + customTextureFile);
+
+            // Create custom texture example (resource-based)
+            CustomTabDefinition resourceTextureExample = new CustomTabDefinition();
+            resourceTextureExample.tabId = "example_resource_texture";
+            resourceTextureExample.enabled = false;
+            resourceTextureExample.tooltip = "Example Resource Texture Tab";
+            resourceTextureExample.order = 103;
+
+            resourceTextureExample.icon = new CustomTabDefinition.IconDefinition();
+            resourceTextureExample.icon.customTexture = "modtabs:textures/gui/inventory.png";
+            resourceTextureExample.icon.fallbackItem = "minecraft:map";
+
+            resourceTextureExample.action = new CustomTabDefinition.ActionDefinition();
+            resourceTextureExample.action.type = "use_item";
+            resourceTextureExample.action.item = "minecraft:map";
+
+            resourceTextureExample.requiredMods = new String[]{};
+
+            String resourceTextureJson = GSON.toJson(resourceTextureExample);
+            Path resourceTextureFile = customTabsPath.resolve("example_resource_texture.json");
+
+            Files.writeString(resourceTextureFile, resourceTextureJson);
+            ModTabs.LOGGER.info("Created example resource texture tab file: " + resourceTextureFile);
+
         } catch (IOException e) {
             ModTabs.LOGGER.error("Failed to create example files: " + e.getMessage());
         }

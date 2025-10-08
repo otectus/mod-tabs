@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -14,11 +14,11 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "ftbTeamsTab", defaultEnabled = true, defaultOrder = 0)
-public class FtbTeamsTab extends SimpleTextureTab {
+public class FtbTeamsTab extends ConfigurableIconTab {
     private static final ResourceLocation TEAMS_TEXTURE = ResourceLocation.fromNamespaceAndPath("ftbteams", "textures/teams.png");
 
     public FtbTeamsTab() {
-        super(TEAMS_TEXTURE);
+        super(TEAMS_TEXTURE, Config.Baked.ftbTeamsTabCustomIcon, "ftbTeams");
     }
 
     @Override

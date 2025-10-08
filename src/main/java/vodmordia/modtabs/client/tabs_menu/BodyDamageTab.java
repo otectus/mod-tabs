@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +12,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -22,23 +23,11 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 import static sfiomn.legendarysurvivaloverhaul.config.Config.Baked.localizedBodyDamageEnabled;
 
 @TabConfig(configKey = "bodyDamageTab", defaultEnabled = true, defaultOrder = 0)
-public class BodyDamageTab extends SimpleItemTab {
+public class BodyDamageTab extends ConfigurableItemTab {
 
     public BodyDamageTab() {
-        super(() -> getFirstAidItem());
+        super(() -> getFirstAidItem(), Config.Baked.bodyDamageTabCustomIcon, "bodyDamage");
     }
-
-    @Override
-    public void openTargetScreen(Player player) {
-        if (ModIntegrationManager.isModLoaded(ModIntegration.LEGENDARY_SURVIVAL_OVERHAUL) && localizedBodyDamageEnabled)
-            ClientHooks.openBodyHealthScreen(player);
-    }
-
-    @Override
-    public boolean isEnabled(Player player) {
-        return ModIntegrationManager.isModLoaded(ModIntegration.LEGENDARY_SURVIVAL_OVERHAUL) && Config.Baked.bodyDamageTabEnabled && localizedBodyDamageEnabled;
-    }
-
 
     private static ItemStack getFirstAidItem() {
         // Try to get LSO's First Aid Supplies item via reflection, fallback to vanilla item
@@ -54,6 +43,18 @@ public class BodyDamageTab extends SimpleItemTab {
             return new ItemStack(Items.GLISTERING_MELON_SLICE);
         }
     }
+
+    @Override
+    public void openTargetScreen(Player player) {
+        if (ModIntegrationManager.isModLoaded(ModIntegration.LEGENDARY_SURVIVAL_OVERHAUL) && localizedBodyDamageEnabled)
+            ClientHooks.openBodyHealthScreen(player);
+    }
+
+    @Override
+    public boolean isEnabled(Player player) {
+        return ModIntegrationManager.isModLoaded(ModIntegration.LEGENDARY_SURVIVAL_OVERHAUL) && Config.Baked.bodyDamageTabEnabled && localizedBodyDamageEnabled;
+    }
+
 
     @Override
     public boolean isCurrentlyUsed(Screen currentScreen) {

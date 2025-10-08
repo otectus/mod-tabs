@@ -86,6 +86,9 @@ public class ModTabs
         {
             Config.Baked.bakeClient();
 
+            // Initialize icons directory for custom tab icons
+            vodmordia.modtabs.utils.DynamicTextureLoader.getIconsDirectory();
+
             // Register all tabs - each tab's isEnabled() method handles mod detection via @TabConfig
             TabsMenu.register(new InventoryTab());
             TabsMenu.register(new BackpackedTab());

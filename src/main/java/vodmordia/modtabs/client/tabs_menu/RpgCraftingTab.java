@@ -1,5 +1,6 @@
 package vodmordia.modtabs.client.tabs_menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -7,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -15,10 +16,10 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "rpgCraftingTab", defaultEnabled = true, defaultOrder = 0)
-public class RpgCraftingTab extends SimpleItemTab {
+public class RpgCraftingTab extends ConfigurableItemTab {
 
     public RpgCraftingTab() {
-        super(new ItemStack(Items.CRAFTING_TABLE));
+        super(new ItemStack(Items.CRAFTING_TABLE), Config.Baked.rpgCraftingTabCustomIcon, "rpgCrafting");
     }
 
     @Override

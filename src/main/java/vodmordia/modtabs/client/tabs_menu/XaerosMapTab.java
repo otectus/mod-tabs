@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.CustomIconTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableCustomIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
@@ -16,7 +16,7 @@ import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "xaerosMapTab", defaultEnabled = true, defaultOrder = 0)
-public class XaerosMapTab extends CustomIconTab {
+public class XaerosMapTab extends ConfigurableCustomIconTab {
 
     public XaerosMapTab() {
         super((context) -> {
@@ -27,7 +27,7 @@ public class XaerosMapTab extends CustomIconTab {
                 context.gui.fill(context.x + 7, context.y + 5, context.x + 19, context.y + 17, 0xFF8B4513);
                 context.gui.fill(context.x + 9, context.y + 7, context.x + 17, context.y + 15, 0xFF90EE90);
             }
-        });
+        }, Config.Baked.xaerosMapTabCustomIcon, "xaerosMap");
     }
 
     @Override

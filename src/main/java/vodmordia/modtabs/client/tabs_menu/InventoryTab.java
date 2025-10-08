@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -16,11 +16,11 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 import top.theillusivec4.curios.client.gui.CuriosScreen;
 
 @TabConfig(configKey = "inventoryTab", defaultEnabled = true, defaultOrder = 0)
-public class InventoryTab extends SimpleTextureTab {
+public class InventoryTab extends ConfigurableIconTab {
     private static final ResourceLocation INVENTORY_ICON = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/inventory.png");
 
     public InventoryTab() {
-        super(INVENTORY_ICON);
+        super(INVENTORY_ICON, Config.Baked.inventoryTabCustomIcon, "inventory");
     }
 
     @Override

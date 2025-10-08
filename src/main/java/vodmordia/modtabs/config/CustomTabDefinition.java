@@ -40,6 +40,12 @@ public class CustomTabDefinition {
 
         @SerializedName("patchouliBook")
         public String patchouliBook;
+
+        @SerializedName("customTexture")
+        public String customTexture;
+
+        @SerializedName("customTexturePath")
+        public String customTexturePath;
     }
 
     public static class ActionDefinition {
@@ -70,7 +76,17 @@ public class CustomTabDefinition {
             return false;
         }
 
-        if (icon == null || icon.item == null || icon.item.trim().isEmpty()) {
+        // Icon validation - allow either item or custom texture
+        if (icon == null) {
+            return false;
+        }
+
+        // Must have either an item OR a custom texture
+        boolean hasItem = icon.item != null && !icon.item.trim().isEmpty();
+        boolean hasCustomTexture = icon.customTexture != null && !icon.customTexture.trim().isEmpty();
+        boolean hasCustomTexturePath = icon.customTexturePath != null && !icon.customTexturePath.trim().isEmpty();
+
+        if (!hasItem && !hasCustomTexture && !hasCustomTexturePath) {
             return false;
         }
 

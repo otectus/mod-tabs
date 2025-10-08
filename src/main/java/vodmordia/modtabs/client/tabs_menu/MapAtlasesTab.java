@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.SimpleTextureTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.config.Config;
@@ -15,11 +15,11 @@ import vodmordia.modtabs.integration.ModIntegrationManager;
 
 
 @TabConfig(configKey = "mapAtlasesTab", defaultEnabled = true, defaultOrder = 0)
-public class MapAtlasesTab extends SimpleTextureTab {
+public class MapAtlasesTab extends ConfigurableIconTab {
     private static final ResourceLocation MAP_ATLAS_ICON = ResourceLocation.fromNamespaceAndPath("map_atlases", "textures/item/atlas_generic.png");
 
     public MapAtlasesTab() {
-        super(MAP_ATLAS_ICON);
+        super(MAP_ATLAS_ICON, Config.Baked.mapAtlasesTabCustomIcon, "mapAtlases");
     }
 
     @Override

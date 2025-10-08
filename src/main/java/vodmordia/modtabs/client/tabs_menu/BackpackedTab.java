@@ -9,7 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
 import vodmordia.modtabs.ModTabs;
 
-import vodmordia.modtabs.api.tabs_menu.SimpleItemTab;
+import vodmordia.modtabs.api.tabs_menu.ConfigurableItemTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabPositioning;
@@ -21,10 +21,24 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 @TabConfig(configKey = "backpackedTab", defaultEnabled = true, defaultOrder = 0)
-public class BackpackedTab extends SimpleItemTab {
+public class BackpackedTab extends ConfigurableItemTab {
 
     public BackpackedTab() {
-        super(() -> getBackpackItem());
+        super(() -> getBackpackItem(), Config.Baked.backpackedTabCustomIcon, "backpacked");
+    }
+
+    private static ItemStack getBackpackItem() {
+        try {
+            // Try to get backpack item from Backpacked mod
+            Class<?> itemsClass = Class.forName("com.mrcrayfish.backpacked.core.ModItems");
+            Field backpackField = itemsClass.getField("BACKPACK");
+            Object supplier = backpackField.get(null);
+            Method getMethod = supplier.getClass().getMethod("get");
+            Item backpackItem = (Item) getMethod.invoke(supplier);
+            return new ItemStack(backpackItem);
+        } catch (Exception e) {
+            return new ItemStack(Items.BUNDLE); // Fallback to bundle
+        }
     }
 
     @Override
@@ -122,20 +136,6 @@ public class BackpackedTab extends SimpleItemTab {
     @Override
     public Component getTooltip() {
         return Component.translatable("tooltip." + ModTabs.MOD_ID + ".tab.backpack.description");
-    }
-
-    private static ItemStack getBackpackItem() {
-        try {
-            // Try to get backpack item from Backpacked mod
-            Class<?> itemsClass = Class.forName("com.mrcrayfish.backpacked.core.ModItems");
-            Field backpackField = itemsClass.getField("BACKPACK");
-            Object supplier = backpackField.get(null);
-            Method getMethod = supplier.getClass().getMethod("get");
-            Item backpackItem = (Item) getMethod.invoke(supplier);
-            return new ItemStack(backpackItem);
-        } catch (Exception e) {
-            return new ItemStack(Items.BUNDLE); // Fallback to bundle
-        }
     }
 
     @Override
