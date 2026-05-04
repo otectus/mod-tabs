@@ -59,7 +59,9 @@ public class ModTabs
     }
 
     private void registerNetworking(net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {
-        var registrar = event.registrar(MOD_ID).versioned("1.0");
+        // optional() so a client-only install can still connect to vanilla / mod-less servers.
+        // Without it, NeoForge marks the channels as required on both ends and rejects the handshake.
+        var registrar = event.registrar(MOD_ID).versioned("1.0").optional();
 
         registrar.playToServer(
             vodmordia.modtabs.network.TomeConvertPayload.TYPE,
