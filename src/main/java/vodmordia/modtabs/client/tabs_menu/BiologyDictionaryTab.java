@@ -16,13 +16,18 @@ import vodmordia.modtabs.utils.ScreenClasses;
 import java.lang.reflect.Method;
 
 /**
- * Tab for the Biology Dictionary mod. Shows only when the player is carrying the
- * dictionary book (a vanilla {@code minecraft:writable_book} tagged with the
- * {@code biologydictionary} CUSTOM_DATA key — the mod doesn't register a custom item).
+ * Tab for the Biology Dictionary mod. Mirrors the same permission rule the mod's own
+ * keybind uses ({@code BiologyDictionaryEvent.hasPermissionToOpenBook}): tab shows when
+ * the player is in creative, when the server-side {@code bookItemRequired} config is off,
+ * or when the dictionary book is in the player's inventory.
  *
- * <p>Detection and screen-opening both go through the mod's own static helpers
- * ({@code BiologyDictionaryItem.isBook}, {@code BiologyDictionaryEvent.openBookScreen})
- * so we honor any permission / config gating the mod itself applies.
+ * <p>The dictionary "book" is a vanilla {@code minecraft:writable_book} tagged with the
+ * {@code biologydictionary} CUSTOM_DATA key — the mod doesn't register a custom item.
+ *
+ * <p>Detection and screen-opening go through the mod's own static helpers
+ * ({@code BiologyDictionaryItem.isBook}, {@code BiologyDictionaryEvent.openBookScreen},
+ * {@code ConfigsManager.getServer().isBookItemRequired}) so we honor any permission /
+ * config gating the mod itself applies.
  */
 @TabConfig(configKey = "biologyDictionaryTab", defaultEnabled = true, defaultOrder = 0)
 public class BiologyDictionaryTab extends IntegrationItemTab {
@@ -73,8 +78,38 @@ public class BiologyDictionaryTab extends IntegrationItemTab {
 
     @Override
     public boolean isEnabled(Player player) {
-        // Tab only shows when the dictionary book is actually in the player's inventory.
-        return super.isEnabled(player) && hasBook(player);
+        return super.isEnabled(player) && canOpenBook(player);
+    }
+
+    /**
+     * Mirror of {@code BiologyDictionaryEvent.hasPermissionToOpenBook}: creative players
+     * and players on a server with {@code bookItemRequired=false} can open the book without
+     * holding it. Otherwise the book must be in the inventory or offhand.
+     */
+    private static boolean canOpenBook(Player player) {
+        if (player.getAbilities().instabuild) return true;
+        if (!isBookItemRequired()) return true;
+        return hasBook(player);
+    }
+
+    /**
+     * Reads {@code ConfigsManager.getServer().isBookItemRequired()} via reflection. The
+     * returned {@code ServerConfigs} is the synced remote copy when connected to a server,
+     * so the tab respects the server's setting on multiplayer. Defaults to {@code true}
+     * (require book) on any failure so we don't accidentally show the tab to players who
+     * shouldn't see it.
+     */
+    private static boolean isBookItemRequired() {
+        try {
+            Class<?> mgrClass = ClassCache.resolve(ScreenClasses.BIOLOGY_DICTIONARY_CONFIGS_MANAGER);
+            if (mgrClass == null) return true;
+            Object serverConfigs = mgrClass.getMethod("getServer").invoke(null);
+            if (serverConfigs == null) return true;
+            Object result = serverConfigs.getClass().getMethod("isBookItemRequired").invoke(serverConfigs);
+            return !(result instanceof Boolean b) || b;
+        } catch (Exception ignored) {
+            return true;
+        }
     }
 
     private static boolean hasBook(Player player) {
