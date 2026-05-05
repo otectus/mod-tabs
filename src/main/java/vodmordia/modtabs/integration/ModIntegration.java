@@ -38,7 +38,8 @@ public enum ModIntegration {
     RPG_CRAFTING("rpgcrafting", "RPG Crafting"),
     MOTP("memory_of_the_past", "MOTP - RPG Player Leveling"),
     BIOLOGY_DICTIONARY("biologydictionary", "Biology Dictionary"),
-    RELIABLE_BACKPACKS("reliable_backpacks", "Reliable Backpacks");
+    RELIABLE_BACKPACKS("reliable_backpacks", "Reliable Backpacks"),
+    WILDEX("wildex", "Wildex Bestiary");
 
     private final String modId;
     private final String displayName;

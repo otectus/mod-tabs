@@ -92,6 +92,8 @@ public class TabsMenu {
             case ScreenClasses.BIOLOGY_DICTIONARY_ENTITY_OVERVIEW_SCREEN:
             case ScreenClasses.BIOLOGY_DICTIONARY_ENTITY_DETAIL_SCREEN:
                 return ModTabsConfig.biologyDictionaryTabDisplayVisibility;
+            case ScreenClasses.WILDEX_SCREEN:
+                return ModTabsConfig.wildexTabDisplayVisibility;
             case ScreenClasses.VANILLA_CONTAINER:
                 // Check if it's a sophisticated backpack screen
                 if (screenClassName.contains("sophisticatedbackpacks")) {

@@ -46,8 +46,13 @@ public class ModTabs
     {
         IEventBus neoForgeBus = NeoForge.EVENT_BUS;
 
-        // Initialize MidnightConfig
-        MidnightConfig.init(MOD_ID, ModTabsConfig.class);
+        // MidnightConfig.init is deferred to FMLCommonSetupEvent (enqueueWork) to avoid
+        // a ConcurrentModificationException race with MidnightLib's own constructor —
+        // NeoForge dispatches @Mod constructors in parallel, and MidnightConfig mutates
+        // shared static LinkedHashMaps without synchronization.
+        modEventBus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) ->
+            event.enqueueWork(() -> MidnightConfig.init(MOD_ID, ModTabsConfig.class))
+        );
 
         // Initialize mod integration manager
         ModIntegrationManager.detectLoadedMods();
@@ -158,6 +163,7 @@ public class ModTabs
             TabsMenu.register(new MotpTab());
             TabsMenu.register(new BiologyDictionaryTab());
             TabsMenu.register(new ReliableBackpackTab());
+            TabsMenu.register(new WildexTab());
 
             // Wait for Patchouli books to load, then load custom tabs
             waitForPatchouliAndLoadCustomTabs();

@@ -201,4 +201,14 @@ public final class ScreenClasses {
             "com.evandev.reliable_backpacks.common.items.BackpackItem";
     public static final String RELIABLE_BACKPACKS_CONTAINER =
             "com.evandev.reliable_backpacks.common.items.BackpackItemContainer";
+
+    // -- Wildex Bestiary --------------------------------------------------
+    public static final String WILDEX_SCREEN =
+            "de.coldfang.wildex.client.screen.WildexScreen";
+    /** Static {@code open()} entry point, same path the mod's own keybind uses. */
+    public static final String WILDEX_SCREEN_OPENER =
+            "de.coldfang.wildex.client.WildexScreenOpener";
+    /** {@code WildexClientConfigView.requireBookForKeybind()} respects synced server config. */
+    public static final String WILDEX_CLIENT_CONFIG_VIEW =
+            "de.coldfang.wildex.client.WildexClientConfigView";
 }

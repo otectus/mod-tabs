@@ -134,6 +134,21 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static TabDisplayVisibility biologyDictionaryTabDisplayVisibility = TabDisplayVisibility.YES;
 
+    @Comment(category = "tabs") public static CommentText spacer_wildex;
+
+    @Comment(category = "tabs") public static CommentText wildex;
+
+    @Entry(category = "tabs")
+    public static boolean wildexTabEnabled = true;
+
+    @Entry(category = "tabs")
+    public static String wildexTabCustomIcon = "";
+    @Entry(category = "tabs")
+    public static int wildexTabOrder = 0;
+
+    @Entry(category = "tabs")
+    public static TabDisplayVisibility wildexTabDisplayVisibility = TabDisplayVisibility.YES;
+
     @Comment(category = "tabs") public static CommentText spacer_reliable_backpacks;
 
     @Comment(category = "tabs") public static CommentText reliableBackpacks;

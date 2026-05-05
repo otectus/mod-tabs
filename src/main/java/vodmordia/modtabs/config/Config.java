@@ -40,6 +40,7 @@ public class Config
 		public static boolean rpgCraftingTabEnabled;
 		public static boolean biologyDictionaryTabEnabled;
 		public static boolean reliableBackpacksTabEnabled;
+		public static boolean wildexTabEnabled;
 		public static boolean stickyInventoryTab;
 
 		// Custom icon settings
@@ -74,6 +75,7 @@ public class Config
 		public static String xaerosMapTabCustomIcon;
 		public static String biologyDictionaryTabCustomIcon;
 		public static String reliableBackpacksTabCustomIcon;
+		public static String wildexTabCustomIcon;
 
 		// Custom tabs settings
 		public static boolean customTabsEnabled;
@@ -111,6 +113,7 @@ public class Config
 		public static TabDisplayVisibility rpgCraftingTabDisplayVisibility;
 		public static TabDisplayVisibility biologyDictionaryTabDisplayVisibility;
 		public static TabDisplayVisibility reliableBackpacksTabDisplayVisibility;
+		public static TabDisplayVisibility wildexTabDisplayVisibility;
 
 		// Tab order overrides
 		public static int inventoryTabOrder;
@@ -145,6 +148,7 @@ public class Config
 		public static int rpgCraftingTabOrder;
 		public static int biologyDictionaryTabOrder;
 		public static int reliableBackpacksTabOrder;
+		public static int wildexTabOrder;
 
 		public static void bakeClient()
 		{
@@ -184,6 +188,7 @@ public class Config
 				rpgCraftingTabEnabled = ModTabsConfig.rpgCraftingTabEnabled;
 				biologyDictionaryTabEnabled = ModTabsConfig.biologyDictionaryTabEnabled;
 				reliableBackpacksTabEnabled = ModTabsConfig.reliableBackpacksTabEnabled;
+				wildexTabEnabled = ModTabsConfig.wildexTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
 				// Load custom tabs settings
@@ -223,6 +228,7 @@ public class Config
 				rpgCraftingTabOrder = ModTabsConfig.rpgCraftingTabOrder;
 				biologyDictionaryTabOrder = ModTabsConfig.biologyDictionaryTabOrder;
 				reliableBackpacksTabOrder = ModTabsConfig.reliableBackpacksTabOrder;
+				wildexTabOrder = ModTabsConfig.wildexTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -256,6 +262,7 @@ public class Config
 				rpgCraftingTabDisplayVisibility = ModTabsConfig.advancementsTabDisplayVisibility; // Shares config with advancements
 				biologyDictionaryTabDisplayVisibility = ModTabsConfig.biologyDictionaryTabDisplayVisibility;
 				reliableBackpacksTabDisplayVisibility = ModTabsConfig.reliableBackpacksTabDisplayVisibility;
+				wildexTabDisplayVisibility = ModTabsConfig.wildexTabDisplayVisibility;
 
 				// Load custom icon settings
 				inventoryTabCustomIcon = ModTabsConfig.inventoryTabCustomIcon;
@@ -289,6 +296,7 @@ public class Config
 				xaerosMapTabCustomIcon = ModTabsConfig.xaerosMapTabCustomIcon;
 				biologyDictionaryTabCustomIcon = ModTabsConfig.biologyDictionaryTabCustomIcon;
 				reliableBackpacksTabCustomIcon = ModTabsConfig.reliableBackpacksTabCustomIcon;
+				wildexTabCustomIcon = ModTabsConfig.wildexTabCustomIcon;
 			}
 			catch (Exception e)
 			{

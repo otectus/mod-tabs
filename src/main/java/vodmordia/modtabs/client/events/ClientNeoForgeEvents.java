@@ -40,6 +40,16 @@ public class ClientNeoForgeEvents {
         event.getScreen();
         TabsMenu.initScreenButtons(event);
 
+        // Wildex's bestiary screen renders its children inside a scaled PoseStack,
+        // which would draw our tab widgets microscopic in the corner. Strip them from
+        // `renderables` so vanilla's render path skips them; the post-render handler
+        // below redraws them at correct scale, and the mouse-click handler forwards
+        // input manually since the buttons remain in `children()`.
+        if (event.getScreen().getClass().getName().equals("de.coldfang.wildex.client.screen.WildexScreen")) {
+            event.getScreen().renderables.removeIf(r ->
+                r instanceof TabButton || r instanceof NextTabsButton);
+        }
+
         // Hide L2 tabs after screen initialization
         if (ModIntegrationManager.isModLoaded(ModIntegration.L2_LIBRARY) ||
             ModIntegrationManager.isModLoaded(ModIntegration.L2_HOSTILITY) ||
@@ -178,7 +188,8 @@ public class ClientNeoForgeEvents {
             screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
             screenClassName.equals("xaero.map.gui.GuiMap") ||
             screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen") ||
-            screenClassName.equals("betteradvancements.common.gui.BetterAdvancementsScreen")) {
+            screenClassName.equals("betteradvancements.common.gui.BetterAdvancementsScreen") ||
+            screenClassName.equals("de.coldfang.wildex.client.screen.WildexScreen")) {
 
             // Find and render all TabButton and NextTabsButton widgets for this screen - this renders AFTER the screen content including blur
             for (var child : event.getScreen().children()) {
@@ -203,7 +214,8 @@ public class ClientNeoForgeEvents {
             screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
             screenClassName.equals("xaero.map.gui.GuiMap") ||
             screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen") ||
-            screenClassName.equals("betteradvancements.common.gui.BetterAdvancementsScreen")) {
+            screenClassName.equals("betteradvancements.common.gui.BetterAdvancementsScreen") ||
+            screenClassName.equals("de.coldfang.wildex.client.screen.WildexScreen")) {
 
             // Check if the click is within any tab button bounds and forward the click
             for (var child : event.getScreen().children()) {
