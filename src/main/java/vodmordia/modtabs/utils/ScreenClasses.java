@@ -211,4 +211,13 @@ public final class ScreenClasses {
     /** {@code WildexClientConfigView.requireBookForKeybind()} respects synced server config. */
     public static final String WILDEX_CLIENT_CONFIG_VIEW =
             "de.coldfang.wildex.client.WildexClientConfigView";
+
+    // -- Apothic Attributes -----------------------------------------------
+    /** Renderable overlay attached to {@link InventoryScreen} via the mod's own ScreenEvent.Init.Post listener.
+     *  Holds the static {@code wasOpen} flag we flip before opening the inventory. */
+    public static final String APOTHIC_ATTRIBUTES_GUI =
+            "dev.shadowsoffire.apothic_attributes.client.AttributesGui";
+    /** Static {@code enableAttributesGui} field — server admins can disable the panel entirely. */
+    public static final String APOTHIC_ATTRIBUTES_CONFIG =
+            "dev.shadowsoffire.apothic_attributes.ALConfig";
 }

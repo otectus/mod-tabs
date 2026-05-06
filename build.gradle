@@ -127,6 +127,12 @@ repositories {
         url = "https://maven.sinytra.org/releases"
     }
 
+    // Shadows_of_Fire's Maven (Apothic Attributes + Placebo).
+    maven {
+        name = "Shadows_of_Fire"
+        url = "https://maven.shadowsoffire.dev/releases"
+    }
+
     // Local flat directory for external JARs
     flatDir {
         dirs 'libs'
@@ -159,7 +165,8 @@ dependencies {
     // own keybind via WildexClientConfigView.requireBookForKeybind().
     // Sourced from Modrinth — CurseForge file id 7785157 has third-party downloads
     // disabled, so cursemaven returns 403; the mod is the same artifact either way.
-    implementation("maven.modrinth:wildex-bestiary:3.0.0")
+    // Temporarily disabled while testing Apothic Attributes integration.
+    //implementation("maven.modrinth:wildex-bestiary:3.0.0")
 
     // === Disabled for fast Wildex test runs. Uncomment to restore full dev set. ===
     //implementation("curse.maven:reskillable-reimagined-1170464:6599973")
@@ -239,6 +246,20 @@ dependencies {
     // MOTP - RPG Player Leveling System
     //implementation("curse.maven:memories-of-the-past-1079687:6990820")
     //implementation("curse.maven:jauml-1281310:6928711")
+
+    // Apothic Attributes (+ Placebo, its hard runtime dep). Reflection-only integration on
+    // our side, but the runtime needs both jars present for AttributesGui to load. Sourced
+    // from Shadows_of_Fire's official maven; bump versions in gradle.properties.
+    //
+    // Apothic's Gradle metadata declares top.theillusivec4.curios:curios-neoforge as a hard
+    // runtime dep, but that artifact lives at maven.theillusivec4.top which we don't have
+    // configured — and Curios is functionally OPTIONAL inside Apothic (CuriosClientCompat is
+    // gated on ModList.isLoaded("curios")). We already have a compileOnly curios above for
+    // our own integrations, so excluding the transitive avoids a "could not resolve" failure.
+    implementation("dev.shadowsoffire:Placebo:${minecraft_version}-${project.placebo_version}")
+    implementation("dev.shadowsoffire:ApothicAttributes:${minecraft_version}-${project.apothic_attributes_version}") {
+        exclude group: "top.theillusivec4.curios", module: "curios-neoforge"
+    }
 
     // Sinytra Connector (for Fabric mod compatibility)
     //runtimeOnly "curse.maven:sinytra-connector-890127:6944771"

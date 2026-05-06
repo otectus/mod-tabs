@@ -164,6 +164,7 @@ public class ModTabs
             TabsMenu.register(new BiologyDictionaryTab());
             TabsMenu.register(new ReliableBackpackTab());
             TabsMenu.register(new WildexTab());
+            TabsMenu.register(new ApothicAttributesTab());
 
             // Wait for Patchouli books to load, then load custom tabs
             waitForPatchouliAndLoadCustomTabs();

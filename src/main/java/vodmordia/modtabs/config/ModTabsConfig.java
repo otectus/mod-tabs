@@ -149,6 +149,18 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static TabDisplayVisibility wildexTabDisplayVisibility = TabDisplayVisibility.YES;
 
+    @Comment(category = "tabs") public static CommentText spacer_apothic_attributes;
+
+    @Comment(category = "tabs") public static CommentText apothicAttributes;
+
+    @Entry(category = "tabs")
+    public static boolean apothicAttributesTabEnabled = true;
+
+    @Entry(category = "tabs")
+    public static String apothicAttributesTabCustomIcon = "";
+    @Entry(category = "tabs")
+    public static int apothicAttributesTabOrder = 0;
+
     @Comment(category = "tabs") public static CommentText spacer_reliable_backpacks;
 
     @Comment(category = "tabs") public static CommentText reliableBackpacks;

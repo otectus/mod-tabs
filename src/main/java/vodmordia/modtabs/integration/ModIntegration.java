@@ -39,7 +39,8 @@ public enum ModIntegration {
     MOTP("memory_of_the_past", "MOTP - RPG Player Leveling"),
     BIOLOGY_DICTIONARY("biologydictionary", "Biology Dictionary"),
     RELIABLE_BACKPACKS("reliable_backpacks", "Reliable Backpacks"),
-    WILDEX("wildex", "Wildex Bestiary");
+    WILDEX("wildex", "Wildex Bestiary"),
+    APOTHIC_ATTRIBUTES("apothic_attributes", "Apothic Attributes");
 
     private final String modId;
     private final String displayName;

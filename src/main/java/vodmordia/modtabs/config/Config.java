@@ -41,6 +41,7 @@ public class Config
 		public static boolean biologyDictionaryTabEnabled;
 		public static boolean reliableBackpacksTabEnabled;
 		public static boolean wildexTabEnabled;
+		public static boolean apothicAttributesTabEnabled;
 		public static boolean stickyInventoryTab;
 
 		// Custom icon settings
@@ -76,6 +77,7 @@ public class Config
 		public static String biologyDictionaryTabCustomIcon;
 		public static String reliableBackpacksTabCustomIcon;
 		public static String wildexTabCustomIcon;
+		public static String apothicAttributesTabCustomIcon;
 
 		// Custom tabs settings
 		public static boolean customTabsEnabled;
@@ -149,6 +151,7 @@ public class Config
 		public static int biologyDictionaryTabOrder;
 		public static int reliableBackpacksTabOrder;
 		public static int wildexTabOrder;
+		public static int apothicAttributesTabOrder;
 
 		public static void bakeClient()
 		{
@@ -189,6 +192,7 @@ public class Config
 				biologyDictionaryTabEnabled = ModTabsConfig.biologyDictionaryTabEnabled;
 				reliableBackpacksTabEnabled = ModTabsConfig.reliableBackpacksTabEnabled;
 				wildexTabEnabled = ModTabsConfig.wildexTabEnabled;
+				apothicAttributesTabEnabled = ModTabsConfig.apothicAttributesTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
 				// Load custom tabs settings
@@ -229,6 +233,7 @@ public class Config
 				biologyDictionaryTabOrder = ModTabsConfig.biologyDictionaryTabOrder;
 				reliableBackpacksTabOrder = ModTabsConfig.reliableBackpacksTabOrder;
 				wildexTabOrder = ModTabsConfig.wildexTabOrder;
+				apothicAttributesTabOrder = ModTabsConfig.apothicAttributesTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -297,6 +302,7 @@ public class Config
 				biologyDictionaryTabCustomIcon = ModTabsConfig.biologyDictionaryTabCustomIcon;
 				reliableBackpacksTabCustomIcon = ModTabsConfig.reliableBackpacksTabCustomIcon;
 				wildexTabCustomIcon = ModTabsConfig.wildexTabCustomIcon;
+				apothicAttributesTabCustomIcon = ModTabsConfig.apothicAttributesTabCustomIcon;
 			}
 			catch (Exception e)
 			{
