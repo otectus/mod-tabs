@@ -43,6 +43,7 @@ public class Config
 		public static boolean wildexTabEnabled;
 		public static boolean apothicAttributesTabEnabled;
 		public static boolean stickyInventoryTab;
+		public static StandardTabPlacement standardTabPlacement;
 
 		// Custom icon settings
 		public static String inventoryTabCustomIcon;
@@ -194,6 +195,7 @@ public class Config
 				wildexTabEnabled = ModTabsConfig.wildexTabEnabled;
 				apothicAttributesTabEnabled = ModTabsConfig.apothicAttributesTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
+				standardTabPlacement = ModTabsConfig.standardTabPlacement;
 
 				// Load custom tabs settings
 				customTabsEnabled = ModTabsConfig.customTabsEnabled;
