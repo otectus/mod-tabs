@@ -8,7 +8,6 @@ import net.minecraft.world.item.Items;
 import vodmordia.modtabs.api.tabs_menu.IntegrationItemTab;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
-import vodmordia.modtabs.api.tabs_menu.TabPositioning;
 import vodmordia.modtabs.api.tabs_menu.TabSpec;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.integration.ModIntegration;
@@ -119,7 +118,6 @@ public class TravelersBackpackTab extends IntegrationItemTab {
                 (Class<? extends net.minecraft.client.gui.screens.Screen>) screenClass;
         ScreenRegistry.builder()
                 .withDimensions(IntegrationUtils::getTravelersBackpackWidth, IntegrationUtils::getTravelersBackpackHeight)
-                .withPositioning(TabPositioning.GUI_RELATIVE)
                 .registerAllTabs(typed);
     }
 
@@ -129,13 +127,37 @@ public class TravelersBackpackTab extends IntegrationItemTab {
         try {
             Class<?> actionPacketClass = Class.forName("com.tiviacz.travelersbackpack.network.ServerboundActionTagPacket");
             Method createMethod = actionPacketClass.getDeclaredMethod("create", int.class, Object[].class);
-            // OPEN_SCREEN = 1
-            createMethod.invoke(null, 1, new Object[0]);
+            // OPEN_SCREEN (1) only opens a worn backpack — the server handler bails when
+            // AttachmentUtils.isWearingBackpack is false. For inventory backpacks we send
+            // OPEN_BACKPACK (2) with (slotIndex, fromHotbar=false). The fromHotbar=false
+            // form skips the `allowOpeningFromSlot` config gate (which defaults to false in
+            // TB's server config), so the open happens regardless of where the backpack sits.
+            if (isWearingBackpackViaAttachments(player)) {
+                createMethod.invoke(null, 1, new Object[0]);
+                return;
+            }
+            int slot = findBackpackInventorySlot(player);
+            if (slot >= 0) {
+                createMethod.invoke(null, 2, new Object[]{ slot, false });
+            }
         } catch (Exception e) {
             if (player instanceof ServerPlayer serverPlayer) {
                 openServerSide(serverPlayer);
             }
         }
+    }
+
+    /** Returns the inventory slot of the first backpack found, or -1 if none. */
+    private int findBackpackInventorySlot(Player player) {
+        Class<?> backpackItemClass = ClassCache.resolve(BACKPACK_ITEM_FQN);
+        if (backpackItemClass == null) return -1;
+        for (int i = 0; i < player.getInventory().items.size(); i++) {
+            ItemStack stack = player.getInventory().items.get(i);
+            if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void openServerSide(ServerPlayer serverPlayer) {

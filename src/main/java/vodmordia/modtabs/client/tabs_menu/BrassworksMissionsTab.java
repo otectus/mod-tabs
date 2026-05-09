@@ -114,12 +114,8 @@ public class BrassworksMissionsTab extends TabBase {
 
     @Override
     public boolean isEnabled(Player player) {
-        boolean configEnabled = Config.Baked.brassworksMissionsTabEnabled;
-        boolean modLoaded = ModIntegrationManager.isModLoaded(ModIntegration.BRASSWORKS_MISSIONS);
-
-        ModTabs.LOGGER.info("BrassworksMissionsTab: isEnabled - configEnabled: {}, modLoaded: {}", configEnabled, modLoaded);
-
-        return configEnabled && modLoaded;
+        return Config.Baked.brassworksMissionsTabEnabled
+                && ModIntegrationManager.isModLoaded(ModIntegration.BRASSWORKS_MISSIONS);
     }
 
     @Override

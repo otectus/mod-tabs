@@ -70,7 +70,6 @@ public class FtbTeamsTab extends ConfigurableIconTab {
         ScreenRegistry.builder()
             .withStandardDimensions()
             .inverted()
-            .atTop()
             .registerAllTabs(screens);
     }
 }

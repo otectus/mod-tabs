@@ -31,6 +31,7 @@
   "tooltip.modtabs.tab.reliable_backpacks.description": "Backpack",
   "tooltip.modtabs.tab.wildex.description": "Bestiary",
   "tooltip.modtabs.tab.apothic_attributes.description": "Attributes",
+  "tooltip.modtabs.tab.cosmetic_armor.description": "Cosmetic Armor",
 
   "modtabs.midnightconfig.category.tabs": "Mod Tabs Settings",
   "modtabs.midnightconfig.category.customTabs": "Custom Tabs Settings",

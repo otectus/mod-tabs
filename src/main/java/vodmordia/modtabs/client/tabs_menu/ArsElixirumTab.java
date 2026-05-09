@@ -90,7 +90,6 @@ public class ArsElixirumTab extends ConfigurableItemTab {
     public void initTabOnScreens() {
         ScreenRegistry.builder()
             .withStandardDimensions()
-            .atBottom()
             .registerAllTabs("dev.obscuria.elixirum.client.screen.ElixirumScreen");
     }
 }
