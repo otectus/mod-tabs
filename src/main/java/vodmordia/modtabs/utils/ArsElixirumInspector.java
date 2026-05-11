@@ -13,31 +13,27 @@ public class ArsElixirumInspector {
      * Attempts to get the Ars Elixirum glass cauldron item via reflection (cached)
      */
     public static Item tryGetGlassCauldronItem() {
-        // Return cached result if already attempted
         if (searchAttempted) {
             return cachedGlassCauldronItem;
         }
-
         searchAttempted = true;
 
         try {
-            // Get Ars Elixirum glass cauldron item: dev.obscuria.elixirum.registry.ElixirumItems.GLASS_CAULDRON
             Class<?> itemsClass = Class.forName("dev.obscuria.elixirum.registry.ElixirumItems");
             Field itemField = itemsClass.getField("GLASS_CAULDRON");
             Object registryObject = itemField.get(null);
 
-            // Get item from Fragmentum Deferred object (uses 'value' method, not 'get')
+            // Fragmentum's Deferred uses 'value' on NeoForge 1.21.x.
             Method valueMethod = registryObject.getClass().getMethod("value");
-            valueMethod.setAccessible(true); // Bypass module access restrictions
+            valueMethod.setAccessible(true);
             Object item = valueMethod.invoke(registryObject);
 
             if (item instanceof Item) {
                 cachedGlassCauldronItem = (Item) item;
                 return cachedGlassCauldronItem;
             }
-        } catch (Exception e) {
-            // Silently fail and use fallback
+        } catch (Throwable ignored) {
         }
-        return null; // Will use brewing stand fallback
+        return null;
     }
 }

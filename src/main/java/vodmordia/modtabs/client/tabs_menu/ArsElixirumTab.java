@@ -27,18 +27,20 @@ public class ArsElixirumTab extends ConfigurableItemTab {
         super(() -> getGlassCauldronItem(), Config.Baked.arsElixirumTabCustomIcon, "arsElixirum");
     }
 
+    private static ItemStack cachedIcon;
+
     private static ItemStack getGlassCauldronItem() {
-        // Try to get Ars Elixirum glass cauldron item via reflection using inspector
+        if (cachedIcon != null) return cachedIcon;
         try {
             Item glassCauldronItem = ArsElixirumInspector.tryGetGlassCauldronItem();
             if (glassCauldronItem != null) {
-                return new ItemStack(glassCauldronItem);
+                cachedIcon = new ItemStack(glassCauldronItem);
+                return cachedIcon;
             }
-        } catch (Exception e) {
-            // Fall through to fallback
+        } catch (Throwable ignored) {
         }
-        // Fallback to brewing stand
-        return new ItemStack(Items.BREWING_STAND);
+        cachedIcon = new ItemStack(Items.BREWING_STAND);
+        return cachedIcon;
     }
 
     @Override
@@ -49,7 +51,6 @@ public class ArsElixirumTab extends ConfigurableItemTab {
             constructor.setAccessible(true);
             Object screen = constructor.newInstance();
 
-            // Set the section to COLLECTION by setting the static selectedSection field
             try {
                 Class<?> sectionTypeClass = Class.forName("dev.obscuria.elixirum.client.screen.section.AbstractSection$Type");
                 Field collectionField = sectionTypeClass.getField("COLLECTION");
@@ -58,11 +59,11 @@ public class ArsElixirumTab extends ConfigurableItemTab {
                 Field selectedSectionField = screenClass.getDeclaredField("selectedSection");
                 selectedSectionField.setAccessible(true);
                 selectedSectionField.set(null, collectionSection);
-            } catch (Exception e) {
+            } catch (Throwable ignored) {
             }
 
             Minecraft.getInstance().setScreen((Screen) screen);
-        } catch (Exception e) {
+        } catch (Throwable ignored) {
         }
     }
 
