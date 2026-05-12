@@ -165,6 +165,8 @@ public class ModTabs
             TabsMenu.register(new ReliableBackpackTab());
             TabsMenu.register(new WildexTab());
             TabsMenu.register(new ApothicAttributesTab());
+            TabsMenu.register(new AetherTab());
+            TabsMenu.register(new CuriosTab());
 
             // Wait for Patchouli books to load, then load custom tabs
             waitForPatchouliAndLoadCustomTabs();

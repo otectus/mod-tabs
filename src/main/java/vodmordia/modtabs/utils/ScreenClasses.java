@@ -220,4 +220,23 @@ public final class ScreenClasses {
     /** Static {@code enableAttributesGui} field — server admins can disable the panel entirely. */
     public static final String APOTHIC_ATTRIBUTES_CONFIG =
             "dev.shadowsoffire.apothic_attributes.ALConfig";
+
+    // -- Curios -----------------------------------------------------------
+    /** {@code EffectRenderingInventoryScreen<CuriosContainer>} — the accessory inventory. */
+    public static final String CURIOS_SCREEN =
+            "top.theillusivec4.curios.client.gui.CuriosScreen";
+    /** Serverbound packet with a single {@code ItemStack carried} field; the server's handler
+     *  opens the curios menu for the player. Same path the mod's CuriosButton uses. */
+    public static final String CURIOS_OPEN_PACKET =
+            "top.theillusivec4.curios.common.network.client.CPacketOpenCurios";
+
+    // -- The Aether ------------------------------------------------------
+    /** {@code EffectRenderingInventoryScreen<AetherAccessoriesMenu>} — the accessory inventory. */
+    public static final String AETHER_ACCESSORIES_SCREEN =
+            "com.aetherteam.aether.client.gui.screen.inventory.AetherAccessoriesScreen";
+    /** Serverbound packet with a single {@code ItemStack carryStack} field; the server's handler
+     *  calls {@code serverPlayer.openMenu(...)} with an {@code AetherAccessoriesMenu}. Same path
+     *  the mod's own "I" keybind uses in {@code GuiHooks.openAccessoryMenu()}. */
+    public static final String AETHER_OPEN_ACCESSORIES_PACKET =
+            "com.aetherteam.aether.network.packet.serverbound.OpenAccessoriesPacket";
 }

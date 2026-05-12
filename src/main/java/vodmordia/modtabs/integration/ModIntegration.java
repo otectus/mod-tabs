@@ -40,7 +40,8 @@ public enum ModIntegration {
     BIOLOGY_DICTIONARY("biologydictionary", "Biology Dictionary"),
     RELIABLE_BACKPACKS("reliable_backpacks", "Reliable Backpacks"),
     WILDEX("wildex", "Wildex Bestiary"),
-    APOTHIC_ATTRIBUTES("apothic_attributes", "Apothic Attributes");
+    APOTHIC_ATTRIBUTES("apothic_attributes", "Apothic Attributes"),
+    AETHER("aether", "The Aether");
 
     private final String modId;
     private final String displayName;

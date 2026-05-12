@@ -150,27 +150,25 @@ dependencies {
     // Midnight Lib - Required dependency for in-game config
     implementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
-    // === Wildex testing run: only Wildex + midnightlib load at runtime. ===
-    // The four mods below are kept on the *compile* classpath because tab classes
+    // === Aether testing run: only The Aether + midnightlib load at runtime. ===
+    // The mods below are kept on the *compile* classpath because tab classes
     // (InventoryTab, FtbTeamsTab, PufferfishsSkillsTab, IntegrationUtils for
     // travelers-backpack) reference their classes directly. At runtime each call
     // site is guarded by ModList.isModLoaded(...) so the JVM never tries to
     // resolve them when the mod isn't present.
-    // curios and ftb-teams promoted to runtime: l2hostility/l2artifacts/ars_nouveau hard-require
-    // curios at boot, and ftbquests/ftbchunks hard-require ftb-teams. The compileOnly-only setup
-    // worked when those dependents weren't loaded; promoting to implementation lets them boot.
-    implementation("curse.maven:curios-309927:6529130")
+    compileOnly("curse.maven:curios-309927:6529130")
     compileOnly("curse.maven:ftb-teams-forge-404468:6119437")
-    // Promoted to runtime — placement testing for PufferfishsSkillsTab and TravelersBackpackTab.
-    implementation("curse.maven:puffish-skills-835091:6798466")
-    implementation("curse.maven:travelers-backpack-321117:6687139")
+    // Temporarily demoted to compileOnly for the Aether-focused test run.
+    compileOnly("curse.maven:puffish-skills-835091:6798466")
+    compileOnly("curse.maven:travelers-backpack-321117:6687139")
 
     // Wildex Bestiary. Reflection-only integration; config gating mirrors the mod's
     // own keybind via WildexClientConfigView.requireBookForKeybind().
     // Sourced from Modrinth — CurseForge file id 7785157 has third-party downloads
     // disabled, so cursemaven returns 403; the mod is the same artifact either way.
     // Requires neoforge 21.1.219+ (set in gradle.properties).
-    implementation("maven.modrinth:wildex-bestiary:3.0.0")
+    // Temporarily disabled while testing The Aether integration.
+    //implementation("maven.modrinth:wildex-bestiary:3.0.0")
 
     // === Disabled at runtime for TravelersBackpack/PufferfishSkills placement-testing run.
     // Kept on compile classpath so tab classes that reference mod APIs directly still build. ===
@@ -210,9 +208,9 @@ dependencies {
     compileOnly("curse.maven:l2-artifacts-659547:6515998")
     compileOnly("curse.maven:patchouli-306770:6842247")
 
-    // Sophisticated Backpacks
-    implementation("curse.maven:sophisticated-core-618298:6982394")
-    implementation("curse.maven:sophisticated-backpacks-422301:7000062")
+    // Sophisticated Backpacks — temporarily demoted to compileOnly for the Aether-focused test run.
+    compileOnly("curse.maven:sophisticated-core-618298:6982394")
+    compileOnly("curse.maven:sophisticated-backpacks-422301:7000062")
 
     // Cobblemon. CurseForge file id is sourced from gradle.properties so it can be
     // overridden via -PcobblemonFileId=<id> for testing the tab integration against
@@ -224,8 +222,8 @@ dependencies {
     // gradle.properties so it can be swapped via -PbiologyDictionaryFileId=<id>.
     // Default 8001520 is the last build that targets MC 1.21.1 + architectury 13.
     compileOnly("curse.maven:biology-dictionary-1426515:${project.findProperty('biologyDictionaryFileId') ?: '8001520'}")
-    // Cloth Config — kept; PufferfishSkills typically pulls this in at runtime.
-    implementation("curse.maven:cloth-config-348521:5729127")
+    // Cloth Config — demoted to compileOnly while PufferfishSkills is off the runtime classpath.
+    compileOnly("curse.maven:cloth-config-348521:5729127")
 
     // Reliable Backpacks
     compileOnly("curse.maven:reliable-backpacks-1484454:7946525")
@@ -270,6 +268,21 @@ dependencies {
     compileOnly("dev.shadowsoffire:ApothicAttributes:${minecraft_version}-${project.apothic_attributes_version}") {
         exclude group: "top.theillusivec4.curios", module: "curios-neoforge"
     }
+
+    // The Aether. Reflection-only integration: AetherTab sends the same
+    // OpenAccessoriesPacket the mod's own "I" keybind dispatches, which the
+    // server handles by opening an AetherAccessoriesMenu. Default file id is
+    // sourced from gradle.properties; override with -PaetherFileId=<id>.
+    //
+    // Demoted to compileOnly: in the dev env the bundled Accessories library
+    // (1.1.0-beta.48) ships without a usable refMap, so its EntityRenderersMixin
+    // can't resolve `lambda$createEntityRenderers$26` and crashes RegisterRenderers.
+    // The bug is dev-only — production installs apply the refMap correctly, so we
+    // build against Aether without running it here. Tested outside dev via
+    // PrismLauncher.
+    compileOnly("curse.maven:aether-255308:${project.findProperty('aetherFileId') ?: '7043502'}")
+    // owo-lib — runtime dep of The Aether on NeoForge 1.21.1; compileOnly along with Aether.
+    compileOnly("curse.maven:owo-lib-532610:6785734")
 
     // Sinytra Connector (for Fabric mod compatibility)
     //runtimeOnly "curse.maven:sinytra-connector-890127:6944771"

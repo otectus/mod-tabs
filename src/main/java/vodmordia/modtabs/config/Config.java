@@ -48,6 +48,8 @@ public class Config
 		public static boolean reliableBackpacksTabEnabled;
 		public static boolean wildexTabEnabled;
 		public static boolean apothicAttributesTabEnabled;
+		public static boolean aetherTabEnabled;
+		public static boolean curiosTabEnabled;
 		public static boolean stickyInventoryTab;
 
 		// Custom icon settings
@@ -249,6 +251,18 @@ public class Config
 		public static int apothicAttributesTabIconNudgeDown;
 		public static int apothicAttributesTabIconNudgeLeft;
 		public static int apothicAttributesTabIconNudgeRight;
+		public static String aetherTabCustomIcon;
+		public static int aetherTabIconScale;
+		public static int aetherTabIconNudgeUp;
+		public static int aetherTabIconNudgeDown;
+		public static int aetherTabIconNudgeLeft;
+		public static int aetherTabIconNudgeRight;
+		public static String curiosTabCustomIcon;
+		public static int curiosTabIconScale;
+		public static int curiosTabIconNudgeUp;
+		public static int curiosTabIconNudgeDown;
+		public static int curiosTabIconNudgeLeft;
+		public static int curiosTabIconNudgeRight;
 
 		// Custom tabs settings
 		public static boolean customTabsEnabled;
@@ -287,6 +301,7 @@ public class Config
 		public static TabDisplayVisibility biologyDictionaryTabDisplayVisibility;
 		public static TabDisplayVisibility reliableBackpacksTabDisplayVisibility;
 		public static TabDisplayVisibility wildexTabDisplayVisibility;
+		public static TabDisplayVisibility curiosTabDisplayVisibility;
 
 		// Tab order overrides
 		public static int inventoryTabOrder;
@@ -323,6 +338,8 @@ public class Config
 		public static int reliableBackpacksTabOrder;
 		public static int wildexTabOrder;
 		public static int apothicAttributesTabOrder;
+		public static int aetherTabOrder;
+		public static int curiosTabOrder;
 
 		public static void bakeClient()
 		{
@@ -370,6 +387,8 @@ public class Config
 				reliableBackpacksTabEnabled = ModTabsConfig.reliableBackpacksTabEnabled;
 				wildexTabEnabled = ModTabsConfig.wildexTabEnabled;
 				apothicAttributesTabEnabled = ModTabsConfig.apothicAttributesTabEnabled;
+				aetherTabEnabled = ModTabsConfig.aetherTabEnabled;
+				curiosTabEnabled = ModTabsConfig.curiosTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
 				// Load custom tabs settings
@@ -411,6 +430,8 @@ public class Config
 				reliableBackpacksTabOrder = ModTabsConfig.reliableBackpacksTabOrder;
 				wildexTabOrder = ModTabsConfig.wildexTabOrder;
 				apothicAttributesTabOrder = ModTabsConfig.apothicAttributesTabOrder;
+				aetherTabOrder = ModTabsConfig.aetherTabOrder;
+				curiosTabOrder = ModTabsConfig.curiosTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -445,6 +466,7 @@ public class Config
 				biologyDictionaryTabDisplayVisibility = ModTabsConfig.biologyDictionaryTabDisplayVisibility;
 				reliableBackpacksTabDisplayVisibility = ModTabsConfig.reliableBackpacksTabDisplayVisibility;
 				wildexTabDisplayVisibility = ModTabsConfig.wildexTabDisplayVisibility;
+				curiosTabDisplayVisibility = ModTabsConfig.curiosTabDisplayVisibility;
 
 				// Load custom icon settings
 				inventoryTabCustomIcon = ModTabsConfig.inventoryTabCustomIcon;
@@ -645,6 +667,18 @@ public class Config
 				apothicAttributesTabIconNudgeDown = ModTabsConfig.apothicAttributesTabIconNudgeDown;
 				apothicAttributesTabIconNudgeLeft = ModTabsConfig.apothicAttributesTabIconNudgeLeft;
 				apothicAttributesTabIconNudgeRight = ModTabsConfig.apothicAttributesTabIconNudgeRight;
+				aetherTabCustomIcon = ModTabsConfig.aetherTabCustomIcon;
+				aetherTabIconScale = ModTabsConfig.aetherTabIconScale;
+				aetherTabIconNudgeUp = ModTabsConfig.aetherTabIconNudgeUp;
+				aetherTabIconNudgeDown = ModTabsConfig.aetherTabIconNudgeDown;
+				aetherTabIconNudgeLeft = ModTabsConfig.aetherTabIconNudgeLeft;
+				aetherTabIconNudgeRight = ModTabsConfig.aetherTabIconNudgeRight;
+				curiosTabCustomIcon = ModTabsConfig.curiosTabCustomIcon;
+				curiosTabIconScale = ModTabsConfig.curiosTabIconScale;
+				curiosTabIconNudgeUp = ModTabsConfig.curiosTabIconNudgeUp;
+				curiosTabIconNudgeDown = ModTabsConfig.curiosTabIconNudgeDown;
+				curiosTabIconNudgeLeft = ModTabsConfig.curiosTabIconNudgeLeft;
+				curiosTabIconNudgeRight = ModTabsConfig.curiosTabIconNudgeRight;
 			}
 			catch (Exception e)
 			{
