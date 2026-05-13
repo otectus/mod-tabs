@@ -158,8 +158,9 @@ dependencies {
     // resolve them when the mod isn't present.
     compileOnly("curse.maven:curios-309927:6529130")
     compileOnly("curse.maven:ftb-teams-forge-404468:6119437")
-    // Temporarily demoted to compileOnly for the Aether-focused test run.
-    compileOnly("curse.maven:puffish-skills-835091:6798466")
+    // Pufferfish Skills (NeoForge). Runtime classpath so we can test the long-press
+    // edit-mode fix on its SkillsScreen. Requires Cloth Config (promoted below).
+    implementation("curse.maven:puffish-skills-835091:6798466")
     compileOnly("curse.maven:travelers-backpack-321117:6687139")
 
     // Wildex Bestiary. Reflection-only integration; config gating mirrors the mod's
@@ -222,8 +223,8 @@ dependencies {
     // gradle.properties so it can be swapped via -PbiologyDictionaryFileId=<id>.
     // Default 8001520 is the last build that targets MC 1.21.1 + architectury 13.
     compileOnly("curse.maven:biology-dictionary-1426515:${project.findProperty('biologyDictionaryFileId') ?: '8001520'}")
-    // Cloth Config — demoted to compileOnly while PufferfishSkills is off the runtime classpath.
-    compileOnly("curse.maven:cloth-config-348521:5729127")
+    // Cloth Config — runtime dependency of Pufferfish Skills (NeoForge).
+    implementation("curse.maven:cloth-config-348521:5729127")
 
     // Reliable Backpacks
     compileOnly("curse.maven:reliable-backpacks-1484454:7946525")
