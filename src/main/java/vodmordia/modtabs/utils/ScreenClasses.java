@@ -222,9 +222,13 @@ public final class ScreenClasses {
             "dev.shadowsoffire.apothic_attributes.ALConfig";
 
     // -- Curios -----------------------------------------------------------
-    /** {@code EffectRenderingInventoryScreen<CuriosContainer>} — the accessory inventory. */
+    /** Legacy curios inventory (V1). Used when {@code CuriosConfig.SERVER.enableLegacyMenu = true}. */
     public static final String CURIOS_SCREEN =
             "top.theillusivec4.curios.client.gui.CuriosScreen";
+    /** Revamped curios inventory (V2). Default on modern Curios — {@code CuriosContainerProvider}
+     *  picks V2 unless the legacy-menu config flag is on, so this is what most players see. */
+    public static final String CURIOS_SCREEN_V2 =
+            "top.theillusivec4.curios.client.gui.CuriosScreenV2";
     /** Serverbound packet with a single {@code ItemStack carried} field; the server's handler
      *  opens the curios menu for the player. Same path the mod's CuriosButton uses. */
     public static final String CURIOS_OPEN_PACKET =

@@ -46,46 +46,41 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
             Class<?> payloadClass = Class.forName("net.p3pp3rf1y.sophisticatedbackpacks.network.BackpackOpenPayload");
             Class<?> backpackItemClass = Class.forName("net.p3pp3rf1y.sophisticatedbackpacks.backpack.BackpackItem");
 
+            // Always find a specific backpack and send the explicit (slot, "", handlerName)
+            // form, even with BackpackSlot.DEFAULT. The empty-payload path defers to SB's
+            // priority system, which respects the `allowOpeningFromSlot` server config — that
+            // setting is false by default, so main-inventory backpacks never open from the
+            // tab click. Specifying the slot bypasses that gate.
+            ItemStack target = getBackpackFromPreferredSlot(player, backpackItemClass);
+            if (target == null || target.isEmpty()) {
+                target = findFirstBackpack(player, backpackItemClass);
+            }
+
             Object payload;
-
-            // Check if user has a preferred slot and if it contains a backpack
-            ItemStack preferredBackpack = getBackpackFromPreferredSlot(player, backpackItemClass);
-
-            if (preferredBackpack != null && !preferredBackpack.isEmpty()) {
-                // Get the slot index for the preferred backpack
-                int slotIndex = getSlotIndexForBackpack(player, preferredBackpack);
-
+            if (target != null && !target.isEmpty()) {
+                int slotIndex = getSlotIndexForBackpack(player, target);
                 if (slotIndex != -1) {
-                    // Use the constructor with handlerName and identifier to bypass Sophisticated Backpacks' priority system
                     String handlerName;
-                    String identifier = ""; // Empty string for single identifier handlers
+                    String identifier = "";
                     int adjustedSlotIndex = slotIndex;
-
-                    // Determine the correct handler name based on the slot
                     if (slotIndex <= 8) {
-                        // Hotbar or main inventory
                         handlerName = "main";
                     } else if (slotIndex == 40) {
-                        // Offhand slot
                         handlerName = "offhand";
-                        adjustedSlotIndex = 0; // Offhand handler only has slot 0
+                        adjustedSlotIndex = 0;
                     } else if (slotIndex >= 36 && slotIndex <= 39) {
-                        // Armor slots
                         handlerName = "armor";
-                        adjustedSlotIndex = 0; // Armor handler only checks chest slot (slot 0)
+                        adjustedSlotIndex = 0;
                     } else {
-                        // Other inventory slots
                         handlerName = "main";
                     }
-
                     payload = payloadClass.getDeclaredConstructor(int.class, String.class, String.class)
                             .newInstance(adjustedSlotIndex, identifier, handlerName);
                 } else {
-                    // Fall back to default constructor
+                    // Curios slot — no inventory index. Let SB's Curios integration resolve it.
                     payload = payloadClass.getDeclaredConstructor().newInstance();
                 }
             } else {
-                // Use the default constructor - let Sophisticated Backpacks handle all the logic
                 payload = payloadClass.getDeclaredConstructor().newInstance();
             }
 
@@ -101,6 +96,53 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
             }
 
         } catch (Exception e) {
+        }
+    }
+
+    private ItemStack findFirstBackpack(Player player, Class<?> backpackItemClass) {
+        for (ItemStack stack : player.getInventory().items) {
+            if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
+                return stack;
+            }
+        }
+        ItemStack offhand = player.getOffhandItem();
+        if (!offhand.isEmpty() && backpackItemClass.isInstance(offhand.getItem())) {
+            return offhand;
+        }
+        for (ItemStack stack : player.getInventory().armor) {
+            if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
+                return stack;
+            }
+        }
+        if (ModIntegrationManager.isModLoaded(ModIntegration.CURIOS)) {
+            ItemStack curio = findBackpackInCurios(player, backpackItemClass);
+            if (curio != null) return curio;
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private ItemStack findBackpackInCurios(Player player, Class<?> backpackItemClass) {
+        try {
+            Class<?> curiosAPIClass = Class.forName("top.theillusivec4.curios.api.CuriosApi");
+            Method getCuriosInventory = curiosAPIClass.getDeclaredMethod("getCuriosInventory", net.minecraft.world.entity.LivingEntity.class);
+            Object holder = getCuriosInventory.invoke(null, player);
+            if (holder == null) return null;
+            // 1.21.1 NeoForge returns Optional; orElse(null) keeps the call uniform with the
+            // 1.20.1 Forge build, which returns LazyOptional (also exposes orElse).
+            Method orElse = holder.getClass().getMethod("orElse", Object.class);
+            Object curiosInventory = orElse.invoke(holder, (Object) null);
+            if (curiosInventory == null) return null;
+            Method findCurios = curiosInventory.getClass().getDeclaredMethod("findCurios", java.util.function.Predicate.class);
+            java.util.function.Predicate<ItemStack> predicate = stack ->
+                    !stack.isEmpty() && backpackItemClass.isInstance(stack.getItem());
+            @SuppressWarnings("unchecked")
+            java.util.List<Object> results = (java.util.List<Object>) findCurios.invoke(curiosInventory, predicate);
+            if (results == null || results.isEmpty()) return null;
+            Object first = results.get(0);
+            Method stackMethod = first.getClass().getDeclaredMethod("stack");
+            return (ItemStack) stackMethod.invoke(first);
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -165,37 +207,13 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
 
                 case CURIOS:
                     if (ModIntegrationManager.isModLoaded(ModIntegration.CURIOS)) {
-                        try {
-                            Class<?> curiosAPIClass = Class.forName("top.theillusivec4.curios.api.CuriosApi");
-                            Method getCuriosInventoryMethod = curiosAPIClass.getDeclaredMethod("getCuriosInventory", net.minecraft.world.entity.LivingEntity.class);
-                            Object optionalCuriosInventory = getCuriosInventoryMethod.invoke(null, player);
-
-                            Method isPresentMethod = optionalCuriosInventory.getClass().getDeclaredMethod("isPresent");
-                            boolean isPresent = (Boolean) isPresentMethod.invoke(optionalCuriosInventory);
-
-                            if (isPresent) {
-                                Method getMethod = optionalCuriosInventory.getClass().getDeclaredMethod("get");
-                                Object curiosInventory = getMethod.invoke(optionalCuriosInventory);
-
-                                Method findCuriosMethod = curiosInventory.getClass().getDeclaredMethod("findCurios", java.util.function.Predicate.class);
-
-                                java.util.function.Predicate<ItemStack> backpackPredicate = stack ->
-                                    !stack.isEmpty() && backpackItemClass.isInstance(stack.getItem());
-
-                                @SuppressWarnings("unchecked")
-                                java.util.List<Object> curioResults = (java.util.List<Object>) findCuriosMethod.invoke(curiosInventory, backpackPredicate);
-
-                                if (!curioResults.isEmpty()) {
-                                    // Get the first curio result and extract the ItemStack
-                                    Object curioResult = curioResults.get(0);
-                                    Method getStackMethod = curioResult.getClass().getDeclaredMethod("stack");
-                                    return (ItemStack) getStackMethod.invoke(curioResult);
-                                }
-                            }
-                        } catch (Exception e) {
-                            // Silently ignore Curios errors
-                        }
+                        ItemStack curio = findBackpackInCurios(player, backpackItemClass);
+                        if (curio != null) return curio;
                     }
+                    break;
+
+                case DEFAULT:
+                    // Handled at method entry — fall through is unreachable but Java requires it.
                     break;
             }
         } catch (Exception e) {
@@ -261,33 +279,7 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
 
             // Check Curios if available
             if (ModIntegrationManager.isModLoaded(ModIntegration.CURIOS)) {
-                try {
-                    Class<?> curiosAPIClass = Class.forName("top.theillusivec4.curios.api.CuriosApi");
-                    Method getCuriosInventoryMethod = curiosAPIClass.getDeclaredMethod("getCuriosInventory", net.minecraft.world.entity.LivingEntity.class);
-                    Object optionalCuriosInventory = getCuriosInventoryMethod.invoke(null, player);
-
-                    Method isPresentMethod = optionalCuriosInventory.getClass().getDeclaredMethod("isPresent");
-                    boolean isPresent = (Boolean) isPresentMethod.invoke(optionalCuriosInventory);
-
-                    if (isPresent) {
-                        Method getMethod = optionalCuriosInventory.getClass().getDeclaredMethod("get");
-                        Object curiosInventory = getMethod.invoke(optionalCuriosInventory);
-
-                        Method findCuriosMethod = curiosInventory.getClass().getDeclaredMethod("findCurios", java.util.function.Predicate.class);
-
-                        java.util.function.Predicate<ItemStack> backpackPredicate = stack ->
-                            !stack.isEmpty() && backpackItemClass.isInstance(stack.getItem());
-
-                        @SuppressWarnings("unchecked")
-                        java.util.List<Object> curioResults = (java.util.List<Object>) findCuriosMethod.invoke(curiosInventory, backpackPredicate);
-
-                        if (!curioResults.isEmpty()) {
-                            return true;
-                        }
-                    }
-                } catch (Exception e) {
-                    // Silently ignore Curios errors
-                }
+                if (findBackpackInCurios(player, backpackItemClass) != null) return true;
             }
 
             return false;
