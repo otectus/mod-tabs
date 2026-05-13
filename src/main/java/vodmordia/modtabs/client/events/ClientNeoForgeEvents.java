@@ -18,6 +18,7 @@ import vodmordia.modtabs.client.screens.TabButton;
 import vodmordia.modtabs.client.keybinds.ModKeybinds;
 import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
+import vodmordia.modtabs.utils.ScreenClasses;
 
 @EventBusSubscriber(modid = ModTabs.MOD_ID, value = Dist.CLIENT)
 public class ClientNeoForgeEvents {
@@ -478,7 +479,9 @@ public class ClientNeoForgeEvents {
             screenClassName.equals("xaero.map.gui.GuiMap") ||
             screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen") ||
             screenClassName.equals("betteradvancements.common.gui.BetterAdvancementsScreen") ||
-            screenClassName.equals("de.coldfang.wildex.client.screen.WildexScreen")) {
+            screenClassName.equals("de.coldfang.wildex.client.screen.WildexScreen") ||
+            screenClassName.equals(ScreenClasses.EPIC_FIGHT_SKILL_EDIT_SCREEN) ||
+            screenClassName.equals(ScreenClasses.EPIC_SKILLS_SKILL_TREE_SCREEN)) {
 
             // These screens don't iterate renderables in their render method, so we
             // manually render TabButton/NextTabsButton at Z=0 (above any blur the screen

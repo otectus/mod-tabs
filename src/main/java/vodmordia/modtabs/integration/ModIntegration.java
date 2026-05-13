@@ -41,7 +41,9 @@ public enum ModIntegration {
     RELIABLE_BACKPACKS("reliable_backpacks", "Reliable Backpacks"),
     WILDEX("wildex", "Wildex Bestiary"),
     APOTHIC_ATTRIBUTES("apothic_attributes", "Apothic Attributes"),
-    AETHER("aether", "The Aether");
+    AETHER("aether", "The Aether"),
+    EPIC_FIGHT("epicfight", "Epic Fight"),
+    EPIC_SKILLS("epicskills", "Epic Fight Skill Tree");
 
     private final String modId;
     private final String displayName;

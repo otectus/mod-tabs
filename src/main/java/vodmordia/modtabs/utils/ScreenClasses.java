@@ -243,4 +243,29 @@ public final class ScreenClasses {
      *  the mod's own "I" keybind uses in {@code GuiHooks.openAccessoryMenu()}. */
     public static final String AETHER_OPEN_ACCESSORIES_PACKET =
             "com.aetherteam.aether.network.packet.serverbound.OpenAccessoriesPacket";
+
+    // -- Epic Fight ------------------------------------------------------
+    /** {@code Screen} (not a container screen) opened by Epic Fight's "K" keybind via
+     *  {@code ControlEngine.openSkillEditor()}. Constructor takes ({@link net.minecraft.world.entity.player.Player},
+     *  {@code PlayerSkills}). */
+    public static final String EPIC_FIGHT_SKILL_EDIT_SCREEN =
+            "yesman.epicfight.client.gui.screen.SkillEditScreen";
+    /** Static helpers: {@code getLocalPlayerPatch(LocalPlayer)} returns the patch attached
+     *  via {@code EpicFightAttachmentTypes.ENTITY_PATCH}; the patch's {@code getPlayerSkills()}
+     *  supplies the second {@link #EPIC_FIGHT_SKILL_EDIT_SCREEN} constructor argument. */
+    public static final String EPIC_FIGHT_CAPABILITIES =
+            "yesman.epicfight.world.capabilities.EpicFightCapabilities";
+
+    // -- Epic Fight Skill Tree (epicskills addon) ------------------------
+    /** {@code Screen} (not a container screen) opened by epicskills' keybind. Constructor
+     *  takes a single {@code LocalPlayerPatch}. Overrides {@code render()} without calling
+     *  {@code super.render()} → same plain-Screen-override quirk as
+     *  {@link #EPIC_FIGHT_SKILL_EDIT_SCREEN}; add this FQN to the manual-renderables
+     *  list in {@code ClientNeoForgeEvents.onScreenRenderPost} or tabs won't draw. */
+    public static final String EPIC_SKILLS_SKILL_TREE_SCREEN =
+            "com.yesman.epicskills.client.gui.screen.SkillTreeScreen";
+    /** Epic Fight's local-player patch class — second {@link #EPIC_SKILLS_SKILL_TREE_SCREEN}
+     *  constructor argument type. Note the {@code capabilites} typo (sic) in the package. */
+    public static final String EPIC_FIGHT_LOCAL_PLAYER_PATCH =
+            "yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch";
 }

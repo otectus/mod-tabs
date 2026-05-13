@@ -285,6 +285,18 @@ dependencies {
     // owo-lib — runtime dep of The Aether on NeoForge 1.21.1; compileOnly along with Aether.
     compileOnly("curse.maven:owo-lib-532610:6785734")
 
+    // Epic Fight (Antikythera-Studios NeoForge fork). Reflection-only integration —
+    // EpicFightTab mirrors ControlEngine.openSkillEditor() via getLocalPlayerPatch /
+    // getPlayerSkills, then constructs SkillEditScreen directly. No compile-time deps,
+    // so this is runtimeOnly-equivalent (kept as `implementation` to match the
+    // puffish-skills pattern for mods we want loaded in dev for live tab testing).
+    implementation("curse.maven:epic-fight-mod-405076:${project.findProperty('epicFightFileId') ?: '8080214'}")
+
+    // Epic Fight Skill Tree (epicskills, Antikythera-Studios). Hard-deps Epic Fight at
+    // runtime; the SkillTreeScreen constructor takes a LocalPlayerPatch from Epic Fight.
+    // Reflection-only on our side — same as EpicFightTab.
+    implementation("curse.maven:epic-fight-skill-tree-1295882:${project.findProperty('epicSkillsFileId') ?: '7916859'}")
+
     // Sinytra Connector (for Fabric mod compatibility)
     //runtimeOnly "curse.maven:sinytra-connector-890127:6944771"
 
