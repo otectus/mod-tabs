@@ -43,7 +43,8 @@ public enum ModIntegration {
     APOTHIC_ATTRIBUTES("apothic_attributes", "Apothic Attributes"),
     AETHER("aether", "The Aether"),
     EPIC_FIGHT("epicfight", "Epic Fight"),
-    EPIC_SKILLS("epicskills", "Epic Fight Skill Tree");
+    EPIC_SKILLS("epicskills", "Epic Fight Skill Tree"),
+    COMPLETIONISTS_INDEX("completionistsindex", "Completionist's Index");
 
     private final String modId;
     private final String displayName;

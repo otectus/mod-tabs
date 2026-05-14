@@ -52,6 +52,7 @@ public class Config
 		public static boolean curiosTabEnabled;
 		public static boolean epicFightTabEnabled;
 		public static boolean epicSkillsTabEnabled;
+		public static boolean completionistsIndexTabEnabled;
 		public static boolean stickyInventoryTab;
 
 		// Custom icon settings
@@ -277,6 +278,12 @@ public class Config
 		public static int epicSkillsTabIconNudgeDown;
 		public static int epicSkillsTabIconNudgeLeft;
 		public static int epicSkillsTabIconNudgeRight;
+		public static String completionistsIndexTabCustomIcon;
+		public static int completionistsIndexTabIconScale;
+		public static int completionistsIndexTabIconNudgeUp;
+		public static int completionistsIndexTabIconNudgeDown;
+		public static int completionistsIndexTabIconNudgeLeft;
+		public static int completionistsIndexTabIconNudgeRight;
 
 		// Custom tabs settings
 		public static boolean customTabsEnabled;
@@ -323,6 +330,7 @@ public class Config
 		public static TabDisplayVisibility curiosTabDisplayVisibility;
 		public static TabDisplayVisibility epicFightTabDisplayVisibility;
 		public static TabDisplayVisibility epicSkillsTabDisplayVisibility;
+		public static TabDisplayVisibility completionistsIndexTabDisplayVisibility;
 
 		// Tab order overrides
 		public static int inventoryTabOrder;
@@ -363,6 +371,7 @@ public class Config
 		public static int curiosTabOrder;
 		public static int epicFightTabOrder;
 		public static int epicSkillsTabOrder;
+		public static int completionistsIndexTabOrder;
 
 		public static void bakeClient()
 		{
@@ -414,6 +423,7 @@ public class Config
 				curiosTabEnabled = ModTabsConfig.curiosTabEnabled;
 				epicFightTabEnabled = ModTabsConfig.epicFightTabEnabled;
 				epicSkillsTabEnabled = ModTabsConfig.epicSkillsTabEnabled;
+				completionistsIndexTabEnabled = ModTabsConfig.completionistsIndexTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
 				// Load custom tabs settings
@@ -464,6 +474,7 @@ public class Config
 				curiosTabOrder = ModTabsConfig.curiosTabOrder;
 				epicFightTabOrder = ModTabsConfig.epicFightTabOrder;
 				epicSkillsTabOrder = ModTabsConfig.epicSkillsTabOrder;
+				completionistsIndexTabOrder = ModTabsConfig.completionistsIndexTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -501,6 +512,7 @@ public class Config
 				curiosTabDisplayVisibility = ModTabsConfig.curiosTabDisplayVisibility;
 				epicFightTabDisplayVisibility = ModTabsConfig.epicFightTabDisplayVisibility;
 				epicSkillsTabDisplayVisibility = ModTabsConfig.epicSkillsTabDisplayVisibility;
+				completionistsIndexTabDisplayVisibility = ModTabsConfig.completionistsIndexTabDisplayVisibility;
 
 				// Load custom icon settings
 				inventoryTabCustomIcon = ModTabsConfig.inventoryTabCustomIcon;
@@ -725,6 +737,12 @@ public class Config
 				epicSkillsTabIconNudgeDown = ModTabsConfig.epicSkillsTabIconNudgeDown;
 				epicSkillsTabIconNudgeLeft = ModTabsConfig.epicSkillsTabIconNudgeLeft;
 				epicSkillsTabIconNudgeRight = ModTabsConfig.epicSkillsTabIconNudgeRight;
+				completionistsIndexTabCustomIcon = ModTabsConfig.completionistsIndexTabCustomIcon;
+				completionistsIndexTabIconScale = ModTabsConfig.completionistsIndexTabIconScale;
+				completionistsIndexTabIconNudgeUp = ModTabsConfig.completionistsIndexTabIconNudgeUp;
+				completionistsIndexTabIconNudgeDown = ModTabsConfig.completionistsIndexTabIconNudgeDown;
+				completionistsIndexTabIconNudgeLeft = ModTabsConfig.completionistsIndexTabIconNudgeLeft;
+				completionistsIndexTabIconNudgeRight = ModTabsConfig.completionistsIndexTabIconNudgeRight;
 			}
 			catch (Exception e)
 			{

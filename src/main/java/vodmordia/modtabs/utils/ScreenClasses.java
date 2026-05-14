@@ -268,4 +268,27 @@ public final class ScreenClasses {
      *  constructor argument type. Note the {@code capabilites} typo (sic) in the package. */
     public static final String EPIC_FIGHT_LOCAL_PLAYER_PATCH =
             "yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch";
+
+    // -- Completionist's Index (Fuzs, NeoForge 1.21.1) -------------------
+    /** Abstract parent of {@code ModsIndexViewScreen} / {@code ItemsIndexViewScreen}.
+     *  On 1.21.1 it extends {@code StatsUpdateListener} → {@code StatsScreen} (vanilla),
+     *  and its {@code render()} calls {@code super.render()} so tabs added as children
+     *  DO draw without needing the manual-renderables list in
+     *  {@code ClientNeoForgeEvents.onScreenRenderPost}. */
+    public static final String COMPLETIONISTS_INDEX_VIEW_SCREEN =
+            "fuzs.completionistsindex.client.gui.screens.inventory.IndexViewScreen";
+    /** Top-level index screen — constructor is {@code (Screen lastScreen, boolean fromInventory)}.
+     *  Note the {@code boolean} arg is new on 1.21.1 (1.20.1 Forge only took the {@code Screen}). */
+    public static final String COMPLETIONISTS_INDEX_MODS_SCREEN =
+            "fuzs.completionistsindex.client.gui.screens.inventory.ModsIndexViewScreen";
+    /** Drill-down screen (per-mod item list). Constructor is {@code (Screen, boolean, List<ItemStack>)};
+     *  we never open it directly but track it for the "currently used" check so cycling skips
+     *  the tab when the player is browsing a mod's items. */
+    public static final String COMPLETIONISTS_INDEX_ITEMS_SCREEN =
+            "fuzs.completionistsindex.client.gui.screens.inventory.ItemsIndexViewScreen";
+    /** Static handler that adds the inventory + pause-menu buttons. On NeoForge 1.21.1 the
+     *  method names are clean ({@code onAfterInventoryScreenInit} / {@code onAfterPauseScreenInit})
+     *  — different from the 1.20.1 Forge build's {@code onScreenInit$Post$1/2}. */
+    public static final String COMPLETIONISTS_INDEX_BUTTON_HANDLER =
+            "fuzs.completionistsindex.client.handler.IndexButtonHandler";
 }
