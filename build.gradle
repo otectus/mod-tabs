@@ -305,6 +305,13 @@ dependencies {
     // here so swapping to `implementation` also requires pinning a puzzleslib file id.
     compileOnly("curse.maven:completionists-index-852667:5736854")
 
+    // SDM Shop (sdmshoprework, DeusSixik / Architectury, NeoForge 1.21.1). Reflection-only —
+    // SdmShopTab invokes SDMShopClient.openGui(boolean) via Class.forName, same path the
+    // mod's own SendOpenShopScreenS2C packet uses. Hard-deps FTB Library + architectury at
+    // runtime; keeping this compileOnly avoids pulling in those transitives in dev — we
+    // don't reference any of its types at compile time.
+    compileOnly("curse.maven:sdm-shop-948942:7173785")
+
     // Sinytra Connector (for Fabric mod compatibility)
     //runtimeOnly "curse.maven:sinytra-connector-890127:6944771"
 

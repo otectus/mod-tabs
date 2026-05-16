@@ -170,6 +170,7 @@ public class ModTabs
             TabsMenu.register(new EpicFightTab());
             TabsMenu.register(new EpicSkillsTab());
             TabsMenu.register(new CompletionistsIndexTab());
+            TabsMenu.register(new SdmShopTab());
 
             // One transient tab per nearby container block (chests, barrels, modded
             // inventories, …). Discovered fresh on every screen-init.

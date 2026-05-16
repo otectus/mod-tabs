@@ -291,4 +291,25 @@ public final class ScreenClasses {
      *  — different from the 1.20.1 Forge build's {@code onScreenInit$Post$1/2}. */
     public static final String COMPLETIONISTS_INDEX_BUTTON_HANDLER =
             "fuzs.completionistsindex.client.handler.IndexButtonHandler";
+
+    // -- SDM Shop (sdmshop, "sdmshopa" 3.x line, NeoForge 1.21.1) ----------
+    // Built from DeusSixik/SDMShop:master (3.2.4+) — NOT the 1.21.1 branch (still on
+    // v1.3.1). Note the package typo `sixk` (vs correctly-spelled `sixik` on 1.20.1's
+    // 7.x line — they're parallel codebases, not a straight port). No SDMShopClient
+    // openGui() helper exists; the keybind constructs a screen directly, so we mirror
+    // that. ShopPage / ShopPageModern both extend FTB Library's BaseScreen → the host
+    // {@link net.minecraft.client.gui.screens.Screen} is {@link #FTB_LIBRARY_WRAPPER}
+    // with the shop page as the {@code wrappedGui} field.
+    /** Default shop screen (when {@code ConfigFile.CLIENT.style == false}, the default).
+     *  No-arg constructor, inherits {@code openGui()} from {@code BaseScreen}. */
+    public static final String SDM_SHOP_DEFAULT_SCREEN =
+            "net.sixk.sdmshop.shop.ShopPage";
+    /** "Modern" style shop. Picked when {@code ConfigFile.CLIENT.style == true}. */
+    public static final String SDM_SHOP_MODERN_SCREEN =
+            "net.sixk.sdmshop.shop.modern.ShopPageModern";
+    /** Static config holder — {@code CLIENT} is a public static instance and
+     *  {@code style} is a public boolean. We read it reflectively to mirror the
+     *  keybind's choice, and fall back to the default screen if reflection fails. */
+    public static final String SDM_SHOP_CONFIG_FILE =
+            "net.sixk.sdmshop.data.config.ConfigFile";
 }

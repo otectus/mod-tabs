@@ -44,7 +44,8 @@ public enum ModIntegration {
     AETHER("aether", "The Aether"),
     EPIC_FIGHT("epicfight", "Epic Fight"),
     EPIC_SKILLS("epicskills", "Epic Fight Skill Tree"),
-    COMPLETIONISTS_INDEX("completionistsindex", "Completionist's Index");
+    COMPLETIONISTS_INDEX("completionistsindex", "Completionist's Index"),
+    SDM_SHOP("sdmshop", "SDM Shop");
 
     private final String modId;
     private final String displayName;
