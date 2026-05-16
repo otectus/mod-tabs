@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "AbstractContainerScreenMixin",
-    "IndexButtonHandlerMixin"
+    "IndexButtonHandlerMixin",
+    "QuestlogInventoryScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

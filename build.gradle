@@ -312,6 +312,15 @@ dependencies {
     // don't reference any of its types at compile time.
     compileOnly("curse.maven:sdm-shop-948942:7173785")
 
+    // Jobs+ (DAQEM, NeoForge 1.21.1). Reflection-only integration — JobsPlusTab sends an
+    // empty ServerboundOpenJobsScreenPacket (the mod's own keybind path); the server replies
+    // with the data-bearing ClientboundOpenJobsScreenPacket that constructs and opens
+    // JobsScreen. The packet is registered through architectury's NetworkManager which, on
+    // NeoForge, routes it through the native PayloadRegistrar, so PacketDistributor.sendToServer
+    // dispatches it correctly. Hard-deps architectury + uilib at runtime; kept compileOnly here
+    // since we don't reference any Jobs+ types at compile time.
+    compileOnly("curse.maven:jobsplus-916985:7340625")
+
     // Sinytra Connector (for Fabric mod compatibility)
     //runtimeOnly "curse.maven:sinytra-connector-890127:6944771"
 

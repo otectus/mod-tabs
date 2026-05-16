@@ -45,7 +45,9 @@ public enum ModIntegration {
     EPIC_FIGHT("epicfight", "Epic Fight"),
     EPIC_SKILLS("epicskills", "Epic Fight Skill Tree"),
     COMPLETIONISTS_INDEX("completionistsindex", "Completionist's Index"),
-    SDM_SHOP("sdmshop", "SDM Shop");
+    SDM_SHOP("sdmshop", "SDM Shop"),
+    JOBS_PLUS("jobsplus", "Jobs+"),
+    QUEST_LOG("questlog", "Quest Log");
 
     private final String modId;
     private final String displayName;

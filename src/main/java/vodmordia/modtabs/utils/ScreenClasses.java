@@ -312,4 +312,46 @@ public final class ScreenClasses {
      *  keybind's choice, and fall back to the default screen if reflection fails. */
     public static final String SDM_SHOP_CONFIG_FILE =
             "net.sixk.sdmshop.data.config.ConfigFile";
+
+    // -- Jobs+ (DAQEM, NeoForge 1.21.1) ---------------------------------
+    // JobsScreen needs server-supplied {@code JobsScreenOptions} (jobs + coins) to
+    // construct, so we can't open it directly client-side. Instead we mirror the
+    // mod's own keybind path in {@code EventKeyPressed}: send an empty
+    // {@code ServerboundOpenJobsScreenPacket} and the server replies with
+    // {@code ClientboundOpenJobsScreenPacket} that constructs and opens the screen
+    // with proper data.
+    /** {@code AbstractScreen} subclass (uilib library) — not a container screen.
+     *  Its {@code render()} does NOT call vanilla {@code super.render()} but DOES
+     *  iterate {@code uilib$getRenderables()} (a mixin accessor on {@code Screen.renderables}),
+     *  so tabs added as children DO draw without needing the manual-renderables list
+     *  in {@code ClientNeoForgeEvents.onScreenRenderPost}. */
+    public static final String JOBS_PLUS_SCREEN =
+            "com.daqem.jobsplus.client.screen.job.JobsScreen";
+    /** Architectury {@code CustomPacketPayload} — no-arg constructor; server-side handler
+     *  builds {@code ClientboundOpenJobsScreenPacket} from the player's jobs/coins. Registered
+     *  via architectury's {@code NetworkManager} on NeoForge as a native NeoForge payload,
+     *  so {@code PacketDistributor.sendToServer((CustomPacketPayload) packet)} dispatches it. */
+    public static final String JOBS_PLUS_OPEN_PACKET =
+            "com.daqem.jobsplus.networking.c2s.ServerboundOpenJobsScreenPacket";
+
+    // -- Quest Log (Infernal Studios, NeoForge 1.21.1) -------------------
+    // Plain {@link net.minecraft.client.gui.screens.Screen} subclass (NOT a container screen)
+    // opened by the mod's own keybind via {@code Minecraft.setScreen(new QuestlogScreen(prev))}.
+    // QuestlogScreen.render() calls super.render() so tabs added as children draw without
+    // needing the manual-renderables list in {@code ClientNeoForgeEvents.onScreenRenderPost}.
+    // The mod adds its own QuestlogOpenButton to the inventory via InventoryScreenMixin; we
+    // suppress that mixin so the tab is the only entry point.
+    /** {@code Screen} (single-arg {@code Screen previousScreen} constructor). */
+    public static final String QUEST_LOG_SCREEN =
+            "org.infernalstudios.questlog.client.gui.screen.QuestlogScreen";
+    /** Static {@code mostRecentNotificationQuest} field — populated when a quest is triggered
+     *  or completed, cleared by {@code QuestlogScreen.init()}. The badge ("!" icon) on the
+     *  native button is shown when this is non-null, OR when any quest is completed-but-
+     *  not-rewarded. We mirror both checks on the tab. */
+    public static final String QUEST_LOG_CLIENT_EVENTS =
+            "org.infernalstudios.questlog.QuestlogClientEvents";
+    /** Static {@code getLocal()} returns the per-player {@code QuestManager}; we use it to
+     *  scan for completed-but-unrewarded quests when there's no recent notification. */
+    public static final String QUEST_LOG_CLIENT =
+            "org.infernalstudios.questlog.QuestlogClient";
 }

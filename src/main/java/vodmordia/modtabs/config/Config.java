@@ -54,6 +54,8 @@ public class Config
 		public static boolean epicSkillsTabEnabled;
 		public static boolean completionistsIndexTabEnabled;
 		public static boolean sdmShopTabEnabled;
+		public static boolean jobsPlusTabEnabled;
+		public static boolean questLogTabEnabled;
 		public static boolean stickyInventoryTab;
 
 		// Custom icon settings
@@ -291,6 +293,18 @@ public class Config
 		public static int sdmShopTabIconNudgeDown;
 		public static int sdmShopTabIconNudgeLeft;
 		public static int sdmShopTabIconNudgeRight;
+		public static String jobsPlusTabCustomIcon;
+		public static int jobsPlusTabIconScale;
+		public static int jobsPlusTabIconNudgeUp;
+		public static int jobsPlusTabIconNudgeDown;
+		public static int jobsPlusTabIconNudgeLeft;
+		public static int jobsPlusTabIconNudgeRight;
+		public static String questLogTabCustomIcon;
+		public static int questLogTabIconScale;
+		public static int questLogTabIconNudgeUp;
+		public static int questLogTabIconNudgeDown;
+		public static int questLogTabIconNudgeLeft;
+		public static int questLogTabIconNudgeRight;
 
 		// Custom tabs settings
 		public static boolean customTabsEnabled;
@@ -339,6 +353,8 @@ public class Config
 		public static TabDisplayVisibility epicSkillsTabDisplayVisibility;
 		public static TabDisplayVisibility completionistsIndexTabDisplayVisibility;
 		public static TabDisplayVisibility sdmShopTabDisplayVisibility;
+		public static TabDisplayVisibility jobsPlusTabDisplayVisibility;
+		public static TabDisplayVisibility questLogTabDisplayVisibility;
 
 		// Tab order overrides
 		public static int inventoryTabOrder;
@@ -381,6 +397,8 @@ public class Config
 		public static int epicSkillsTabOrder;
 		public static int completionistsIndexTabOrder;
 		public static int sdmShopTabOrder;
+		public static int jobsPlusTabOrder;
+		public static int questLogTabOrder;
 
 		public static void bakeClient()
 		{
@@ -434,6 +452,8 @@ public class Config
 				epicSkillsTabEnabled = ModTabsConfig.epicSkillsTabEnabled;
 				completionistsIndexTabEnabled = ModTabsConfig.completionistsIndexTabEnabled;
 				sdmShopTabEnabled = ModTabsConfig.sdmShopTabEnabled;
+				jobsPlusTabEnabled = ModTabsConfig.jobsPlusTabEnabled;
+				questLogTabEnabled = ModTabsConfig.questLogTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 
 				// Load custom tabs settings
@@ -486,6 +506,8 @@ public class Config
 				epicSkillsTabOrder = ModTabsConfig.epicSkillsTabOrder;
 				completionistsIndexTabOrder = ModTabsConfig.completionistsIndexTabOrder;
 				sdmShopTabOrder = ModTabsConfig.sdmShopTabOrder;
+				jobsPlusTabOrder = ModTabsConfig.jobsPlusTabOrder;
+				questLogTabOrder = ModTabsConfig.questLogTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -525,6 +547,8 @@ public class Config
 				epicSkillsTabDisplayVisibility = ModTabsConfig.epicSkillsTabDisplayVisibility;
 				completionistsIndexTabDisplayVisibility = ModTabsConfig.completionistsIndexTabDisplayVisibility;
 				sdmShopTabDisplayVisibility = ModTabsConfig.sdmShopTabDisplayVisibility;
+				jobsPlusTabDisplayVisibility = ModTabsConfig.jobsPlusTabDisplayVisibility;
+				questLogTabDisplayVisibility = ModTabsConfig.questLogTabDisplayVisibility;
 
 				// Load custom icon settings
 				inventoryTabCustomIcon = ModTabsConfig.inventoryTabCustomIcon;
@@ -761,6 +785,18 @@ public class Config
 				sdmShopTabIconNudgeDown = ModTabsConfig.sdmShopTabIconNudgeDown;
 				sdmShopTabIconNudgeLeft = ModTabsConfig.sdmShopTabIconNudgeLeft;
 				sdmShopTabIconNudgeRight = ModTabsConfig.sdmShopTabIconNudgeRight;
+				jobsPlusTabCustomIcon = ModTabsConfig.jobsPlusTabCustomIcon;
+				jobsPlusTabIconScale = ModTabsConfig.jobsPlusTabIconScale;
+				jobsPlusTabIconNudgeUp = ModTabsConfig.jobsPlusTabIconNudgeUp;
+				jobsPlusTabIconNudgeDown = ModTabsConfig.jobsPlusTabIconNudgeDown;
+				jobsPlusTabIconNudgeLeft = ModTabsConfig.jobsPlusTabIconNudgeLeft;
+				jobsPlusTabIconNudgeRight = ModTabsConfig.jobsPlusTabIconNudgeRight;
+				questLogTabCustomIcon = ModTabsConfig.questLogTabCustomIcon;
+				questLogTabIconScale = ModTabsConfig.questLogTabIconScale;
+				questLogTabIconNudgeUp = ModTabsConfig.questLogTabIconNudgeUp;
+				questLogTabIconNudgeDown = ModTabsConfig.questLogTabIconNudgeDown;
+				questLogTabIconNudgeLeft = ModTabsConfig.questLogTabIconNudgeLeft;
+				questLogTabIconNudgeRight = ModTabsConfig.questLogTabIconNudgeRight;
 			}
 			catch (Exception e)
 			{
