@@ -20,14 +20,14 @@ import vodmordia.modtabs.utils.ScreenClasses;
  * {@code ClientboundOpenJobsScreenPacket} that constructs and opens the screen with proper
  * data.
  *
- * <p>Dispatch goes through architectury's {@code NetworkManager.sendToServer}, NOT
+ * Dispatch goes through architectury's {@code NetworkManager.sendToServer}, NOT
  * NeoForge's {@code PacketDistributor.sendToServer}. Architectury registers the packet
  * wrapped in its own {@code NetworkAggregator$BufCustomPacketPayload}; sending the raw
  * mod payload via {@code PacketDistributor} skips that wrapping and the encoder throws
  * {@code ClassCastException}. Going through {@code NetworkManager} preserves the wrap —
  * same path the mod's own keybind ({@code EventKeyPressed}) uses.
  *
- * <p>Both the packet class and architectury's {@code NetworkManager} are resolved through
+ * Both the packet class and architectury's {@code NetworkManager} are resolved through
  * {@link Class#forName} so this class loads without architectury or Jobs+ on the classpath.
  */
 @TabConfig(configKey = "jobsPlusTab", defaultEnabled = true, defaultOrder = 0)

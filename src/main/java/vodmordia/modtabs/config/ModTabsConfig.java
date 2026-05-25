@@ -22,6 +22,12 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs")
     public static boolean stickyInventoryTab = true;
 
+    // Modpack-maker lock. When false, all three layout-editor entry points
+    // (Shift+Z, long-press on a tab, the Edit button in LayoutEditorButtons) are
+    // no-ops, so packs can ship a fixed tab layout that players can't rearrange.
+    @Entry(category = "tabs")
+    public static boolean allowEditing = true;
+
     @Entry(category = "tabs") @Hidden
     public static boolean inventoryTabEnabled = true;
 
@@ -468,6 +474,81 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs") @Hidden
     public static TabDisplayVisibility questLogTabDisplayVisibility = TabDisplayVisibility.YES;
+
+    @Comment(category = "tabs") public static CommentText spacer_mapwright;
+
+    @Comment(category = "tabs") public static CommentText mapwright;
+
+    @Entry(category = "tabs") @Hidden
+    public static boolean mapwrightTabEnabled = true;
+
+    @Entry(category = "tabs") @Hidden
+    public static String mapwrightTabCustomIcon = "";
+    @Entry(category = "tabs") @Hidden
+    public static int mapwrightTabIconScale = 100;
+    @Entry(category = "tabs") @Hidden
+    public static int mapwrightTabIconNudgeUp = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int mapwrightTabIconNudgeDown = 1;
+    @Entry(category = "tabs") @Hidden
+    public static int mapwrightTabIconNudgeLeft = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int mapwrightTabIconNudgeRight = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int mapwrightTabOrder = 0;
+
+    @Entry(category = "tabs") @Hidden
+    public static TabDisplayVisibility mapwrightTabDisplayVisibility = TabDisplayVisibility.TUCK;
+
+    @Comment(category = "tabs") public static CommentText spacer_field_guide;
+
+    @Comment(category = "tabs") public static CommentText fieldGuide;
+
+    @Entry(category = "tabs") @Hidden
+    public static boolean fieldGuideTabEnabled = true;
+
+    @Entry(category = "tabs") @Hidden
+    public static String fieldGuideTabCustomIcon = "";
+    @Entry(category = "tabs") @Hidden
+    public static int fieldGuideTabIconScale = 100;
+    @Entry(category = "tabs") @Hidden
+    public static int fieldGuideTabIconNudgeUp = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int fieldGuideTabIconNudgeDown = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int fieldGuideTabIconNudgeLeft = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int fieldGuideTabIconNudgeRight = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int fieldGuideTabOrder = 0;
+
+    @Entry(category = "tabs") @Hidden
+    public static TabDisplayVisibility fieldGuideTabDisplayVisibility = TabDisplayVisibility.YES;
+
+    @Comment(category = "tabs") public static CommentText spacer_modonomicon;
+
+    @Comment(category = "tabs") public static CommentText modonomicon;
+
+    @Entry(category = "tabs") @Hidden
+    public static boolean modonomiconTabEnabled = true;
+
+    @Entry(category = "tabs") @Hidden
+    public static String modonomiconTabCustomIcon = "";
+    @Entry(category = "tabs") @Hidden
+    public static int modonomiconTabIconScale = 100;
+    @Entry(category = "tabs") @Hidden
+    public static int modonomiconTabIconNudgeUp = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int modonomiconTabIconNudgeDown = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int modonomiconTabIconNudgeLeft = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int modonomiconTabIconNudgeRight = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int modonomiconTabOrder = 0;
+
+    @Entry(category = "tabs") @Hidden
+    public static TabDisplayVisibility modonomiconTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer_reliable_backpacks;
 
@@ -1074,7 +1155,7 @@ public class ModTabsConfig extends MidnightConfig {
     @Comment(category = "tabs") public static CommentText nearbyContainersHeader;
 
     @Entry(category = "tabs")
-    public static boolean nearbyContainersTabEnabled = true;
+    public static boolean nearbyContainersTabEnabled = false;
 
     @Entry(category = "tabs", min = 1, max = 16)
     public static int nearbyContainersTabRange = 5;

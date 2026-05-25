@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
  * SkillTreeScreen constructor takes Epic Fight's {@code LocalPlayerPatch}; the tab self-
  * gates on the patch lookup returning non-null, so a missing-EF install is a silent no-op.
  *
- * <p>{@code SkillTreeScreen.discarded()} returns true when the player has no unlocked
+ * {@code SkillTreeScreen.discarded()} returns true when the player has no unlocked
  * skill trees — calling it before {@code setScreen} matches the mod's own keybind guard.
  */
 @TabConfig(configKey = "epicSkillsTab", defaultEnabled = true, defaultOrder = 0)

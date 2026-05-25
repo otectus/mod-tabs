@@ -26,7 +26,7 @@ import java.lang.reflect.Constructor;
  * {@code AetherAccessoriesMenu}. The accessory screen is then registered
  * client-side via the menu's screen factory — same flow as pressing "I".
  *
- * <p>Both the packet class and the screen FQN are resolved through {@link ClassCache}
+ * Both the packet class and the screen FQN are resolved through {@link ClassCache}
  * so this class compiles and loads without a hard runtime dependency on The Aether.
  */
 @TabConfig(configKey = "aetherTab", defaultEnabled = true, defaultOrder = 0)

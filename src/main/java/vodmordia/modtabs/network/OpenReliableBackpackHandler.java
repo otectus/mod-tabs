@@ -22,13 +22,13 @@ import java.lang.reflect.Constructor;
 /**
  * Server handler for {@link OpenReliableBackpackPayload}.
  *
- * <p>Replicates the body of {@code EntityInteractionEvents.onEntityInteract} from the
+ * Replicates the body of {@code EntityInteractionEvents.onEntityInteract} from the
  * Reliable Backpacks mod minus the {@code isBehind} proximity check, so the player
  * can open their own equipped backpack from a tab click. The mod's
  * {@code BackpackItemContainer} is used so persistence ({@code setChanged} → component)
  * and animation packets ({@code startOpen}/{@code stopOpen}) all work as the mod intends.
  *
- * <p>If the backpack is in the player's inventory but not equipped, this handler swaps
+ * If the backpack is in the player's inventory but not equipped, this handler swaps
  * it into the chest slot (mirroring vanilla {@code Equipable.swapWithEquipmentSlot})
  * before opening, so the tab works whether the player has the backpack worn or not.
  */

@@ -9,7 +9,7 @@ import vodmordia.modtabs.ModTabs;
 /**
  * Client → server request to open the player's own equipped Reliable Backpack.
  *
- * <p>No payload fields — the server uses {@code context.player()} to locate the
+ * No payload fields — the server uses {@code context.player()} to locate the
  * wearer's chest-slot backpack and runs the open logic itself.
  */
 public record OpenReliableBackpackPayload() implements CustomPacketPayload {

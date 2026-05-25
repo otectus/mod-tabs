@@ -125,6 +125,10 @@ public class TabsMenu {
     }
 
     public static void enterEditMode(Screen screen) {
+        // Modpack lock: when the modpack maker sets allowEditing=false in the config file,
+        // every entry point into the layout editor (Shift+Z, tab long-press, the Edit button
+        // in LayoutEditorButtons) becomes a no-op. Gating here once covers all three.
+        if (!Config.Baked.allowEditing) return;
         editingScreenClass = screen.getClass();
         dragOffsetX = 0;
         dragOffsetY = 0;
@@ -1296,10 +1300,10 @@ public class TabsMenu {
     /**
      * Returns the ModTabsConfig key prefix for the given screen, e.g. "inventory" /
      * "cobblemon" / "advancements". The visibility (YES/NO/TUCK) and custom-icon fields
-     * for that screen live at <code><key>TabDisplayVisibility</code> and
-     * <code><key>TabCustomIcon</code> on {@link ModTabsConfig}.
+     * for that screen live at {@code <key>TabDisplayVisibility} and
+     * {@code <key>TabCustomIcon} on {@link ModTabsConfig}.
      *
-     * <p>First checks every registered tab's {@code isCurrentlyUsed(screen)} — if a tab
+     * First checks every registered tab's {@code isCurrentlyUsed(screen)} — if a tab
      * claims the screen, its {@code @TabConfig(configKey = ...)} (minus the "Tab"
      * suffix) is the right key. The hardcoded switch below is a fallback for tabs that
      * don't own a screen via {@code isCurrentlyUsed} (e.g. screens shared between

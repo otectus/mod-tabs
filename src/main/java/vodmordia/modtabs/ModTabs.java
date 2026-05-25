@@ -173,6 +173,9 @@ public class ModTabs
             TabsMenu.register(new SdmShopTab());
             TabsMenu.register(new JobsPlusTab());
             TabsMenu.register(new QuestLogTab());
+            TabsMenu.register(new MapwrightTab());
+            TabsMenu.register(new FieldGuideTab());
+            TabsMenu.register(new ModonomiconTab());
 
             // One transient tab per nearby container block (chests, barrels, modded
             // inventories, …). Discovered fresh on every screen-init.
@@ -381,7 +384,7 @@ public class ModTabs
         /**
          * Refresh the current screen to show newly loaded custom tabs.
          *
-         * <p>This is invoked from the {@code PatchouliCustomTabsLoader} worker thread, but
+         * This is invoked from the {@code PatchouliCustomTabsLoader} worker thread, but
          * {@link net.minecraft.client.Minecraft#setScreen} must run on the client thread —
          * mutating the screen off-thread can race with rendering and crash. Schedule the
          * refresh via {@code Minecraft.execute} so it lands on the right thread.

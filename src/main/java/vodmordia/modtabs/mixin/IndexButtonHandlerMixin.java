@@ -20,15 +20,15 @@ import java.util.function.UnaryOperator;
  * HEAD skips both the {@code recipeBookButton} lookup and the {@code addRenderableWidget}
  * call, so no button gets attached.
  *
- * <p>Only the inventory variant is suppressed — {@code onAfterPauseScreenInit} is left
+ * Only the inventory variant is suppressed — {@code onAfterPauseScreenInit} is left
  * alone since the pause-menu placement isn't what the tab replaces.
  *
- * <p>Method signature on NeoForge 1.21.1: {@code (Minecraft, InventoryScreen, int, int,
+ * Method signature on NeoForge 1.21.1: {@code (Minecraft, InventoryScreen, int, int,
  * List<AbstractWidget>, UnaryOperator<AbstractWidget>, Consumer<AbstractWidget>)} —
  * different from the 1.20.1 Forge build's {@code onScreenInit$Post$1} (two Consumers,
  * generic Screen target).
  *
- * <p>Target is referenced by FQN string so this mixin is a no-op when the mod is
+ * Target is referenced by FQN string so this mixin is a no-op when the mod is
  * absent ({@code require = 0}).
  */
 @Mixin(targets = "fuzs.completionistsindex.client.handler.IndexButtonHandler", remap = false)

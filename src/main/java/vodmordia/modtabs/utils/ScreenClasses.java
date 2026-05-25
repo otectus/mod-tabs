@@ -5,10 +5,10 @@ package vodmordia.modtabs.utils;
  * integrated mod. When a mod renames or restructures a class, this file is the only place
  * that needs to change — instead of grepping across 35 tab classes plus the TabsMenu switch.
  *
- * <p>Constants are grouped by mod and named so the call site reads naturally:
+ * Constants are grouped by mod and named so the call site reads naturally:
  * {@code ScreenClasses.FTB_LIBRARY_WRAPPER} rather than a raw string literal.
  *
- * <p>All values are {@code public static final String} so they remain valid as
+ * All values are {@code public static final String} so they remain valid as
  * {@code switch} case labels and as compile-time constants.
  */
 public final class ScreenClasses {
@@ -354,4 +354,105 @@ public final class ScreenClasses {
      *  scan for completed-but-unrewarded quests when there's no recent notification. */
     public static final String QUEST_LOG_CLIENT =
             "org.infernalstudios.questlog.QuestlogClient";
+
+    // -- Mapwright (NeoForge 1.21.1) -------------------------------------
+    // Fullscreen plain {@link net.minecraft.client.gui.screens.Screen} subclass opened by the
+    // mod's own keybind ({@code IKeyMappings.Normal.OPEN_MAP}) via
+    // {@code Minecraft.setScreen(new MapScreen(playerPosition))} after setting
+    // {@code MapwrightClient.targetPanningPosition} to the same position.
+    // MapScreen.render() calls super.render() so tabs added as children draw without needing
+    // the manual-renderables list in {@code ClientNeoForgeEvents.onScreenRenderPost}; the
+    // stamp-bag overlay + tool-cursor drawn after super.render() float above the tab row but
+    // only intrude in the bottom/right of the screen where the tab bar isn't.
+    /** {@code Screen} subclass — constructor takes a single {@code org.joml.Vector2d openingPos}.
+     *  Reads {@code MapwrightClient.targetPanningPosition} on construction, so both must be set
+     *  in the same open call (see {@code InputListener.tick}). */
+    public static final String MAPWRIGHT_SCREEN =
+            "wawa.mapwright.map.MapScreen";
+    /** Public static field holder. We need {@code targetPanningPosition} (public static
+     *  {@code org.joml.Vector2d}) — MapScreen's constructor lerps from {@code openingPos}
+     *  toward this value, so writing both to the player's position keeps the map centered on
+     *  open (matching the keybind's no-scoping / no-pins path). */
+    public static final String MAPWRIGHT_CLIENT =
+            "wawa.mapwright.MapwrightClient";
+
+    // -- Field Guide (evanbones, NeoForge 1.21.1) -------------------------
+    // Plain {@link net.minecraft.client.gui.screens.Screen} subclasses (NOT container
+    // screens). All three extend {@code BookScreen}; their {@code render()} blits the
+    // 300x200 book texture and then calls {@code super.render()} so tabs added as
+    // children render naturally — no entry in {@code ClientNeoForgeEvents.onScreenRenderPost}
+    // needed. The mod adds its own ImageButton to the inventory via {@code InventoryScreenMixin};
+    // we suppress that mixin via {@link vodmordia.modtabs.mixin.FieldGuideInventoryScreenMixin}
+    // so the tab is the only inventory entry point.
+    /** Category landing page — opened by the no-arg constructor, same path the mod's
+     *  inventory button uses when {@code defaultScreen != "last_opened_screen"} or no
+     *  prior book screen exists. */
+    public static final String FIELD_GUIDE_CATEGORY_SCREEN =
+            "com.evandev.fieldguide.client.gui.screens.FieldGuideCategoryScreen";
+    /** Per-entry detail page. Player navigates here from the category screen; we register
+     *  it so cycling skips the tab when the player is reading an entry. */
+    public static final String FIELD_GUIDE_ENTRY_SCREEN =
+            "com.evandev.fieldguide.client.gui.screens.FieldGuideEntryScreen";
+    /** Intro "journal" page shown for the {@code intro} category. {@code init()} on
+     *  FieldGuideCategoryScreen redirects to this when the selected category id ends in
+     *  {@code /intro}, so the player can end up here on first open. */
+    public static final String FIELD_GUIDE_JOURNAL_SCREEN =
+            "com.evandev.fieldguide.client.gui.screens.FieldGuideJournalScreen";
+    /** {@code BookScreen.lastOpenedScreen} — public static field set whenever any
+     *  BookScreen's {@code init()} runs. When {@code ClientConfig.defaultScreen ==
+     *  "last_opened_screen"} the inventory button opens this instead of constructing a
+     *  fresh category screen; the tab mirrors that branch. */
+    public static final String FIELD_GUIDE_BOOK_SCREEN =
+            "com.evandev.fieldguide.client.gui.screens.BookScreen";
+    /** Mod's ClientConfig holder — {@code defaultScreen} field is a String key
+     *  ("last_opened_screen" / "current_biome" / category id / ""). We read it via the
+     *  no-arg {@code get()} static so a player who configured the mod to remember the
+     *  last screen gets the same behavior from the tab as from the native button. */
+    public static final String FIELD_GUIDE_CLIENT_CONFIG =
+            "com.evandev.fieldguide.config.ClientConfig";
+    /** {@code BiologyDictionaryItem.createBook()}-equivalent — we read {@code FIELD_GUIDE}
+     *  off {@code ModItems} via {@code Supplier.get()} so the tab icon matches the
+     *  in-game item. Falls back to vanilla {@code KNOWLEDGE_BOOK} if reflection fails. */
+    public static final String FIELD_GUIDE_MOD_ITEMS =
+            "com.evandev.fieldguide.item.ModItems";
+
+    // -- Modonomicon (klikli-dev, NeoForge 1.21.1) ------------------------
+    // Patchouli-style guidebook framework. Each book registers its own ModonomiconItem
+    // subclass and stores the book id in a data component; right-click on the item opens
+    // the book via {@code BookGuiManager.openBook(BookAddress.defaultFor(book))}. The mod
+    // doesn't add an inventory button — books are item-driven — so no suppression mixin
+    // is needed. Parent screens override {@code render()} and manually iterate
+    // {@code this.renderables} (NOT super.render), but tabs added via
+    // {@code addRenderableWidget} land in that same list so they DO draw without needing
+    // a {@code ClientNeoForgeEvents.onScreenRenderPost} entry.
+    /** Base item class for any Modonomicon book. Has public static {@code getBook(ItemStack)}
+     *  returning {@code Book}, and {@code getBookId(ItemStack)} returning the
+     *  {@code ResourceLocation}. */
+    public static final String MODONOMICON_ITEM =
+            "com.klikli_dev.modonomicon.item.ModonomiconItem";
+    /** {@code BookGuiManager} — public static {@code get()} returns the singleton;
+     *  {@code openBook(BookAddress)} is the entry point used by both the keybind and
+     *  {@link #MODONOMICON_ITEM}'s right-click. */
+    public static final String MODONOMICON_BOOK_GUI_MANAGER =
+            "com.klikli_dev.modonomicon.client.gui.BookGuiManager";
+    /** Address-locator record for a book open request. Static {@code defaultFor(Book)}
+     *  constructs the canonical address used by item-right-click. The class lives under
+     *  {@code client.gui.book} (NOT under {@code book} where most other book types sit). */
+    public static final String MODONOMICON_BOOK_ADDRESS =
+            "com.klikli_dev.modonomicon.client.gui.book.BookAddress";
+    /** Parent screen for books with {@code displayMode == NODE}. Active screen
+     *  ({@code Minecraft.screen}) for node-mode books — category / entry / search /
+     *  bookmarks screens render through it but are NOT set as the active screen. */
+    public static final String MODONOMICON_BOOK_PARENT_NODE_SCREEN =
+            "com.klikli_dev.modonomicon.client.gui.book.node.BookParentNodeScreen";
+    /** Parent screen for books with {@code displayMode == INDEX}. Active screen for
+     *  index-mode books; sub-screens (category index, entries) are pushed as GUI layers
+     *  via {@code ClientServices.GUI.pushGuiLayer}, so the active screen stays this. */
+    public static final String MODONOMICON_BOOK_PARENT_INDEX_SCREEN =
+            "com.klikli_dev.modonomicon.client.gui.book.index.BookParentIndexScreen";
+    /** Shown when {@code BookDataManager.get().getBook(id)} returns null — typically a
+     *  data load failure. We register it so the tab follows the player into the error
+     *  state rather than vanishing on a transient failure. */
+    public static final String MODONOMICON_BOOK_ERROR_SCREEN =
+            "com.klikli_dev.modonomicon.client.gui.book.BookErrorScreen";
 }

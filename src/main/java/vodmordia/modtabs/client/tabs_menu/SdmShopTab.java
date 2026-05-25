@@ -25,17 +25,17 @@ import java.lang.reflect.Field;
  * (default), then calls its inherited {@code BaseScreen.openGui()} which sets the screen
  * to a fresh {@code ScreenWrapper} wrapping the page.
  *
- * <p>There is no {@code SDMShopClient.openGui(...)} helper on this line of the mod — the
+ * There is no {@code SDMShopClient.openGui(...)} helper on this line of the mod — the
  * keybind constructs the screen directly. We do the same. If the config-style field can't
  * be read (renamed in a future build), the fallback is {@code ShopPage} which matches the
  * shipped default ({@code style = false}).
  *
- * <p>The displayed screen is an FTB Library {@code BaseScreen} wrapped in
+ * The displayed screen is an FTB Library {@code BaseScreen} wrapped in
  * {@link ScreenClasses#FTB_LIBRARY_WRAPPER} — same host class as FTB Quests / FTB Teams.
  * {@link #isCurrentlyUsed} inspects the wrapper's {@code wrappedGui} field to distinguish
  * SDM Shop from those two so cycling skips this tab only when the shop is actually open.
  *
- * <p>Tab-bar visibility on the shop screen relies on whichever tab owns the wrapper
+ * Tab-bar visibility on the shop screen relies on whichever tab owns the wrapper
  * registration: FtbQuestsTab claims it when FTB Quests is installed; FtbTeamsTab claims
  * it as a fallback when only FTB Teams is installed. This tab adds a final fallback for
  * the case where neither FTB mod is installed but SDM Shop is — same coordination pattern,

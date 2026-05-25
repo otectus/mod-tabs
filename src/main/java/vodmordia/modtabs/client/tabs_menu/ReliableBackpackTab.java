@@ -22,7 +22,7 @@ import vodmordia.modtabs.utils.ScreenClasses;
  * a {@link OpenReliableBackpackPayload} to the server, which opens the backpack via
  * vanilla {@link net.minecraft.world.inventory.ShulkerBoxMenu}.
  *
- * <p>The mod itself ships no client-side open API by design — its only "open" path
+ * The mod itself ships no client-side open API by design — its only "open" path
  * is "interact with another player from behind". This tab adds an open-from-self
  * shortcut by replicating the mod's server-side open logic in our own packet handler.
  */

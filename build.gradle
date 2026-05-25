@@ -321,6 +321,30 @@ dependencies {
     // since we don't reference any Jobs+ types at compile time.
     compileOnly("curse.maven:jobsplus-916985:7340625")
 
+    // Modonomicon (klikli-dev, NeoForge 1.21.1). Reflection-only — ModonomiconTab finds the
+    // first ModonomiconItem in the player's inventory and opens it via
+    // BookGuiManager.openBook(BookAddress.defaultFor(book)) — same path the item's right-
+    // click use() takes on the client side. The mod itself adds no inventory button (books
+    // are opened by right-clicking the item), so no suppression mixin is needed.
+    // compileOnly because we never reference Modonomicon types at compile time.
+    compileOnly("curse.maven:modonomicon-538392:7771524")
+
+    // Field Guide (evanbones, NeoForge 1.21.1). Reflection-only — FieldGuideTab mirrors
+    // the mod's inventory-button path in InventoryScreenMixin: open
+    // FieldGuideCategoryScreen with the no-arg constructor (or BookScreen.lastOpenedScreen
+    // if the player's config defaults to "last_opened_screen"). compileOnly because the
+    // tab never references Field Guide types at compile time and we don't want its runtime
+    // deps (cloth-config, owo-lib variants, etc.) polluting the dev classpath.
+    compileOnly("curse.maven:field-guide-1470590:8142963")
+
+    // Mapwright (wawa / BeeIsYou, NeoForge 1.21.1). Reflection-only — MapwrightTab mirrors
+    // InputListener.tick's no-scoping path: set MapwrightClient.targetPanningPosition to
+    // the player's (x,z), construct org.joml.Vector2d(x,z) as openingPos, and pass it to
+    // MapScreen's single-arg constructor. compileOnly because we never reference Mapwright
+    // types at compile time (and runtime jar pulls in veil, sable-companion, etc. we don't
+    // want polluting dev).
+    compileOnly("curse.maven:mapwright-1361711:8051003")
+
     // Sinytra Connector (for Fabric mod compatibility)
     //runtimeOnly "curse.maven:sinytra-connector-890127:6944771"
 

@@ -21,10 +21,10 @@ import java.lang.reflect.Method;
  * the player is in creative, when the server-side {@code bookItemRequired} config is off,
  * or when the dictionary book is in the player's inventory.
  *
- * <p>The dictionary "book" is a vanilla {@code minecraft:writable_book} tagged with the
+ * The dictionary "book" is a vanilla {@code minecraft:writable_book} tagged with the
  * {@code biologydictionary} CUSTOM_DATA key — the mod doesn't register a custom item.
  *
- * <p>Detection and screen-opening go through the mod's own static helpers
+ * Detection and screen-opening go through the mod's own static helpers
  * ({@code BiologyDictionaryItem.isBook}, {@code BiologyDictionaryEvent.openBookScreen},
  * {@code ConfigsManager.getServer().isBookItemRequired}) so we honor any permission /
  * config gating the mod itself applies.

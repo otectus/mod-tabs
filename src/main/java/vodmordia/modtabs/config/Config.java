@@ -56,7 +56,11 @@ public class Config
 		public static boolean sdmShopTabEnabled;
 		public static boolean jobsPlusTabEnabled;
 		public static boolean questLogTabEnabled;
+		public static boolean mapwrightTabEnabled;
+		public static boolean fieldGuideTabEnabled;
+		public static boolean modonomiconTabEnabled;
 		public static boolean stickyInventoryTab;
+		public static boolean allowEditing;
 
 		// Custom icon settings
 		public static String inventoryTabCustomIcon;
@@ -305,6 +309,24 @@ public class Config
 		public static int questLogTabIconNudgeDown;
 		public static int questLogTabIconNudgeLeft;
 		public static int questLogTabIconNudgeRight;
+		public static String mapwrightTabCustomIcon;
+		public static int mapwrightTabIconScale;
+		public static int mapwrightTabIconNudgeUp;
+		public static int mapwrightTabIconNudgeDown;
+		public static int mapwrightTabIconNudgeLeft;
+		public static int mapwrightTabIconNudgeRight;
+		public static String fieldGuideTabCustomIcon;
+		public static int fieldGuideTabIconScale;
+		public static int fieldGuideTabIconNudgeUp;
+		public static int fieldGuideTabIconNudgeDown;
+		public static int fieldGuideTabIconNudgeLeft;
+		public static int fieldGuideTabIconNudgeRight;
+		public static String modonomiconTabCustomIcon;
+		public static int modonomiconTabIconScale;
+		public static int modonomiconTabIconNudgeUp;
+		public static int modonomiconTabIconNudgeDown;
+		public static int modonomiconTabIconNudgeLeft;
+		public static int modonomiconTabIconNudgeRight;
 
 		// Custom tabs settings
 		public static boolean customTabsEnabled;
@@ -355,6 +377,9 @@ public class Config
 		public static TabDisplayVisibility sdmShopTabDisplayVisibility;
 		public static TabDisplayVisibility jobsPlusTabDisplayVisibility;
 		public static TabDisplayVisibility questLogTabDisplayVisibility;
+		public static TabDisplayVisibility mapwrightTabDisplayVisibility;
+		public static TabDisplayVisibility fieldGuideTabDisplayVisibility;
+		public static TabDisplayVisibility modonomiconTabDisplayVisibility;
 
 		// Tab order overrides
 		public static int inventoryTabOrder;
@@ -399,6 +424,9 @@ public class Config
 		public static int sdmShopTabOrder;
 		public static int jobsPlusTabOrder;
 		public static int questLogTabOrder;
+		public static int mapwrightTabOrder;
+		public static int fieldGuideTabOrder;
+		public static int modonomiconTabOrder;
 
 		public static void bakeClient()
 		{
@@ -454,7 +482,11 @@ public class Config
 				sdmShopTabEnabled = ModTabsConfig.sdmShopTabEnabled;
 				jobsPlusTabEnabled = ModTabsConfig.jobsPlusTabEnabled;
 				questLogTabEnabled = ModTabsConfig.questLogTabEnabled;
+				mapwrightTabEnabled = ModTabsConfig.mapwrightTabEnabled;
+				fieldGuideTabEnabled = ModTabsConfig.fieldGuideTabEnabled;
+				modonomiconTabEnabled = ModTabsConfig.modonomiconTabEnabled;
 				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
+				allowEditing = ModTabsConfig.allowEditing;
 
 				// Load custom tabs settings
 				customTabsEnabled = ModTabsConfig.customTabsEnabled;
@@ -508,6 +540,9 @@ public class Config
 				sdmShopTabOrder = ModTabsConfig.sdmShopTabOrder;
 				jobsPlusTabOrder = ModTabsConfig.jobsPlusTabOrder;
 				questLogTabOrder = ModTabsConfig.questLogTabOrder;
+				mapwrightTabOrder = ModTabsConfig.mapwrightTabOrder;
+				fieldGuideTabOrder = ModTabsConfig.fieldGuideTabOrder;
+				modonomiconTabOrder = ModTabsConfig.modonomiconTabOrder;
 
 				// Load tab display visibility settings
 				inventoryTabDisplayVisibility = ModTabsConfig.inventoryTabDisplayVisibility;
@@ -549,6 +584,9 @@ public class Config
 				sdmShopTabDisplayVisibility = ModTabsConfig.sdmShopTabDisplayVisibility;
 				jobsPlusTabDisplayVisibility = ModTabsConfig.jobsPlusTabDisplayVisibility;
 				questLogTabDisplayVisibility = ModTabsConfig.questLogTabDisplayVisibility;
+				mapwrightTabDisplayVisibility = ModTabsConfig.mapwrightTabDisplayVisibility;
+				fieldGuideTabDisplayVisibility = ModTabsConfig.fieldGuideTabDisplayVisibility;
+				modonomiconTabDisplayVisibility = ModTabsConfig.modonomiconTabDisplayVisibility;
 
 				// Load custom icon settings
 				inventoryTabCustomIcon = ModTabsConfig.inventoryTabCustomIcon;
@@ -797,6 +835,24 @@ public class Config
 				questLogTabIconNudgeDown = ModTabsConfig.questLogTabIconNudgeDown;
 				questLogTabIconNudgeLeft = ModTabsConfig.questLogTabIconNudgeLeft;
 				questLogTabIconNudgeRight = ModTabsConfig.questLogTabIconNudgeRight;
+				mapwrightTabCustomIcon = ModTabsConfig.mapwrightTabCustomIcon;
+				mapwrightTabIconScale = ModTabsConfig.mapwrightTabIconScale;
+				mapwrightTabIconNudgeUp = ModTabsConfig.mapwrightTabIconNudgeUp;
+				mapwrightTabIconNudgeDown = ModTabsConfig.mapwrightTabIconNudgeDown;
+				mapwrightTabIconNudgeLeft = ModTabsConfig.mapwrightTabIconNudgeLeft;
+				mapwrightTabIconNudgeRight = ModTabsConfig.mapwrightTabIconNudgeRight;
+				fieldGuideTabCustomIcon = ModTabsConfig.fieldGuideTabCustomIcon;
+				fieldGuideTabIconScale = ModTabsConfig.fieldGuideTabIconScale;
+				fieldGuideTabIconNudgeUp = ModTabsConfig.fieldGuideTabIconNudgeUp;
+				fieldGuideTabIconNudgeDown = ModTabsConfig.fieldGuideTabIconNudgeDown;
+				fieldGuideTabIconNudgeLeft = ModTabsConfig.fieldGuideTabIconNudgeLeft;
+				fieldGuideTabIconNudgeRight = ModTabsConfig.fieldGuideTabIconNudgeRight;
+				modonomiconTabCustomIcon = ModTabsConfig.modonomiconTabCustomIcon;
+				modonomiconTabIconScale = ModTabsConfig.modonomiconTabIconScale;
+				modonomiconTabIconNudgeUp = ModTabsConfig.modonomiconTabIconNudgeUp;
+				modonomiconTabIconNudgeDown = ModTabsConfig.modonomiconTabIconNudgeDown;
+				modonomiconTabIconNudgeLeft = ModTabsConfig.modonomiconTabIconNudgeLeft;
+				modonomiconTabIconNudgeRight = ModTabsConfig.modonomiconTabIconNudgeRight;
 			}
 			catch (Exception e)
 			{

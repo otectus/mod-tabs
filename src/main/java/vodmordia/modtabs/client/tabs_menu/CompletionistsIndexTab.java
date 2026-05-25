@@ -23,11 +23,11 @@ import java.lang.reflect.Constructor;
  * inventory button is suppressed via {@code IndexButtonHandlerMixin} so the tab is the
  * only entry point into the index from the inventory.
  *
- * <p>Constructor signature is {@code (Screen lastScreen, boolean fromInventory)} on
+ * Constructor signature is {@code (Screen lastScreen, boolean fromInventory)} on
  * NeoForge 1.21.1 — the boolean is new in this build and gates back-navigation behavior.
  * Passing {@code true} matches what the mod's own inventory button does.
  *
- * <p>{@code IndexViewScreen} (on 1.21.1) extends vanilla {@code StatsScreen} via
+ * {@code IndexViewScreen} (on 1.21.1) extends vanilla {@code StatsScreen} via
  * {@code StatsUpdateListener}, and its {@code render()} calls {@code super.render()} —
  * tabs added as children render naturally without needing the manual-renderables list
  * in {@code ClientNeoForgeEvents.onScreenRenderPost}.

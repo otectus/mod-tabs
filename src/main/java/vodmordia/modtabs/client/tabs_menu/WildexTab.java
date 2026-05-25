@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
  * inventory; when it's off, the tab shows unconditionally so admins can disable the
  * book gate server-side and still expose the bestiary screen.
  *
- * <p>The book item is {@code wildex:wildex_book}; opening goes through
+ * The book item is {@code wildex:wildex_book}; opening goes through
  * {@code WildexScreenOpener.open()} so we share the mod's sound/setScreen flow.
  */
 @TabConfig(configKey = "wildexTab", defaultEnabled = true, defaultOrder = 0)

@@ -22,7 +22,7 @@ import java.lang.reflect.Constructor;
  * server, which opens the curios menu — same flow as clicking the mod's own
  * CuriosButton on the inventory screen.
  *
- * <p>The packet class is resolved through {@link ClassCache} so this class
+ * The packet class is resolved through {@link ClassCache} so this class
  * compiles and loads without a hard runtime dependency on Curios.
  */
 @TabConfig(configKey = "curiosTab", defaultEnabled = true, defaultOrder = 0)
