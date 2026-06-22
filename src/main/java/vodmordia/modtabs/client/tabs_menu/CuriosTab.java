@@ -1,12 +1,12 @@
 package vodmordia.modtabs.client.tabs_menu;
 
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.network.PacketDistributor;
 import vodmordia.modtabs.ModTabs;
-import vodmordia.modtabs.api.tabs_menu.IntegrationItemTab;
+import vodmordia.modtabs.api.tabs_menu.IntegrationIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.TabSpec;
 import vodmordia.modtabs.config.Config;
@@ -26,7 +26,14 @@ import java.lang.reflect.Constructor;
  * compiles and loads without a hard runtime dependency on Curios.
  */
 @TabConfig(configKey = "curiosTab", defaultEnabled = true, defaultOrder = 0)
-public class CuriosTab extends IntegrationItemTab {
+public class CuriosTab extends IntegrationIconTab {
+
+    // Curios' own inventory button texture, pulled straight from the mod's assets so the tab
+    // matches the icon players already associate with Curios. It's a 10x10 image; the tab
+    // renderer stretches the full texture to fill the 16x16 icon slot (width == textureWidth in
+    // ConfigurableIconTab, so the blit samples the whole texture).
+    private static final ResourceLocation CURIOS_ICON =
+            ResourceLocation.fromNamespaceAndPath("curios", "textures/gui/curios/button_highlighted.png");
 
     // Both V1 (CuriosScreen, legacy) and V2 (CuriosScreenV2, default) need tabs — the
     // server picks V2 by default; V1 only opens when CuriosConfig.SERVER.enableLegacyMenu
@@ -48,7 +55,7 @@ public class CuriosTab extends IntegrationItemTab {
     );
 
     public CuriosTab() {
-        super(SPEC, () -> new ItemStack(Items.NETHER_STAR), Config.Baked.curiosTabCustomIcon);
+        super(SPEC, CURIOS_ICON, Config.Baked.curiosTabCustomIcon);
     }
 
     @Override
