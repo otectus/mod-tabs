@@ -59,7 +59,6 @@ public class Config
 		public static boolean mapwrightTabEnabled;
 		public static boolean fieldGuideTabEnabled;
 		public static boolean modonomiconTabEnabled;
-		public static boolean stickyInventoryTab;
 		public static boolean allowEditing;
 
 		// Custom icon settings
@@ -485,7 +484,6 @@ public class Config
 				mapwrightTabEnabled = ModTabsConfig.mapwrightTabEnabled;
 				fieldGuideTabEnabled = ModTabsConfig.fieldGuideTabEnabled;
 				modonomiconTabEnabled = ModTabsConfig.modonomiconTabEnabled;
-				stickyInventoryTab = ModTabsConfig.stickyInventoryTab;
 				allowEditing = ModTabsConfig.allowEditing;
 
 				// Load custom tabs settings
