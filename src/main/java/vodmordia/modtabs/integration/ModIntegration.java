@@ -50,7 +50,8 @@ public enum ModIntegration {
     QUEST_LOG("questlog", "Quest Log"),
     MAPWRIGHT("mapwright", "Mapwright"),
     FIELD_GUIDE("fieldguide", "Field Guide"),
-    MODONOMICON("modonomicon", "Modonomicon");
+    MODONOMICON("modonomicon", "Modonomicon"),
+    QUARK("quark", "Quark");
 
     private final String modId;
     private final String displayName;

@@ -79,6 +79,11 @@ public class ModTabs
             vodmordia.modtabs.network.OpenReliableBackpackPayload.STREAM_CODEC,
             vodmordia.modtabs.network.OpenReliableBackpackHandler::handle
         );
+        registrar.playToServer(
+            vodmordia.modtabs.network.OpenQuarkBackpackPayload.TYPE,
+            vodmordia.modtabs.network.OpenQuarkBackpackPayload.STREAM_CODEC,
+            vodmordia.modtabs.network.OpenQuarkBackpackHandler::handle
+        );
 
         LOGGER.info("Registered ModTabs network packets");
     }
@@ -163,6 +168,7 @@ public class ModTabs
             TabsMenu.register(new MotpTab());
             TabsMenu.register(new BiologyDictionaryTab());
             TabsMenu.register(new ReliableBackpackTab());
+            TabsMenu.register(new QuarkBackpackTab());
             TabsMenu.register(new WildexTab());
             TabsMenu.register(new ApothicAttributesTab());
             TabsMenu.register(new AetherTab());

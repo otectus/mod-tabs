@@ -46,6 +46,7 @@ public class ModTabsConfig extends MidnightConfig {
     @Entry(category = "tabs") @Hidden public static boolean fieldGuideTabSticky = false;
     @Entry(category = "tabs") @Hidden public static boolean modonomiconTabSticky = false;
     @Entry(category = "tabs") @Hidden public static boolean reliableBackpacksTabSticky = false;
+    @Entry(category = "tabs") @Hidden public static boolean quarkBackpackTabSticky = false;
     @Entry(category = "tabs") @Hidden public static boolean brassworksMissionsTabSticky = false;
     @Entry(category = "tabs") @Hidden public static boolean cobblemonTabSticky = false;
     @Entry(category = "tabs") @Hidden public static boolean cosmeticArmorTabSticky = false;
@@ -621,6 +622,31 @@ public class ModTabsConfig extends MidnightConfig {
 
     @Entry(category = "tabs") @Hidden
     public static TabDisplayVisibility reliableBackpacksTabDisplayVisibility = TabDisplayVisibility.YES;
+
+    @Comment(category = "tabs") public static CommentText spacer_quark_backpack;
+
+    @Comment(category = "tabs") public static CommentText quarkBackpack;
+
+    @Entry(category = "tabs") @Hidden
+    public static boolean quarkBackpackTabEnabled = true;
+
+    @Entry(category = "tabs") @Hidden
+    public static String quarkBackpackTabCustomIcon = "";
+    @Entry(category = "tabs") @Hidden
+    public static int quarkBackpackTabIconScale = 100;
+    @Entry(category = "tabs") @Hidden
+    public static int quarkBackpackTabIconNudgeUp = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int quarkBackpackTabIconNudgeDown = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int quarkBackpackTabIconNudgeLeft = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int quarkBackpackTabIconNudgeRight = 0;
+    @Entry(category = "tabs") @Hidden
+    public static int quarkBackpackTabOrder = 0;
+
+    @Entry(category = "tabs") @Hidden
+    public static TabDisplayVisibility quarkBackpackTabDisplayVisibility = TabDisplayVisibility.YES;
 
     @Comment(category = "tabs") public static CommentText spacer4b;
 

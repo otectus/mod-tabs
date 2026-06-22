@@ -202,6 +202,13 @@ public final class ScreenClasses {
     public static final String RELIABLE_BACKPACKS_CONTAINER =
             "com.evandev.reliable_backpacks.common.items.BackpackItemContainer";
 
+    // -- Quark Backpack (Quark "Oddities" addon, mod id "quark") -----------
+    /** Chest-slot {@code ArmorItem} that is itself a {@code MenuProvider}. */
+    public static final String QUARK_BACKPACK_ITEM =
+            "org.violetmoon.quark.addons.oddities.item.BackpackItem";
+    public static final String QUARK_BACKPACK_SCREEN =
+            "org.violetmoon.quark.addons.oddities.client.screen.BackpackInventoryScreen";
+
     // -- Wildex Bestiary --------------------------------------------------
     public static final String WILDEX_SCREEN =
             "de.coldfang.wildex.client.screen.WildexScreen";

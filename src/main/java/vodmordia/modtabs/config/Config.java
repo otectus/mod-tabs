@@ -46,6 +46,7 @@ public class Config
 		public static boolean rpgCraftingTabEnabled;
 		public static boolean biologyDictionaryTabEnabled;
 		public static boolean reliableBackpacksTabEnabled;
+		public static boolean quarkBackpackTabEnabled;
 		public static boolean wildexTabEnabled;
 		public static boolean apothicAttributesTabEnabled;
 		public static boolean aetherTabEnabled;
@@ -248,6 +249,12 @@ public class Config
 		public static int reliableBackpacksTabIconNudgeDown;
 		public static int reliableBackpacksTabIconNudgeLeft;
 		public static int reliableBackpacksTabIconNudgeRight;
+		public static String quarkBackpackTabCustomIcon;
+		public static int quarkBackpackTabIconScale;
+		public static int quarkBackpackTabIconNudgeUp;
+		public static int quarkBackpackTabIconNudgeDown;
+		public static int quarkBackpackTabIconNudgeLeft;
+		public static int quarkBackpackTabIconNudgeRight;
 		public static String wildexTabCustomIcon;
 		public static int wildexTabIconScale;
 		public static int wildexTabIconNudgeUp;
@@ -368,6 +375,7 @@ public class Config
 		public static TabDisplayVisibility rpgCraftingTabDisplayVisibility;
 		public static TabDisplayVisibility biologyDictionaryTabDisplayVisibility;
 		public static TabDisplayVisibility reliableBackpacksTabDisplayVisibility;
+		public static TabDisplayVisibility quarkBackpackTabDisplayVisibility;
 		public static TabDisplayVisibility wildexTabDisplayVisibility;
 		public static TabDisplayVisibility curiosTabDisplayVisibility;
 		public static TabDisplayVisibility epicFightTabDisplayVisibility;
@@ -413,6 +421,7 @@ public class Config
 		public static int rpgCraftingTabOrder;
 		public static int biologyDictionaryTabOrder;
 		public static int reliableBackpacksTabOrder;
+		public static int quarkBackpackTabOrder;
 		public static int wildexTabOrder;
 		public static int apothicAttributesTabOrder;
 		public static int aetherTabOrder;
@@ -471,6 +480,7 @@ public class Config
 				rpgCraftingTabEnabled = ModTabsConfig.rpgCraftingTabEnabled;
 				biologyDictionaryTabEnabled = ModTabsConfig.biologyDictionaryTabEnabled;
 				reliableBackpacksTabEnabled = ModTabsConfig.reliableBackpacksTabEnabled;
+				quarkBackpackTabEnabled = ModTabsConfig.quarkBackpackTabEnabled;
 				wildexTabEnabled = ModTabsConfig.wildexTabEnabled;
 				apothicAttributesTabEnabled = ModTabsConfig.apothicAttributesTabEnabled;
 				aetherTabEnabled = ModTabsConfig.aetherTabEnabled;
@@ -528,6 +538,7 @@ public class Config
 				rpgCraftingTabOrder = ModTabsConfig.rpgCraftingTabOrder;
 				biologyDictionaryTabOrder = ModTabsConfig.biologyDictionaryTabOrder;
 				reliableBackpacksTabOrder = ModTabsConfig.reliableBackpacksTabOrder;
+				quarkBackpackTabOrder = ModTabsConfig.quarkBackpackTabOrder;
 				wildexTabOrder = ModTabsConfig.wildexTabOrder;
 				apothicAttributesTabOrder = ModTabsConfig.apothicAttributesTabOrder;
 				aetherTabOrder = ModTabsConfig.aetherTabOrder;
@@ -574,6 +585,7 @@ public class Config
 				rpgCraftingTabDisplayVisibility = ModTabsConfig.advancementsTabDisplayVisibility; // Shares config with advancements
 				biologyDictionaryTabDisplayVisibility = ModTabsConfig.biologyDictionaryTabDisplayVisibility;
 				reliableBackpacksTabDisplayVisibility = ModTabsConfig.reliableBackpacksTabDisplayVisibility;
+				quarkBackpackTabDisplayVisibility = ModTabsConfig.quarkBackpackTabDisplayVisibility;
 				wildexTabDisplayVisibility = ModTabsConfig.wildexTabDisplayVisibility;
 				curiosTabDisplayVisibility = ModTabsConfig.curiosTabDisplayVisibility;
 				epicFightTabDisplayVisibility = ModTabsConfig.epicFightTabDisplayVisibility;
@@ -773,6 +785,12 @@ public class Config
 				reliableBackpacksTabIconNudgeDown = ModTabsConfig.reliableBackpacksTabIconNudgeDown;
 				reliableBackpacksTabIconNudgeLeft = ModTabsConfig.reliableBackpacksTabIconNudgeLeft;
 				reliableBackpacksTabIconNudgeRight = ModTabsConfig.reliableBackpacksTabIconNudgeRight;
+				quarkBackpackTabCustomIcon = ModTabsConfig.quarkBackpackTabCustomIcon;
+				quarkBackpackTabIconScale = ModTabsConfig.quarkBackpackTabIconScale;
+				quarkBackpackTabIconNudgeUp = ModTabsConfig.quarkBackpackTabIconNudgeUp;
+				quarkBackpackTabIconNudgeDown = ModTabsConfig.quarkBackpackTabIconNudgeDown;
+				quarkBackpackTabIconNudgeLeft = ModTabsConfig.quarkBackpackTabIconNudgeLeft;
+				quarkBackpackTabIconNudgeRight = ModTabsConfig.quarkBackpackTabIconNudgeRight;
 				wildexTabCustomIcon = ModTabsConfig.wildexTabCustomIcon;
 				wildexTabIconScale = ModTabsConfig.wildexTabIconScale;
 				wildexTabIconNudgeUp = ModTabsConfig.wildexTabIconNudgeUp;
