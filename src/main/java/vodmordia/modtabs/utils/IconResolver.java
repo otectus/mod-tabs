@@ -1,13 +1,13 @@
 package vodmordia.modtabs.utils;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import vodmordia.modtabs.ModTabs;
 
 /**
  * Utility for resolving custom icon strings into texture paths.
  * Supports three formats:
  * 1. Simple filename: "my_icon.png" -> loads from config/modtabs/icons/my_icon.png
- * 2. ResourceLocation: "modtabs:textures/gui/my_icon.png" -> loads from resources
+ * 2. Identifier: "modtabs:textures/gui/my_icon.png" -> loads from resources
  * 3. Empty/null -> use default (returns null)
  */
 public class IconResolver {
@@ -17,9 +17,9 @@ public class IconResolver {
      *
      * @param iconConfig The icon configuration string from config
      * @param tabId Unique identifier for this tab (used for texture registration)
-     * @return ResourceLocation of the loaded texture, or null if using default
+     * @return Identifier of the loaded texture, or null if using default
      */
-    public static ResourceLocation resolveIcon(String iconConfig, String tabId) {
+    public static Identifier resolveIcon(String iconConfig, String tabId) {
         // If empty or null, use default
         if (iconConfig == null || iconConfig.trim().isEmpty()) {
             return null;
@@ -27,10 +27,10 @@ public class IconResolver {
 
         String trimmed = iconConfig.trim();
 
-        // Check if it's a ResourceLocation (contains ':')
+        // Check if it's a Identifier (contains ':')
         if (trimmed.contains(":")) {
             try {
-                ResourceLocation resourceLocation = ResourceLocation.parse(trimmed);
+                Identifier resourceLocation = Identifier.parse(trimmed);
                 // Validate the texture exists in resources
                 if (DynamicTextureLoader.validateResourceTexture(resourceLocation)) {
                     ModTabs.LOGGER.info("Resolved icon '" + iconConfig + "' as resource texture for tab: " + tabId);
@@ -40,7 +40,7 @@ public class IconResolver {
                     return null;
                 }
             } catch (Exception e) {
-                ModTabs.LOGGER.error("Invalid ResourceLocation format: " + trimmed + " for tab: " + tabId);
+                ModTabs.LOGGER.error("Invalid Identifier format: " + trimmed + " for tab: " + tabId);
                 return null;
             }
         } else {
@@ -49,7 +49,7 @@ public class IconResolver {
             // DynamicTexture; a tabId-only key would re-serve the previously-cached image.
             String filePath = "config/modtabs/icons/" + trimmed;
             String safeName = trimmed.toLowerCase().replaceAll("[^a-z0-9_]", "_");
-            ResourceLocation texture = DynamicTextureLoader.loadTextureFromFile(
+            Identifier texture = DynamicTextureLoader.loadTextureFromFile(
                     filePath, "tab_" + tabId + "__" + safeName);
 
             if (texture != null) {

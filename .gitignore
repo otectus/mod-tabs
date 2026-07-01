@@ -30,4 +30,12 @@ libs
 forge*changelog.txt
 /changelog.txt
 
+# OS / editor cruft
+.DS_Store
+
+# Local logs
+*.log
+build_output.log
+client_log.txt
+
 

@@ -1,7 +1,7 @@
 package vodmordia.modtabs.api.tabs_menu;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -23,7 +23,7 @@ public abstract class ConfigurableItemTab extends SimpleItemTab {
 
     private final String tabId;
     private String lastResolvedFor;
-    private ResourceLocation lastResolved;
+    private Identifier lastResolved;
 
     protected ConfigurableItemTab(Supplier<ItemStack> iconItemSupplier, String customIconConfig, String tabId) {
         super(iconItemSupplier);
@@ -36,8 +36,8 @@ public abstract class ConfigurableItemTab extends SimpleItemTab {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics gui, int x, int y, boolean hover) {
-        ResourceLocation customIcon = currentCustomIcon();
+    public void render(@NotNull GuiGraphicsExtractor gui, int x, int y, boolean hover) {
+        Identifier customIcon = currentCustomIcon();
         float scale = currentIconScale();
         int[] n = currentIconNudge();
         boolean nudged = n[0] != 0 || n[1] != 0;
@@ -61,8 +61,8 @@ public abstract class ConfigurableItemTab extends SimpleItemTab {
     }
 
     @Override
-    protected void renderInverted(@NotNull GuiGraphics gui, int x, int y, boolean hover) {
-        ResourceLocation customIcon = currentCustomIcon();
+    protected void renderInverted(@NotNull GuiGraphicsExtractor gui, int x, int y, boolean hover) {
+        Identifier customIcon = currentCustomIcon();
         float scale = currentIconScale();
         int[] n = currentIconNudge();
         boolean nudged = n[0] != 0 || n[1] != 0;
@@ -120,7 +120,7 @@ public abstract class ConfigurableItemTab extends SimpleItemTab {
         return 0;
     }
 
-    private ResourceLocation currentCustomIcon() {
+    private Identifier currentCustomIcon() {
         String cfg = readCurrentCustomIconConfig();
         if (!Objects.equals(cfg, lastResolvedFor)) {
             lastResolvedFor = cfg;

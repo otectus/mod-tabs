@@ -2,7 +2,7 @@ package vodmordia.modtabs.api.tabs_menu;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -20,7 +20,7 @@ public abstract class IntegrationIconTab extends ConfigurableIconTab {
 
     protected final TabSpec spec;
 
-    protected IntegrationIconTab(TabSpec spec, ResourceLocation defaultIcon, String customIconConfig) {
+    protected IntegrationIconTab(TabSpec spec, Identifier defaultIcon, String customIconConfig) {
         super(defaultIcon, customIconConfig, spec.iconKey());
         this.spec = spec;
     }

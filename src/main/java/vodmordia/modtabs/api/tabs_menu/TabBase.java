@@ -1,6 +1,6 @@
 package vodmordia.modtabs.api.tabs_menu;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -30,9 +30,9 @@ public abstract class TabBase {
 
     public abstract void initTabOnScreens();
 
-    public abstract void render(GuiGraphics gui, int x, int y, boolean hover);
+    public abstract void render(GuiGraphicsExtractor gui, int x, int y, boolean hover);
 
-    public void render(GuiGraphics gui, int x, int y, boolean hover, TabDisplayMode displayMode) {
+    public void render(GuiGraphicsExtractor gui, int x, int y, boolean hover, TabDisplayMode displayMode) {
         if (displayMode == TabDisplayMode.INVERTED) {
             renderInverted(gui, x, y, hover);
         } else {
@@ -41,7 +41,7 @@ public abstract class TabBase {
     }
 
 
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+    protected void renderInverted(GuiGraphicsExtractor gui, int x, int y, boolean hover) {
         // Default: subclasses should override for custom inverted rendering
         // Most tabs can use TabRenderer which handles inversion automatically
         render(gui, x, y, hover);

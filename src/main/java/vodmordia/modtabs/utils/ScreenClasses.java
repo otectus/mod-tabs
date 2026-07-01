@@ -434,7 +434,7 @@ public final class ScreenClasses {
     // a {@code ClientNeoForgeEvents.onScreenRenderPost} entry.
     /** Base item class for any Modonomicon book. Has public static {@code getBook(ItemStack)}
      *  returning {@code Book}, and {@code getBookId(ItemStack)} returning the
-     *  {@code ResourceLocation}. */
+     *  {@code Identifier}. */
     public static final String MODONOMICON_ITEM =
             "com.klikli_dev.modonomicon.item.ModonomiconItem";
     /** {@code BookGuiManager} — public static {@code get()} returns the singleton;

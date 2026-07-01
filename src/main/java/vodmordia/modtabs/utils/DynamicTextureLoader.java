@@ -3,7 +3,7 @@ package vodmordia.modtabs.utils;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import vodmordia.modtabs.ModTabs;
 
 import java.io.FileInputStream;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class DynamicTextureLoader {
 
-    private static final Map<String, ResourceLocation> loadedTextures = new HashMap<>();
+    private static final Map<String, Identifier> loadedTextures = new HashMap<>();
     private static final String DYNAMIC_TEXTURE_PREFIX = "modtabs_dynamic";
 
     /**
@@ -29,9 +29,9 @@ public class DynamicTextureLoader {
      *
      * @param filePath The file path relative to the game directory
      * @param textureId A unique identifier for this texture
-     * @return The ResourceLocation of the loaded texture, or null if loading failed
+     * @return The Identifier of the loaded texture, or null if loading failed
      */
-    public static ResourceLocation loadTextureFromFile(String filePath, String textureId) {
+    public static Identifier loadTextureFromFile(String filePath, String textureId) {
         // Check if we've already loaded this texture
         if (loadedTextures.containsKey(textureId)) {
             return loadedTextures.get(textureId);
@@ -61,11 +61,11 @@ public class DynamicTextureLoader {
             }
 
             // Create a DynamicTexture from the NativeImage
-            DynamicTexture dynamicTexture = new DynamicTexture(nativeImage);
+            DynamicTexture dynamicTexture = new DynamicTexture(() -> "modtabs-dynamic-icon", nativeImage);
 
-            // Create a unique ResourceLocation for this texture
+            // Create a unique Identifier for this texture
             // ResourceLocations must be lowercase, so convert textureId to lowercase
-            ResourceLocation textureLocation = ResourceLocation.fromNamespaceAndPath(
+            Identifier textureLocation = Identifier.fromNamespaceAndPath(
                 ModTabs.MOD_ID,
                 DYNAMIC_TEXTURE_PREFIX + "/" + textureId.toLowerCase()
             );
@@ -73,7 +73,7 @@ public class DynamicTextureLoader {
             // Register the texture with Minecraft's texture manager
             Minecraft.getInstance().getTextureManager().register(textureLocation, dynamicTexture);
 
-            // Cache the ResourceLocation
+            // Cache the Identifier
             loadedTextures.put(textureId, textureLocation);
 
             ModTabs.LOGGER.info("Successfully loaded custom texture: " + filePath + " as " + textureLocation);
@@ -86,13 +86,13 @@ public class DynamicTextureLoader {
     }
 
     /**
-     * Validate that a ResourceLocation can be loaded from the resource pack system.
+     * Validate that a Identifier can be loaded from the resource pack system.
      * This is used for "customTexture" paths that reference textures in resource packs.
      *
-     * @param textureLocation The ResourceLocation to validate
+     * @param textureLocation The Identifier to validate
      * @return true if the texture exists, false otherwise
      */
-    public static boolean validateResourceTexture(ResourceLocation textureLocation) {
+    public static boolean validateResourceTexture(Identifier textureLocation) {
         try {
             // Check if the texture exists in the resource manager
             Minecraft minecraft = Minecraft.getInstance();
@@ -113,7 +113,7 @@ public class DynamicTextureLoader {
      * This should be called when reloading custom tabs.
      */
     public static void clearLoadedTextures() {
-        for (Map.Entry<String, ResourceLocation> entry : loadedTextures.entrySet()) {
+        for (Map.Entry<String, Identifier> entry : loadedTextures.entrySet()) {
             try {
                 Minecraft.getInstance().getTextureManager().release(entry.getValue());
             } catch (Exception e) {

@@ -1,9 +1,12 @@
 package vodmordia.modtabs.client.screens;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.InputWithModifiers;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +70,10 @@ public class TabButton extends Button {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
         if (button == 0 && this.isMouseOver(mouseX, mouseY) && !TabsMenu.isEditing(this.screen)) {
             pressStartMs = System.currentTimeMillis();
             setTooltip(null); // suppress tooltip while gesturing
@@ -80,11 +86,14 @@ public class TabButton extends Button {
         if (TabsMenu.isEditing(this.screen)) {
             return false;
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(MouseButtonEvent event) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
         if (pressStartMs > 0L && button == 0) {
             boolean wasShortClick = (System.currentTimeMillis() - pressStartMs) < LONG_PRESS_MS;
             pressStartMs = 0L;
@@ -97,14 +106,14 @@ public class TabButton extends Button {
             }
             return true;
         }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(event);
     }
 
     @Override
-    public void onPress() {
+    public void onPress(InputWithModifiers input) {
         // mouseClicked/mouseReleased handle the long-press path; onPress is dead code for tabs now.
         if (TabsMenu.isEditing(this.screen)) return;
-        super.onPress();
+        super.onPress(input);
         if (!this.isDisabled) {
             TabsMenu.markScreenOpenedViaTab(this.screen);
             tabBase.openTargetScreen(this.player);
@@ -118,27 +127,11 @@ public class TabButton extends Button {
     }
 
     @Override
-    public void renderWidget(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partial) {
-        // Render strategy:
-        //  - Edit mode: render in the normal widget pass (on top), never in the
-        //    pre-panel pass — the user needs handles to be reachable.
-        //  - Play mode on a container screen: render ONLY in the pre-panel pass so the
-        //    inventory panel covers overlapping tabs. The mixin sets renderingBehindPanel.
-        //  - Play mode on a non-container screen (e.g. AdvancementsScreen): there's no
-        //    mixin and no panel to go behind, so render in the normal widget pass.
-        boolean editing = TabsMenu.isEditing(this.screen);
-        boolean isContainer = this.screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?>;
-        // Container screens that fully override render (no super.render call) miss our
-        // behind-panel mixin and would never draw. Treat them like non-container screens —
-        // render on top in the normal pass.
-        boolean rendersOnTop = isContainer && TabsMenu.rendersTabsOnTop(this.screen);
-        if (editing) {
-            if (TabsMenu.renderingBehindPanel) return;
-        } else if (isContainer && !rendersOnTop) {
-            if (!TabsMenu.renderingBehindPanel) return;
-        } else {
-            if (TabsMenu.renderingBehindPanel) return;
-        }
+    public void extractContents(@NotNull GuiGraphicsExtractor gui, int mouseX, int mouseY, float partial) {
+        // 26.1: the behind-panel render strategy (and its `renderingBehindPanel` gate) is gone —
+        // it was driven by AbstractContainerScreenMixin, which 26.1's render-state rewrite made
+        // untargetable, so the mixin was removed. Tabs now always draw on top in the normal
+        // renderable pass, on every screen.
         // Recompute position from the bar anchor each render so live scale/spacing edits are visible.
         int x = calculateX(barLeft, tabPositionIndex);
         int y = calculateY(barTop, tabPositionIndex, displayMode);
@@ -185,21 +178,21 @@ public class TabButton extends Button {
 
         boolean needsPose = scale != 1.0f || rotation != 0f;
         if (needsPose) {
-            gui.pose().pushPose();
+            gui.pose().pushMatrix();
             if (rotation != 0f) {
                 double[] center = TabsMenu.barCenter();
-                gui.pose().translate(center[0], center[1], 0);
-                gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(rotation));
-                gui.pose().translate(-center[0], -center[1], 0);
+                gui.pose().translate((float) center[0], (float) center[1]);
+                gui.pose().rotate((float) Math.toRadians(rotation));
+                gui.pose().translate((float) -center[0], (float) -center[1]);
             }
             if (scale != 1.0f) {
-                gui.pose().translate(animatedX, animatedY, 0);
-                gui.pose().scale(scale, scale, 1.0f);
+                gui.pose().translate((float) animatedX, (float) animatedY);
+                gui.pose().scale(scale, scale);
                 this.tabBase.render(gui, 0, 0, effectiveHover, this.displayMode);
             } else {
                 this.tabBase.render(gui, animatedX, animatedY, effectiveHover, this.displayMode);
             }
-            gui.pose().popPose();
+            gui.pose().popMatrix();
         } else {
             this.tabBase.render(gui, animatedX, animatedY, effectiveHover, this.displayMode);
         }
@@ -285,7 +278,7 @@ public class TabButton extends Button {
      * Render a clock-face style pie at (cx, cy) filling clockwise from 12 o'clock as
      * progress goes from 0..1.
      */
-    private static void drawLongPressPie(GuiGraphics gui, int cx, int cy, float progress) {
+    private static void drawLongPressPie(GuiGraphicsExtractor gui, int cx, int cy, float progress) {
         int segments = 24;
         int innerRadius = 1;
         int outerRadius = 7;
@@ -297,11 +290,11 @@ public class TabButton extends Button {
             float t = i / (float) segments;
             float angle = t * 360f - 90f;
             int color = t < progress ? filled : dim;
-            gui.pose().pushPose();
-            gui.pose().translate(cx, cy, 0);
-            gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(angle));
+            gui.pose().pushMatrix();
+            gui.pose().translate((float) cx, (float) cy);
+            gui.pose().rotate((float) Math.toRadians(angle));
             gui.fill(innerRadius, -tickThickness, outerRadius, tickThickness, color);
-            gui.pose().popPose();
+            gui.pose().popMatrix();
         }
     }
 }

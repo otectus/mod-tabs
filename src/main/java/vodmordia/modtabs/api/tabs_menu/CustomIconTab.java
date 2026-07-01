@@ -1,6 +1,6 @@
 package vodmordia.modtabs.api.tabs_menu;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import java.util.function.Consumer;
@@ -44,12 +44,12 @@ public abstract class CustomIconTab extends TabBase {
     }
 
     @Override
-    public void render(GuiGraphics gui, int x, int y, boolean hover) {
+    public void render(GuiGraphicsExtractor gui, int x, int y, boolean hover) {
         renderer().render(gui, x, y, hover, false);
     }
 
     @Override
-    protected void renderInverted(GuiGraphics gui, int x, int y, boolean hover) {
+    protected void renderInverted(GuiGraphicsExtractor gui, int x, int y, boolean hover) {
         renderer().render(gui, x, y, hover, true);
     }
 }

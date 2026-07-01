@@ -1,7 +1,8 @@
 package vodmordia.modtabs.api.tabs_menu;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import vodmordia.modtabs.ModTabs;
 
@@ -14,14 +15,14 @@ import java.util.function.Consumer;
 public class TabRenderer {
 
     // Common constants used by all tabs
-    public static final ResourceLocation TAB_TEXTURE = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
+    public static final Identifier TAB_TEXTURE = Identifier.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
     public static final int TAB_BACKGROUND_U = 0;
     public static final int TAB_BACKGROUND_V = 138;
     public static final int HOVER_OFFSET = 54;
 
     // Builder for fluent API
     private boolean hasBackground = false;
-    private ResourceLocation iconTexture = null;
+    private Identifier iconTexture = null;
     private int iconWidth, iconHeight;
     private int iconU, iconV, iconTextureWidth, iconTextureHeight;
     private ItemStack iconItem = null;
@@ -53,7 +54,7 @@ public class TabRenderer {
     /**
      * Adds a texture icon at the specified position
      */
-    public TabRenderer withTextureIcon(ResourceLocation texture, int x, int y, int width, int height) {
+    public TabRenderer withTextureIcon(Identifier texture, int x, int y, int width, int height) {
         this.iconTexture = texture;
         this.iconWidth = width;
         this.iconHeight = height;
@@ -67,7 +68,7 @@ public class TabRenderer {
     /**
      * Adds a texture icon with custom UV coordinates
      */
-    public TabRenderer withTextureIcon(ResourceLocation texture, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
+    public TabRenderer withTextureIcon(Identifier texture, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
         this.iconTexture = texture;
         this.iconU = u;
         this.iconV = v;
@@ -137,7 +138,7 @@ public class TabRenderer {
     /**
      * Renders the tab with all specified components.
      */
-    public void render(GuiGraphics gui, int x, int y, boolean hover, boolean inverted) {
+    public void render(GuiGraphicsExtractor gui, int x, int y, boolean hover, boolean inverted) {
         // Panel preview: render the tab base behind the icon, but never inverted, so the
         // user sees the icon at its natural pose. (currentIconRotation() also short-circuits
         // to 0 while previewRendering is true.)
@@ -158,24 +159,24 @@ public class TabRenderer {
 
     }
 
-    private void renderBackground(GuiGraphics gui, int x, int y, boolean hover, boolean inverted) {
+    private void renderBackground(GuiGraphicsExtractor gui, int x, int y, boolean hover, boolean inverted) {
         int hoverOffset = hover ? HOVER_OFFSET : 0;
 
         if (inverted) {
             // Render rotated background
-            gui.pose().pushPose();
-            gui.pose().translate(x + TabBase.TAB_WIDTH / 2.0f, y + TabBase.TAB_HEIGHT / 2.0f, 0);
-            gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180));
-            gui.pose().translate(-TabBase.TAB_WIDTH / 2.0f, -TabBase.TAB_HEIGHT / 2.0f, 0);
-            gui.blit(TAB_TEXTURE, 0, 0, TAB_BACKGROUND_U + hoverOffset, TAB_BACKGROUND_V, TabBase.TAB_WIDTH, TabBase.TAB_HEIGHT);
-            gui.pose().popPose();
+            gui.pose().pushMatrix();
+            gui.pose().translate((float)(x + TabBase.TAB_WIDTH / 2.0f), (float)(y + TabBase.TAB_HEIGHT / 2.0f));
+            gui.pose().rotate((float) Math.toRadians(180));
+            gui.pose().translate((float)(-TabBase.TAB_WIDTH / 2.0f), (float)(-TabBase.TAB_HEIGHT / 2.0f));
+            gui.blit(RenderPipelines.GUI_TEXTURED, TAB_TEXTURE, 0, 0, (float)(TAB_BACKGROUND_U + hoverOffset), (float)(TAB_BACKGROUND_V), TabBase.TAB_WIDTH, TabBase.TAB_HEIGHT, 256, 256);
+            gui.pose().popMatrix();
         } else {
             // Render normal background
-            gui.blit(TAB_TEXTURE, x, y, TAB_BACKGROUND_U + hoverOffset, TAB_BACKGROUND_V, TabBase.TAB_WIDTH, TabBase.TAB_HEIGHT);
+            gui.blit(RenderPipelines.GUI_TEXTURED, TAB_TEXTURE, x, y, (float)(TAB_BACKGROUND_U + hoverOffset), (float)(TAB_BACKGROUND_V), TabBase.TAB_WIDTH, TabBase.TAB_HEIGHT, 256, 256);
         }
     }
 
-    private void renderTextureIcon(GuiGraphics gui, int x, int y, boolean inverted) {
+    private void renderTextureIcon(GuiGraphicsExtractor gui, int x, int y, boolean inverted) {
         // Geometrically center the icon inside the tab. The per-tab iconX/iconY values
         // used to be additive offsets; ignoring them means every tab gets perfectly
         // centered, which is what we want.
@@ -191,19 +192,19 @@ public class TabRenderer {
         int cx = finalX + iconWidth / 2;
         int cy = finalY + iconHeight / 2;
         if (rotated || scaled) {
-            gui.pose().pushPose();
-            gui.pose().translate(cx, cy, 0);
-            if (rotated) gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(iconRot));
-            if (scaled) gui.pose().scale(iconScale, iconScale, 1.0f);
-            gui.pose().translate(-cx, -cy, 0);
+            gui.pose().pushMatrix();
+            gui.pose().translate((float)(cx), (float)(cy));
+            if (rotated) gui.pose().rotate((float) Math.toRadians(iconRot));
+            if (scaled) gui.pose().scale(iconScale, iconScale);
+            gui.pose().translate((float)(-cx), (float)(-cy));
         }
-        gui.blit(iconTexture, finalX, finalY, iconU, iconV, iconWidth, iconHeight, iconTextureWidth, iconTextureHeight);
+        gui.blit(RenderPipelines.GUI_TEXTURED, iconTexture, finalX, finalY, (float)(iconU), (float)(iconV), iconWidth, iconHeight, iconTextureWidth, iconTextureHeight);
         if (rotated || scaled) {
-            gui.pose().popPose();
+            gui.pose().popMatrix();
         }
     }
 
-    private void renderItemIcon(GuiGraphics gui, int x, int y, boolean inverted) {
+    private void renderItemIcon(GuiGraphicsExtractor gui, int x, int y, boolean inverted) {
         int tabW = TabBase.TAB_WIDTH;
         int tabH = TabBase.TAB_HEIGHT;
         int dx = TabsMenu.previewRendering ? 0 : (vodmordia.modtabs.config.Config.Baked.iconOffsetLeft - vodmordia.modtabs.config.Config.Baked.iconOffsetRight);
@@ -213,37 +214,37 @@ public class TabRenderer {
         int iconRot = TabsMenu.currentIconRotation();
         boolean rotated = iconRot != 0;
         if (rotated) {
-            gui.pose().pushPose();
+            gui.pose().pushMatrix();
             int cx = finalX + 8;
             int cy = finalY + 8;
-            gui.pose().translate(cx, cy, 0);
-            gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(iconRot));
-            gui.pose().translate(-cx, -cy, 0);
+            gui.pose().translate((float)(cx), (float)(cy));
+            gui.pose().rotate((float) Math.toRadians(iconRot));
+            gui.pose().translate((float)(-cx), (float)(-cy));
         }
         float effectiveScale = itemScale * iconScale;
         if (effectiveScale != 1.0f) {
-            gui.pose().pushPose();
-            gui.pose().translate(finalX + 8, finalY + 8, 0);
-            gui.pose().scale(effectiveScale, effectiveScale, 1.0f);
-            gui.pose().translate(-8, -8, 0);
-            gui.renderItem(iconItem, 0, 0);
-            gui.pose().popPose();
+            gui.pose().pushMatrix();
+            gui.pose().translate((float)(finalX + 8), (float)(finalY + 8));
+            gui.pose().scale(effectiveScale, effectiveScale);
+            gui.pose().translate((float)(-8), (float)(-8));
+            gui.item(iconItem, 0, 0);
+            gui.pose().popMatrix();
         } else {
-            gui.renderItem(iconItem, finalX, finalY);
+            gui.item(iconItem, finalX, finalY);
         }
         if (rotated) {
-            gui.pose().popPose();
+            gui.pose().popMatrix();
         }
     }
 
-    private void renderCustomIcon(GuiGraphics gui, int x, int y, boolean hover, boolean inverted) {
+    private void renderCustomIcon(GuiGraphicsExtractor gui, int x, int y, boolean hover, boolean inverted) {
         int iconRot = TabsMenu.currentIconRotation();
         boolean rotated = iconRot != 0;
         boolean scaled = iconScale != 1.0f;
         boolean nudged = iconNudgeX != 0 || iconNudgeY != 0;
         if (nudged) {
-            gui.pose().pushPose();
-            gui.pose().translate(iconNudgeX, iconNudgeY, 0);
+            gui.pose().pushMatrix();
+            gui.pose().translate((float)(iconNudgeX), (float)(iconNudgeY));
         }
         if (rotated || scaled) {
             // Pivot/scale around the icon's actual center if the tab declared one; otherwise
@@ -255,19 +256,19 @@ public class TabRenderer {
             int defaultCy = TabBase.TAB_HEIGHT / 2;
             int cx = x + (customIconCenterX >= 0 ? customIconCenterX : defaultCx);
             int cy = y + (customIconCenterY >= 0 ? customIconCenterY : defaultCy);
-            gui.pose().pushPose();
-            gui.pose().translate(cx, cy, 0);
-            if (rotated) gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(iconRot));
-            if (scaled) gui.pose().scale(iconScale, iconScale, 1.0f);
-            gui.pose().translate(-cx, -cy, 0);
+            gui.pose().pushMatrix();
+            gui.pose().translate((float)(cx), (float)(cy));
+            if (rotated) gui.pose().rotate((float) Math.toRadians(iconRot));
+            if (scaled) gui.pose().scale(iconScale, iconScale);
+            gui.pose().translate((float)(-cx), (float)(-cy));
         }
         RenderContext context = new RenderContext(gui, x, y, hover, inverted);
         customIconRenderer.accept(context);
         if (rotated || scaled) {
-            gui.pose().popPose();
+            gui.pose().popMatrix();
         }
         if (nudged) {
-            gui.pose().popPose();
+            gui.pose().popMatrix();
         }
     }
 
@@ -275,11 +276,11 @@ public class TabRenderer {
      * Context object passed to custom icon renderers
      */
     public static class RenderContext {
-        public final GuiGraphics gui;
+        public final GuiGraphicsExtractor gui;
         public final int x, y;
         public final boolean hover, inverted;
 
-        public RenderContext(GuiGraphics gui, int x, int y, boolean hover, boolean inverted) {
+        public RenderContext(GuiGraphicsExtractor gui, int x, int y, boolean hover, boolean inverted) {
             this.gui = gui;
             this.x = x;
             this.y = y;

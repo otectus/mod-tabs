@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import vodmordia.modtabs.ModTabs;
 
@@ -99,7 +99,7 @@ public class ScreenLayoutStore {
      * Returns null if the file isn't present, the resource manager isn't ready yet, or parsing
      * fails — callers fall through to a hard-coded {@link ScreenLayout} default.
      *
-     * Resource path uses lowercase + {@code $} → {@code _} because ResourceLocation paths
+     * Resource path uses lowercase + {@code $} → {@code _} because Identifier paths
      * are restricted to {@code [a-z0-9_/.-]}; FQNs only ever introduce uppercase or {@code $}
      * (for inner classes), so this is a lossless flattening.
      */
@@ -108,7 +108,7 @@ public class ScreenLayoutStore {
         if (mc == null || mc.getResourceManager() == null) {
             return null;
         }
-        ResourceLocation loc = ResourceLocation.fromNamespaceAndPath(
+        Identifier loc = Identifier.fromNamespaceAndPath(
                 ModTabs.MOD_ID, "screen-layouts/" + resourceSanitize(fqn) + ".json");
         Optional<Resource> res = mc.getResourceManager().getResource(loc);
         if (res.isEmpty()) {
@@ -137,7 +137,7 @@ public class ScreenLayoutStore {
     }
 
     /**
-     * ResourceLocation paths only accept {@code [a-z0-9_/.-]}, so we lowercase and flatten
+     * Identifier paths only accept {@code [a-z0-9_/.-]}, so we lowercase and flatten
      * {@code $} (inner-class separator) to {@code _}. The mapping is unambiguous because
      * FQNs only differ from resource-path-safe strings on case and {@code $}.
      */

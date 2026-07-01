@@ -1,10 +1,13 @@
 package vodmordia.modtabs.client.screens;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonInfo;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.TabDisplayMode;
@@ -12,7 +15,7 @@ import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 
 
 public class NextTabsButton extends Button {
-    private final ResourceLocation TAB_ICONS = ResourceLocation.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
+    private final Identifier TAB_ICONS = Identifier.fromNamespaceAndPath(ModTabs.MOD_ID, "textures/gui/tab_menu_buttons.png");
     public static final int NEXT_TABS_ICON_TEX_X = 135;
     public static final int NEXT_TABS_ICON_TEX_Y = 0;
     public static final int NEXT_TABS_BUTTON_WIDTH = 12;
@@ -66,19 +69,8 @@ public class NextTabsButton extends Button {
     }
 
     @Override
-    public void renderWidget(@NotNull GuiGraphics gui, int mouseX, int mouseY, float partial) {
-        // Match TabButton's render-strategy gate (see comment there).
-        Screen current = net.minecraft.client.Minecraft.getInstance().screen;
-        boolean editing = current != null && TabsMenu.isEditing(current);
-        boolean isContainer = current instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?>;
-        boolean rendersOnTop = isContainer && TabsMenu.rendersTabsOnTop(current);
-        if (editing) {
-            if (TabsMenu.renderingBehindPanel) return;
-        } else if (isContainer && !rendersOnTop) {
-            if (!TabsMenu.renderingBehindPanel) return;
-        } else {
-            if (TabsMenu.renderingBehindPanel) return;
-        }
+    public void extractContents(@NotNull GuiGraphicsExtractor gui, int mouseX, int mouseY, float partial) {
+        // 26.1: behind-panel render gate removed (see TabButton) — always draw on top.
         // Recompute natural-frame position each render. Without this, live scale / spacing
         // edits don't shift the chevron's anchor — the user compensates with tempNextOffset,
         // and on save the natural anchor jumps to its correct (recomputed) spot while the
@@ -115,26 +107,26 @@ public class NextTabsButton extends Button {
         // center, then next-button's own rotation around its (natural-frame) center.
         boolean needsPose = nextOffX != 0 || nextOffY != 0 || barRotation != 0f || nextRotation != 0f;
         if (needsPose) {
-            gui.pose().pushPose();
+            gui.pose().pushMatrix();
             if (nextOffX != 0 || nextOffY != 0) {
-                gui.pose().translate(nextOffX, nextOffY, 0);
+                gui.pose().translate((float) nextOffX, (float) nextOffY);
             }
             if (barRotation != 0f) {
                 double[] center = TabsMenu.barCenter();
-                gui.pose().translate(center[0], center[1], 0);
-                gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(barRotation));
-                gui.pose().translate(-center[0], -center[1], 0);
+                gui.pose().translate((float) center[0], (float) center[1]);
+                gui.pose().rotate((float) Math.toRadians(barRotation));
+                gui.pose().translate((float) -center[0], (float) -center[1]);
             }
             if (nextRotation != 0f) {
-                gui.pose().translate(btnCenterX, btnCenterY, 0);
-                gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(nextRotation));
-                gui.pose().translate(-btnCenterX, -btnCenterY, 0);
+                gui.pose().translate((float) btnCenterX, (float) btnCenterY);
+                gui.pose().rotate((float) Math.toRadians(nextRotation));
+                gui.pose().translate((float) -btnCenterX, (float) -btnCenterY);
             }
         }
 
-        gui.blit(TAB_ICONS, animatedX, animatedY, NEXT_TABS_ICON_TEX_X + texOffsetX, NEXT_TABS_ICON_TEX_Y, NEXT_TABS_BUTTON_WIDTH, NEXT_TABS_BUTTON_HEIGHT);
+        gui.blit(RenderPipelines.GUI_TEXTURED, TAB_ICONS, animatedX, animatedY, (float) (NEXT_TABS_ICON_TEX_X + texOffsetX), (float) NEXT_TABS_ICON_TEX_Y, NEXT_TABS_BUTTON_WIDTH, NEXT_TABS_BUTTON_HEIGHT, 256, 256);
         if (needsPose) {
-            gui.pose().popPose();
+            gui.pose().popMatrix();
         }
     }
 
@@ -146,7 +138,10 @@ public class NextTabsButton extends Button {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        int button = event.button();
         // In edit mode, don't consume clicks — let editor widgets registered after us
         // in screen.children() receive them. Without this, vanilla Button.mouseClicked
         // would swallow any click in our bounds (calling our no-op edit-mode onPress).
@@ -161,7 +156,7 @@ public class NextTabsButton extends Button {
         // already inverse-rotates the cursor; route through that instead.
         if (button == 0 && this.active && this.visible && this.isMouseOver(mouseX, mouseY)) {
             this.playDownSound(net.minecraft.client.Minecraft.getInstance().getSoundManager());
-            this.onPress();
+            this.onPress(new MouseButtonInfo(button, 0));
             return true;
         }
         return false;

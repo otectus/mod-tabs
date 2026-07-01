@@ -1,7 +1,7 @@
 package vodmordia.modtabs.api.tabs_menu;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ public abstract class ConfigurableCustomIconTab extends CustomIconTab {
     private final int iconCenterX;
     private final int iconCenterY;
     private String lastResolvedFor;
-    private ResourceLocation lastResolved;
+    private Identifier lastResolved;
 
     protected ConfigurableCustomIconTab(Consumer<TabRenderer.RenderContext> customRenderer, String customIconConfig, String tabId) {
         super(customRenderer);
@@ -51,8 +51,8 @@ public abstract class ConfigurableCustomIconTab extends CustomIconTab {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics gui, int x, int y, boolean hover) {
-        ResourceLocation customIcon = currentCustomIcon();
+    public void render(@NotNull GuiGraphicsExtractor gui, int x, int y, boolean hover) {
+        Identifier customIcon = currentCustomIcon();
         float scale = currentIconScale();
         int[] n = currentIconNudge();
         boolean nudged = n[0] != 0 || n[1] != 0;
@@ -112,7 +112,7 @@ public abstract class ConfigurableCustomIconTab extends CustomIconTab {
         return 0;
     }
 
-    private ResourceLocation currentCustomIcon() {
+    private Identifier currentCustomIcon() {
         String cfg = readCurrentCustomIconConfig();
         if (!Objects.equals(cfg, lastResolvedFor)) {
             lastResolvedFor = cfg;

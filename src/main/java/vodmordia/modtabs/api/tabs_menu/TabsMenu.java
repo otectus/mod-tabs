@@ -1,7 +1,7 @@
 package vodmordia.modtabs.api.tabs_menu;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.player.Player;
@@ -67,21 +67,21 @@ public class TabsMenu {
      * between the dim and the panel image. Skipped while editing — edit mode wants tabs
      * on top so the user can grab handles.
      */
-    public static void renderTabsBehindPanel(Screen screen, GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
+    public static void renderTabsBehindPanel(Screen screen, GuiGraphicsExtractor gui, int mouseX, int mouseY, float partialTick) {
         if (isEditing(screen)) return;
         if (!tabsScreens.containsKey(screen.getClass())) return;
         renderingBehindPanel = true;
         try {
             for (var r : screen.renderables) {
                 if (r instanceof TabButton || r instanceof NextTabsButton) {
-                    r.render(gui, mouseX, mouseY, partialTick);
+                    r.extractRenderState(gui, mouseX, mouseY, partialTick);
                 }
             }
             // ItemRenderer (used for icons like Apothic Attributes' sword) submits to
-            // GuiGraphics's deferred item buffer, which flushes only at the end of the
+            // GuiGraphicsExtractor's deferred item buffer, which flushes only at the end of the
             // frame — by then the panel has already drawn, leaving the icon on top of
             // it. Flush now so the icons rasterize at this point in the render order.
-            gui.flush();
+            gui.nextStratum();
         } finally {
             renderingBehindPanel = false;
         }
@@ -140,7 +140,7 @@ public class TabsMenu {
         tempIconRotation = 0;
         dragMode = DragMode.NONE;
         panelCollapsed = true;
-        GlobalSettingsPanel.close(false);
+        // editor settings-panel stripped
         setTabTooltipsSuppressed(screen, true);
     }
 
@@ -149,7 +149,7 @@ public class TabsMenu {
         if (current != null) {
             setTabTooltipsSuppressed(current, false);
         }
-        vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconDropdown.closeOpen();
+        // editor stripped
         editingScreenClass = null;
         dragOffsetX = 0;
         dragOffsetY = 0;
@@ -371,7 +371,7 @@ public class TabsMenu {
      * screen edges. Yellow is used (rather than the panel's green) so the anchor
      * outline reads as distinct from the bar's selection / handle accents.
      */
-    private static void drawAnchorOutline(GuiGraphics gui, Screen screen) {
+    private static void drawAnchorOutline(GuiGraphicsExtractor gui, Screen screen) {
         ScreenLayout layout = ScreenLayoutStore.get(screen.getClass());
         int color = 0xFFFFD700;
         int x0, y0, x1, y1;
@@ -737,7 +737,7 @@ public class TabsMenu {
      * the tab bar (which has already been drawn during the screen's normal render
      * pass and is therefore visible through the "hole" in the dim overlay).
      */
-    public static void renderEditModeOverlay(GuiGraphics gui, Screen screen, int mouseX, int mouseY) {
+    public static void renderEditModeOverlay(GuiGraphicsExtractor gui, Screen screen, int mouseX, int mouseY) {
         if (!isEditing(screen)) {
             return;
         }
@@ -748,8 +748,8 @@ public class TabsMenu {
         // Pass 1: dim + tabs at Z=400. ItemRenderer pushes its own +150 internally for
         // 3D-rendered item icons, so item icons land at Z≈550 — fine, they just need to
         // be above the player model (which renders below 400).
-        gui.pose().pushPose();
-        gui.pose().translate(0, 0, 400);
+        gui.pose().pushMatrix();
+        gui.pose().translate(0, 0);
 
         gui.fill(0, 0, sw, sh, dim);
 
@@ -763,22 +763,22 @@ public class TabsMenu {
             if (child instanceof net.minecraft.client.gui.components.AbstractWidget w) {
                 if (child instanceof vodmordia.modtabs.client.screens.TabButton
                         || child instanceof vodmordia.modtabs.client.screens.NextTabsButton
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditOnly
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconScaleEditBox
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconNudgeEditBox
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.MaxTabsPerPageEditBox) {
-                    w.render(gui, mouseX, mouseY, 0f);
+                        || false
+                        || false
+                        || false
+                        || false) {
+                    w.extractRenderState(gui, mouseX, mouseY, 0f);
                 }
             }
         }
 
-        gui.pose().popPose();
+        gui.pose().popMatrix();
 
         // Pass 2: decorations (frame, handles, panel) at Z=600 so they sit ABOVE any
         // 3D-rendered item icons that landed at Z≈550 in pass 1. Without this split, an
         // ItemStack-icon tab (e.g. Apothic Attributes' sword) would draw on top of the panel.
-        gui.pose().pushPose();
-        gui.pose().translate(0, 0, 600);
+        gui.pose().pushMatrix();
+        gui.pose().translate(0, 0);
 
         // Frame + handles render inside a pose-rotated block so they spin with the bar.
         int[] bounds = computeTabBarBounds();
@@ -788,11 +788,11 @@ public class TabsMenu {
         float rotation = currentEffectiveRotation();
         int hovered = handleHitTest(mouseX, mouseY);
 
-        gui.pose().pushPose();
+        gui.pose().pushMatrix();
         if (rotation != 0f) {
-            gui.pose().translate(cx, cy, 0);
-            gui.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(rotation));
-            gui.pose().translate(-cx, -cy, 0);
+            gui.pose().translate((float)(cx), (float)(cy));
+            gui.pose().rotate((float) Math.toRadians(rotation));
+            gui.pose().translate((float)(-cx), (float)(-cy));
         }
 
         // Highlight the tab whose configKey matches the screen we're editing — subtle
@@ -838,7 +838,7 @@ public class TabsMenu {
         gui.fill(midX, rotHandleY + 1, midX + 1, ft, green);
         drawRotationHandle(gui, rotHandleX, rotHandleY, hovered == 6);
 
-        gui.pose().popPose();
+        gui.pose().popMatrix();
 
         // Next-button rotation handle — only when a next button actually exists on the
         // screen. Without this guard, screens with a single tab (no overflow chevron)
@@ -859,39 +859,34 @@ public class TabsMenu {
         // sits on top, including over rotated tabs that might overlap.
         drawOptionsPanel(gui, screen);
 
-        gui.pose().popPose();
+        gui.pose().popMatrix();
 
         // Pass 3: panel controls at Z=700 — must be ABOVE the panel BG (Z=600) or they'd
         // be obscured by the rectangle drawn in drawOptionsPanel.
-        gui.pose().pushPose();
-        gui.pose().translate(0, 0, 700);
+        gui.pose().pushMatrix();
+        gui.pose().translate(0, 0);
         for (var child : screen.children()) {
             if (child instanceof net.minecraft.client.gui.components.AbstractWidget w) {
-                if (child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconRotationCycle
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.VisibilityCycle
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.TuckDirectionCycle
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconDropdown
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconRefresh
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconFolder
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconScaleEditBox
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconNudgeEditBox
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.AnchorCycle
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.TabOrderCycle
-                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.MaxTabsPerPageEditBox) {
-                    w.render(gui, mouseX, mouseY, 0f);
+                if (false
+                        || false
+                        || false
+                        || false
+                        || false
+                        || false
+                        || false
+                        || false
+                        || false
+                        || false
+                        || false) {
+                    w.extractRenderState(gui, mouseX, mouseY, 0f);
                 }
             }
         }
-        gui.pose().popPose();
+        gui.pose().popMatrix();
 
         // Pass 4: global settings modal (Z=900) — sits above everything else, including
         // the panel and its widgets, so its scrim and controls capture all input.
-        if (GlobalSettingsPanel.isOpen()) {
-            gui.pose().pushPose();
-            gui.pose().translate(0, 0, 900);
-            GlobalSettingsPanel.render(gui, screen, mouseX, mouseY);
-            gui.pose().popPose();
-        }
+        // Global settings panel rendering stripped with the layout editor.
     }
 
     /** Public so the LayoutEditorButtons module can position controls inside it. */
@@ -946,7 +941,7 @@ public class TabsMenu {
         return panelCollapsed;
     }
 
-    private static void drawOptionsPanel(GuiGraphics gui, Screen screen) {
+    private static void drawOptionsPanel(GuiGraphicsExtractor gui, Screen screen) {
         int x = currentPanelX(screen), y = currentPanelY(screen), w = PANEL_W, h = PANEL_H;
         int bg = 0xE8101418;
         int border = 0xFF44FF66;
@@ -957,20 +952,20 @@ public class TabsMenu {
         gui.fill(x, y, x + 1, y + h, border);
         gui.fill(x + w - 1, y, x + w, y + h, border);
         // Title
-        gui.drawString(Minecraft.getInstance().font, "Layout Options",
+        gui.text(Minecraft.getInstance().font, "Layout Options",
                 x + PANEL_PAD, y + 4, 0xFFCCFFCC, false);
         gui.fill(x + 1, y + PANEL_TITLE_H, x + w - 1, y + PANEL_TITLE_H + 1, border);
         // Row labels
         int rowY = y + PANEL_TITLE_H + PANEL_PAD;
-        gui.drawString(Minecraft.getInstance().font, "Icon rotation:", x + PANEL_PAD, rowY + 4, 0xFFCCCCCC, false);
-        gui.drawString(Minecraft.getInstance().font, "Tab visibility:", x + PANEL_PAD, rowY + PANEL_ROW_H + 4, 0xFFCCCCCC, false);
-        gui.drawString(Minecraft.getInstance().font, "Tuck direction:", x + PANEL_PAD, rowY + PANEL_ROW_H * 2 + 4, 0xFFCCCCCC, false);
-        gui.drawString(Minecraft.getInstance().font, "Custom icon:", x + PANEL_PAD, rowY + PANEL_ROW_H * 3 + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Icon rotation:", x + PANEL_PAD, rowY + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Tab visibility:", x + PANEL_PAD, rowY + PANEL_ROW_H + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Tuck direction:", x + PANEL_PAD, rowY + PANEL_ROW_H * 2 + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Custom icon:", x + PANEL_PAD, rowY + PANEL_ROW_H * 3 + 4, 0xFFCCCCCC, false);
 
         // Preview row — render of the tab's icon at its natural pose (no rotation,
         // no vertical re-orientation) so the user can compare against tweaks.
         int previewRowY = rowY + PANEL_ROW_H * 4 + PANEL_PAD;
-        gui.drawString(Minecraft.getInstance().font, "Preview:", x + PANEL_PAD, previewRowY + 8, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Preview:", x + PANEL_PAD, previewRowY + 8, 0xFFCCCCCC, false);
         TabBase previewTab = findTabForConfigKey(getConfigKeyForScreen(screen));
         if (previewTab != null) {
             int previewTabX = x + PANEL_PAD + PANEL_LABEL_W;
@@ -986,17 +981,17 @@ public class TabsMenu {
         // Scale-factor row sits below the preview. The trailing "%" is drawn after the
         // editor's IconScaleEditBox; both anchor off PANEL_PAD + PANEL_LABEL_W like other rows.
         int scaleRowY = previewRowY + PANEL_PREVIEW_H + PANEL_PAD;
-        gui.drawString(Minecraft.getInstance().font, "Scale factor:", x + PANEL_PAD, scaleRowY + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Scale factor:", x + PANEL_PAD, scaleRowY + 4, 0xFFCCCCCC, false);
         // The "%" suffix is drawn here (not as a widget) so it stays glued to whatever the
         // EditBox's right edge happens to be — addToScreen sizes the box to leave 12 px for it.
-        gui.drawString(Minecraft.getInstance().font, "%",
+        gui.text(Minecraft.getInstance().font, "%",
                 x + PANEL_W - PANEL_PAD - 8, scaleRowY + 4, 0xFFCCCCCC, false);
 
         // Icon-nudge row: four small inputs (U/D/L/R) for per-direction pixel offsets.
         // The cell letters are drawn here so the EditBoxes can stay simple text inputs;
         // addToScreen registers four IconNudgeEditBox widgets keyed off the same offsets.
         int nudgeRowY = scaleRowY + PANEL_ROW_H;
-        gui.drawString(Minecraft.getInstance().font, "Icon nudge:", x + PANEL_PAD, nudgeRowY + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Icon nudge:", x + PANEL_PAD, nudgeRowY + 4, 0xFFCCCCCC, false);
         int relCellX = PANEL_PAD + PANEL_LABEL_W;
         int controlW = PANEL_W - PANEL_PAD - PANEL_LABEL_W - PANEL_PAD;
         int nudgeLetterW = 8;
@@ -1006,21 +1001,21 @@ public class TabsMenu {
         String[] nudgeLetters = { "U", "D", "L", "R" };
         for (int i = 0; i < 4; i++) {
             int cellX = x + relCellX + i * nudgePitch;
-            gui.drawString(Minecraft.getInstance().font, nudgeLetters[i], cellX, nudgeRowY + 4, 0xFFCCCCCC, false);
+            gui.text(Minecraft.getInstance().font, nudgeLetters[i], cellX, nudgeRowY + 4, 0xFFCCCCCC, false);
         }
 
         // Anchor row: GUI/SCREEN toggle. The corresponding outline (GUI box vs screen edges)
         // is drawn during pass 1 of renderEditModeOverlay so the user sees the chosen frame.
         int anchorRowY = nudgeRowY + PANEL_ROW_H;
-        gui.drawString(Minecraft.getInstance().font, "Anchor:", x + PANEL_PAD, anchorRowY + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Anchor:", x + PANEL_PAD, anchorRowY + 4, 0xFFCCCCCC, false);
 
         // Tab Order row: L→R vs R→L visual ordering of tabs in the bar.
         int tabOrderRowY = anchorRowY + PANEL_ROW_H;
-        gui.drawString(Minecraft.getInstance().font, "Tab order:", x + PANEL_PAD, tabOrderRowY + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Tab order:", x + PANEL_PAD, tabOrderRowY + 4, 0xFFCCCCCC, false);
 
         // Max tabs/page row: per-screen pagination cap. 0 = unlimited (single page).
         int maxTabsRowY = tabOrderRowY + PANEL_ROW_H;
-        gui.drawString(Minecraft.getInstance().font, "Tabs/page:", x + PANEL_PAD, maxTabsRowY + 4, 0xFFCCCCCC, false);
+        gui.text(Minecraft.getInstance().font, "Tabs/page:", x + PANEL_PAD, maxTabsRowY + 4, 0xFFCCCCCC, false);
 
         // Side handle (always visible — peeks at screen-left edge when panel is slid off).
         int hx = panelHandleX(screen);
@@ -1032,12 +1027,12 @@ public class TabsMenu {
         // Arrow showing which direction the click will move the panel.
         String arrow = panelCollapsed ? ">" : "<";
         int aw = Minecraft.getInstance().font.width(arrow);
-        gui.drawString(Minecraft.getInstance().font, arrow,
+        gui.text(Minecraft.getInstance().font, arrow,
                 hx + (PANEL_HANDLE_W - aw) / 2, hy + (PANEL_HANDLE_H - 8) / 2, 0xFFCCFFCC, false);
     }
 
     /** Bresenham-style line drawn as a stack of 1×1 fills. Crude but adequate for tethers. */
-    private static void drawLineBetween(GuiGraphics gui, int x0, int y0, int x1, int y1, int color) {
+    private static void drawLineBetween(GuiGraphicsExtractor gui, int x0, int y0, int x1, int y1, int color) {
         int dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
         int dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
         int err = dx + dy;
@@ -1051,7 +1046,7 @@ public class TabsMenu {
     }
 
     /** Purple disc — visually distinct from the yellow bar-rotation handle. */
-    private static void drawNextRotationHandle(GuiGraphics gui, int cx, int cy, boolean hovered) {
+    private static void drawNextRotationHandle(GuiGraphicsExtractor gui, int cx, int cy, boolean hovered) {
         int color = hovered ? 0xFFD6A3FF : 0xFFB36BFF;
         int radius = 4;
         for (int dy = -radius; dy <= radius; dy++) {
@@ -1064,7 +1059,7 @@ public class TabsMenu {
     }
 
     /** Small filled disc used as the rotation handle. Yellow → bright yellow on hover. */
-    private static void drawRotationHandle(GuiGraphics gui, int cx, int cy, boolean hovered) {
+    private static void drawRotationHandle(GuiGraphicsExtractor gui, int cx, int cy, boolean hovered) {
         int color = hovered ? 0xFFFFEE66 : 0xFFFFCC22;
         int radius = 4;
         for (int dy = -radius; dy <= radius; dy++) {
@@ -1081,7 +1076,7 @@ public class TabsMenu {
      * opposite edge (base) sits diagonally outward. Blue by default, brighter blue when
      * hovered. Corner index: 0=TL, 1=TR, 2=BL, 3=BR.
      */
-    private static void drawCornerHandle(GuiGraphics gui, int cx, int cy, int corner, boolean hovered) {
+    private static void drawCornerHandle(GuiGraphicsExtractor gui, int cx, int cy, int corner, boolean hovered) {
         int color = hovered ? 0xFFA8DDFF : 0xFF44AAFF;
         int side = 8;
         double medianLen = side * Math.sqrt(3) / 2.0; // height of an equilateral triangle
@@ -1134,7 +1129,7 @@ public class TabsMenu {
      * Filled triangle pointing in cardinal direction {@code dir}: 0=down, 1=up, 2=right, 3=left.
      * Drawn axis-aligned via {@code gui.fill} stacks; no matrix math needed.
      */
-    private static void drawInwardTriangle(GuiGraphics gui, int cx, int cy, int dir, boolean hovered) {
+    private static void drawInwardTriangle(GuiGraphicsExtractor gui, int cx, int cy, int dir, boolean hovered) {
         int color = hovered ? 0xFFA8FFB8 : 0xFF44FF66;
         int size = 4;
         for (int i = 0; i < size; i++) {
@@ -1577,8 +1572,7 @@ public class TabsMenu {
             // widgets self-gate on isEditing — they don't render in play mode.
             TabDisplayVisibility visibility = getTabDisplayVisibilityForScreen(event.getScreen());
             if (visibility == TabDisplayVisibility.NO) {
-                vodmordia.modtabs.client.screens.LayoutEditorButtons.addToScreen(
-                        event.getScreen(), event::addListener);
+                // Editor toggle stripped with the layout editor; just render no tabs.
                 return;
             }
 
@@ -1779,18 +1773,18 @@ public class TabsMenu {
 
             // Layout editor controls (always added when tabs are visible on this screen)
             event.getScreen().children().removeIf(child ->
-                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditToggle ||
-                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditOnly ||
-                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconScaleEditBox ||
-                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconNudgeEditBox ||
-                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.MaxTabsPerPageEditBox);
+                false ||
+                false ||
+                false ||
+                false ||
+                false);
             event.getScreen().renderables.removeIf(r ->
-                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditToggle ||
-                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditOnly ||
-                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconScaleEditBox ||
-                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconNudgeEditBox ||
-                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.MaxTabsPerPageEditBox);
-            vodmordia.modtabs.client.screens.LayoutEditorButtons.addToScreen(event.getScreen(), event::addListener);
+                false ||
+                false ||
+                false ||
+                false ||
+                false);
+            // editor stripped
         }
     }
 

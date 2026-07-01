@@ -5,12 +5,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 public class ModKeybinds {
 
-    public static final String KEY_CATEGORY_MODTABS = "key.categories.modtabs";
-
+    // 26.1: key categories are KeyMapping.Category objects, not String translation keys.
     public static final KeyMapping TAB_CYCLE = new KeyMapping(
         "key.modtabs.tab_cycle",
         InputConstants.Type.KEYSYM,
         InputConstants.KEY_TAB,
-        KEY_CATEGORY_MODTABS
+        KeyMapping.Category.INVENTORY
     );
 }

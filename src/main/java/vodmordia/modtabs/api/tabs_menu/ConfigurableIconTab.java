@@ -1,7 +1,7 @@
 package vodmordia.modtabs.api.tabs_menu;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -21,12 +21,12 @@ import java.util.Objects;
 @OnlyIn(Dist.CLIENT)
 public abstract class ConfigurableIconTab extends SimpleTextureTab {
 
-    private final ResourceLocation defaultIcon;
+    private final Identifier defaultIcon;
     private final String tabId;
     private String lastResolvedFor;
-    private ResourceLocation lastResolved;
+    private Identifier lastResolved;
 
-    protected ConfigurableIconTab(ResourceLocation defaultIcon, String customIconConfig, String tabId) {
+    protected ConfigurableIconTab(Identifier defaultIcon, String customIconConfig, String tabId) {
         super(defaultIcon);
         this.defaultIcon = defaultIcon;
         this.tabId = tabId;
@@ -35,11 +35,11 @@ public abstract class ConfigurableIconTab extends SimpleTextureTab {
         // dynamically in currentIcon().
     }
 
-    private ResourceLocation currentIcon() {
+    private Identifier currentIcon() {
         String cfg = readCurrentCustomIconConfig();
         if (!Objects.equals(cfg, lastResolvedFor)) {
             lastResolvedFor = cfg;
-            ResourceLocation custom = IconResolver.resolveIcon(cfg, tabId);
+            Identifier custom = IconResolver.resolveIcon(cfg, tabId);
             lastResolved = custom != null ? custom : defaultIcon;
         }
         return lastResolved;
@@ -59,7 +59,7 @@ public abstract class ConfigurableIconTab extends SimpleTextureTab {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics gui, int x, int y, boolean hover) {
+    public void render(@NotNull GuiGraphicsExtractor gui, int x, int y, boolean hover) {
         int[] nudge = currentIconNudge();
         TabRenderer.builder()
                 .withBackground()
@@ -70,7 +70,7 @@ public abstract class ConfigurableIconTab extends SimpleTextureTab {
     }
 
     @Override
-    protected void renderInverted(@NotNull GuiGraphics gui, int x, int y, boolean hover) {
+    protected void renderInverted(@NotNull GuiGraphicsExtractor gui, int x, int y, boolean hover) {
         int[] nudge = currentIconNudge();
         TabRenderer.builder()
                 .withBackground()

@@ -1,8 +1,9 @@
 package vodmordia.modtabs.client.tabs_menu;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +25,16 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
 
     public SophisticatedBackpacksTab() {
         super(() -> getBackpackItem(), Config.Baked.sophisticatedBackpacksTabCustomIcon, "sophisticatedBackpacks");
+    }
+
+    /** 26.1: Inventory.armor is gone; armor now lives in the player's equipment. Mirror the
+     *  old 4-slot armor list (feet, legs, chest, head) for the backpack-in-armor scan. */
+    private static java.util.List<ItemStack> armorItems(Player player) {
+        return java.util.List.of(
+                player.getItemBySlot(EquipmentSlot.FEET),
+                player.getItemBySlot(EquipmentSlot.LEGS),
+                player.getItemBySlot(EquipmentSlot.CHEST),
+                player.getItemBySlot(EquipmentSlot.HEAD));
     }
 
     private static ItemStack getBackpackItem() {
@@ -100,7 +111,7 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
     }
 
     private ItemStack findFirstBackpack(Player player, Class<?> backpackItemClass) {
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
             if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
                 return stack;
             }
@@ -109,7 +120,7 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
         if (!offhand.isEmpty() && backpackItemClass.isInstance(offhand.getItem())) {
             return offhand;
         }
-        for (ItemStack stack : player.getInventory().armor) {
+        for (ItemStack stack : armorItems(player)) {
             if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
                 return stack;
             }
@@ -175,7 +186,7 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
                         break;
                     }
 
-                    ItemStack hotbarStack = player.getInventory().items.get(hotbarIndex);
+                    ItemStack hotbarStack = player.getInventory().getNonEquipmentItems().get(hotbarIndex);
 
                     if (!hotbarStack.isEmpty() && backpackItemClass.isInstance(hotbarStack.getItem())) {
                         return hotbarStack;
@@ -190,7 +201,7 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
                     break;
 
                 case MAIN_INVENTORY:
-                    for (ItemStack stack : player.getInventory().items) {
+                    for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
                         if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
                             return stack;
                         }
@@ -198,7 +209,7 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
                     break;
 
                 case ARMOR:
-                    for (ItemStack stack : player.getInventory().armor) {
+                    for (ItemStack stack : armorItems(player)) {
                         if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
                             return stack;
                         }
@@ -228,21 +239,21 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
         try {
             // Check hotbar first (slots 0-8)
             for (int i = 0; i < 9; i++) {
-                if (player.getInventory().items.get(i) == targetBackpack) {
+                if (player.getInventory().getNonEquipmentItems().get(i) == targetBackpack) {
                     return i;
                 }
             }
 
             // Check main inventory (slots 9-35)
-            for (int i = 9; i < player.getInventory().items.size(); i++) {
-                if (player.getInventory().items.get(i) == targetBackpack) {
+            for (int i = 9; i < player.getInventory().getNonEquipmentItems().size(); i++) {
+                if (player.getInventory().getNonEquipmentItems().get(i) == targetBackpack) {
                     return i;
                 }
             }
 
             // Check armor slots (slots 36-39)
-            for (int i = 0; i < player.getInventory().armor.size(); i++) {
-                if (player.getInventory().armor.get(i) == targetBackpack) {
+            for (int i = 0; i < armorItems(player).size(); i++) {
+                if (armorItems(player).get(i) == targetBackpack) {
                     return 36 + i;
                 }
             }
@@ -264,14 +275,14 @@ public class SophisticatedBackpacksTab extends ConfigurableItemTab {
             Class<?> backpackItemClass = Class.forName("net.p3pp3rf1y.sophisticatedbackpacks.backpack.BackpackItem");
 
             // Check main inventory
-            for (ItemStack stack : player.getInventory().items) {
+            for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
                 if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
                     return true;
                 }
             }
 
             // Check armor slots
-            for (ItemStack stack : player.getInventory().armor) {
+            for (ItemStack stack : armorItems(player)) {
                 if (!stack.isEmpty() && backpackItemClass.isInstance(stack.getItem())) {
                     return true;
                 }
