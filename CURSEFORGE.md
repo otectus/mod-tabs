@@ -7,6 +7,13 @@ another screen, then hit your inventory key to snap right back.
 This is the fresh **Minecraft 26.1.2 / NeoForge** release (`0.1.0`): a ground-up rewrite of
 the classic *Legendary Tabs* / *Mod Tabs* concept, rebuilt on a lean, flexible core.
 
+> **This is a fork.** Mod Tabs (Forked) is a fork of
+> **[Mod Tabs](https://www.curseforge.com/minecraft/mc-mods/mod-tabs)** by **Vodmordia**
+> ([source](https://github.com/morelandjo/ModTabs)), which itself descends from
+> **[Legendary Tabs](https://www.curseforge.com/minecraft/mc-mods/legendary-tabs)** by
+> **Sfiomn**. It is distributed under the **MIT License** (see *How this fork differs* and
+> *Credits* below). Fork source: <https://github.com/otectus/mod-tabs>
+
 ---
 
 ## ✨ What it does
@@ -74,15 +81,40 @@ the layout editor.
 
 ---
 
+## 🔀 How this fork differs from the original
+
+Mod Tabs (Forked) is a **ground-up port to Minecraft 26.1.2 / NeoForge**, deliberately
+reduced to a lean core rather than a feature-for-feature copy of the upstream 1.21.1 line:
+
+- **Ships only** the tab-bar framework, the inventory / home tab, and the nearby-container
+  tabs.
+- **Not included (yet):** the ~45 third-party per-mod integration tabs, the integration
+  network packets, and the standalone global-settings panel from the older *Mod Tabs* /
+  *Legendary Tabs* builds.
+- **Config migrated** entirely to the in-game **MidnightLib** config screen.
+- **Container detection is now menu-provider-driven** (no hardcoded block list), so vanilla
+  and modded containers are picked up automatically.
+
+More per-mod integrations are planned on top of this base.
+
+---
+
 ## 🙏 Credits
 
-- Original *Legendary Tabs* concept and implementation by **Sfiomn**.
-- Rewrite and 26.1.2 port by **Vodmordia**.
+- Original *[Legendary Tabs](https://www.curseforge.com/minecraft/mc-mods/legendary-tabs)*
+  concept and implementation by **Sfiomn**
+  ([source](https://github.com/sfiomn/LegendaryTabs)).
+- *[Mod Tabs](https://www.curseforge.com/minecraft/mc-mods/mod-tabs)* rewrite and NeoForge
+  port by **Vodmordia** ([source](https://github.com/morelandjo/ModTabs)) — the direct
+  parent of this fork.
+- 26.1.2 core port (this fork) by **otectus**
+  ([source](https://github.com/otectus/mod-tabs)).
 - The nearby-container feature is a clean-room implementation inspired by the design of
-  **InventoryTabs** by dhyces / Kavin Phan. No source code was copied — the shared ideas
-  are credited in full in the project's `CREDITS.txt`.
+  **[InventoryTabs](https://github.com/dhyces/InventoryTabs)** by dhyces / Kavin Phan. No
+  source code was copied — the shared ideas are credited in full in the project's
+  `CREDITS.txt`.
 
-Released under the **MIT License**.
+Released under the **MIT License** — the same license as the upstream *Mod Tabs* project.
 
 ---
 

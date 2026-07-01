@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2026-06-30
 
 Initial release of the **minimal core port** to Minecraft 26.1.2 / NeoForge. This is a
-ground-up rewrite of Vodmordia's *Mod Tabs* (itself a rewrite of Sfiomn's *Legendary
-Tabs*), reduced to the tab framework plus the two always-available tabs. Per-mod
+ground-up rewrite of Vodmordia's *[Mod Tabs](https://www.curseforge.com/minecraft/mc-mods/mod-tabs)*
+([source](https://github.com/morelandjo/ModTabs)) — itself a rewrite of Sfiomn's
+*[Legendary Tabs](https://www.curseforge.com/minecraft/mc-mods/legendary-tabs)* — reduced to
+the tab framework plus the two always-available tabs. Per-mod
 integrations from the older 1.21.1 line are not part of this build.
 
 ### Added
@@ -46,4 +48,4 @@ integrations from the older 1.21.1 line are not part of this build.
   standalone global-settings panel from the older 1.21.1 line are not included in this
   core build.
 
-[0.1.0]: https://github.com/vodmordia/mod-tabs/releases/tag/v0.1.0
+[0.1.0]: https://github.com/otectus/mod-tabs/releases/tag/v0.1.0

@@ -5,10 +5,14 @@ screens, letting you jump between screens without closing your inventory. It als
 surfaces **nearby chests, barrels, shulker boxes and modded containers** as tabs so you
 can open them straight from the inventory screen.
 
-Originally developed by **Sfiomn** as *Legendary Tabs* and later rewritten by
-**Vodmordia**, this repository is the **minimal core port to Minecraft 26.1.2 /
-NeoForge**. Version `0.1.0` ships the tab framework, the inventory (home) tab and the
-nearby-container tabs. Additional per-mod integrations are planned on top of this base.
+This repository is a **fork** and **minimal core port to Minecraft 26.1.2 / NeoForge** of
+**[Mod Tabs](https://www.curseforge.com/minecraft/mc-mods/mod-tabs)** by **Vodmordia**
+([source](https://github.com/morelandjo/ModTabs)), which itself is a rewrite of
+**[Legendary Tabs](https://www.curseforge.com/minecraft/mc-mods/legendary-tabs)** by
+**Sfiomn** ([source](https://github.com/sfiomn/LegendaryTabs)). Version `0.1.0` ships the
+tab framework, the inventory (home) tab and the nearby-container tabs; additional per-mod
+integrations are planned on top of this base. Distributed under the **MIT License** — the
+same license as the upstream *Mod Tabs* project.
 
 ---
 
@@ -94,11 +98,18 @@ The built jar lands in `build/libs/`. To launch the dev client:
 
 ## Credits & License
 
-- Original *Legendary Tabs* concept and implementation by **Sfiomn**.
-- Rewrite and 26.1.2 port by **Vodmordia**.
+- Original *[Legendary Tabs](https://www.curseforge.com/minecraft/mc-mods/legendary-tabs)*
+  concept and implementation by **Sfiomn**
+  ([source](https://github.com/sfiomn/LegendaryTabs)).
+- *[Mod Tabs](https://www.curseforge.com/minecraft/mc-mods/mod-tabs)* rewrite and NeoForge
+  port by **Vodmordia** ([source](https://github.com/morelandjo/ModTabs)) — the direct
+  parent this fork is based on.
+- 26.1.2 core port (this fork) by **otectus**
+  ([source](https://github.com/otectus/mod-tabs)).
 - The nearby-container feature is a clean-room implementation inspired by the design of
-  **InventoryTabs** by dhyces / Kavin Phan — see [`CREDITS.txt`](CREDITS.txt) for the full
-  attribution.
+  **[InventoryTabs](https://github.com/dhyces/InventoryTabs)** by dhyces / Kavin Phan — see
+  [`CREDITS.txt`](CREDITS.txt) for the full attribution.
 
-Licensed under the **MIT License** (`mod_license` in project metadata). See
+Licensed under the **MIT License** — see [`LICENSE`](LICENSE). This matches the license of
+the upstream *Mod Tabs* project (MIT at the time of this fork). See
 [`CREDITS.txt`](CREDITS.txt) for third-party attributions.
