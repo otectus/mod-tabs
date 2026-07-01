@@ -7,7 +7,7 @@ project. Full lineage and attribution:
   * Mod Tabs (direct parent of this fork) by Vodmordia
       https://www.curseforge.com/minecraft/mc-mods/mod-tabs
       https://github.com/morelandjo/ModTabs
-      Released under the MIT License (at the time of this fork).
+      Released under the GNU LGPL v2.1.
 
   * Legendary Tabs (the original this concept descends from) by Sfiomn
       https://www.curseforge.com/minecraft/mc-mods/legendary-tabs
@@ -16,9 +16,9 @@ project. Full lineage and attribution:
   * Mod Tabs (Forked) — Minecraft 26.1.2 core port by otectus
       https://github.com/otectus/mod-tabs
 
-This fork is distributed under the MIT License (see the LICENSE file), the same
-license as the upstream Mod Tabs project, with the original copyright notices
-retained.
+This fork is distributed under the GNU Lesser General Public License, version 2.1
+(see the LICENSE file), the same license as the upstream Mod Tabs project, with
+the original copyright notices retained.
 
 =========================================================================
 

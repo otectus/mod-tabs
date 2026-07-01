@@ -11,7 +11,7 @@ the classic *Legendary Tabs* / *Mod Tabs* concept, rebuilt on a lean, flexible c
 > **[Mod Tabs](https://www.curseforge.com/minecraft/mc-mods/mod-tabs)** by **Vodmordia**
 > ([source](https://github.com/morelandjo/ModTabs)), which itself descends from
 > **[Legendary Tabs](https://www.curseforge.com/minecraft/mc-mods/legendary-tabs)** by
-> **Sfiomn**. It is distributed under the **MIT License** (see *How this fork differs* and
+> **Sfiomn**. It is distributed under the **GNU LGPL v2.1** (see *How this fork differs* and
 > *Credits* below). Fork source: <https://github.com/otectus/mod-tabs>
 
 ---
@@ -114,7 +114,7 @@ More per-mod integrations are planned on top of this base.
   source code was copied — the shared ideas are credited in full in the project's
   `CREDITS.txt`.
 
-Released under the **MIT License** — the same license as the upstream *Mod Tabs* project.
+Released under the **GNU LGPL v2.1** — the same license as the upstream *Mod Tabs* project.
 
 ---
 

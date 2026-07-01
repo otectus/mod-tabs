@@ -11,7 +11,7 @@ This repository is a **fork** and **minimal core port to Minecraft 26.1.2 / NeoF
 **[Legendary Tabs](https://www.curseforge.com/minecraft/mc-mods/legendary-tabs)** by
 **Sfiomn** ([source](https://github.com/sfiomn/LegendaryTabs)). Version `0.1.0` ships the
 tab framework, the inventory (home) tab and the nearby-container tabs; additional per-mod
-integrations are planned on top of this base. Distributed under the **MIT License** — the
+integrations are planned on top of this base. Distributed under the **GNU LGPL v2.1** — the
 same license as the upstream *Mod Tabs* project.
 
 ---
@@ -110,6 +110,6 @@ The built jar lands in `build/libs/`. To launch the dev client:
   **[InventoryTabs](https://github.com/dhyces/InventoryTabs)** by dhyces / Kavin Phan — see
   [`CREDITS.txt`](CREDITS.txt) for the full attribution.
 
-Licensed under the **MIT License** — see [`LICENSE`](LICENSE). This matches the license of
-the upstream *Mod Tabs* project (MIT at the time of this fork). See
+Licensed under the **GNU LGPL v2.1** — see [`LICENSE`](LICENSE). This matches the license of
+the upstream *Mod Tabs* project. See
 [`CREDITS.txt`](CREDITS.txt) for third-party attributions.
