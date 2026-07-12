@@ -9,10 +9,11 @@ This repository is a **fork** and **minimal core port to Minecraft 26.1.2 / NeoF
 **[Mod Tabs](https://www.curseforge.com/minecraft/mc-mods/mod-tabs)** by **Vodmordia**
 ([source](https://github.com/morelandjo/ModTabs)), which itself is a rewrite of
 **[Legendary Tabs](https://www.curseforge.com/minecraft/mc-mods/legendary-tabs)** by
-**Sfiomn** ([source](https://github.com/sfiomn/LegendaryTabs)). Version `0.1.0` ships the
-tab framework, the inventory (home) tab and the nearby-container tabs; additional per-mod
-integrations are planned on top of this base. Distributed under the **GNU LGPL v2.1** — the
-same license as the upstream *Mod Tabs* project.
+**Sfiomn** ([source](https://github.com/sfiomn/LegendaryTabs)). Version `0.2.0` ships the
+tab framework, the inventory (home) tab, the nearby-container tabs and the full per-screen
+layout editor; additional per-mod integrations are planned on top of this base (as
+data-driven definitions rather than hand-written classes). Distributed under the
+**GNU LGPL v2.1** — the same license as the upstream *Mod Tabs* project.
 
 ---
 
@@ -34,13 +35,19 @@ same license as the upstream *Mod Tabs* project.
   container screens (chest, shulker box, dispenser, hopper). The home tab always takes
   you back to your inventory.
 - **Nearby container tabs** — scans a radius around the player and shows **one tab per
-  openable block**. Detection is driven by the block's menu provider, so vanilla *and*
+  openable container**. Detection is driven by the block's menu provider, so vanilla *and*
   modded containers are picked up automatically without a hardcoded list. Double chests
   collapse into a single tab, blocked chests are skipped, and the bar refreshes live when
-  a container is placed or broken while your screen is open. *(Disabled by default.)*
+  a container is placed or broken while your screen is open. The effective radius is
+  capped at your block-interaction reach (~4.5 blocks, 5 in creative) — the server would
+  reject opening anything farther anyway. Detection covers block entities, which is every
+  real container; stateless workstations like crafting tables don't get tabs.
+  *(Disabled by default.)*
 - **Per-screen layout editor** — reposition, scale, rotate and space out the bar, move the
-  paging button, choose a tuck direction and anchoring mode, and set a tabs-per-page cap.
-  Layouts are saved per screen type.
+  paging button, and edit per-tab settings (visibility, custom icons, icon scale/nudge,
+  anchoring, tab order, tabs-per-page) through the options panel. A cogwheel opens the
+  global settings modal for per-tab visibility, sticky state and ordering. Layouts are
+  saved per screen type; ESC cancels, the save button persists.
 - **Tuck & sticky tabs** — tuck the bar out of the way and reveal it on hover, pin tabs to
   the leading edge so they survive pagination, or hide the bar entirely per screen.
 - **Pagination** — cap how many tabs show per page; a chevron button flips through the rest.
@@ -52,9 +59,11 @@ same license as the upstream *Mod Tabs* project.
 
 | Action | Default |
 |---|---|
-| Cycle to the next tab | **Shift + Tab** *(rebindable — "Tab Cycle" under the *Mod Tabs* controls category)* |
+| Cycle to the next tab | **Shift + Tab** *(fully rebindable, modifier included — "Tab Cycle" under the Inventory controls category)* |
+| Cycle to the previous tab | **Ctrl + Tab** *(rebindable — "Tab Cycle (Backward)")* |
 | Return to the inventory from a tab-opened screen | your **inventory key** (default **E**) |
 | Open the layout editor | **Shift + Z**, or **long-press the inventory tab** (~1.5 s) |
+| Leave the layout editor | **ESC** (cancels bar drags; panel edits apply immediately), or the save/cancel/reset buttons |
 | Click a tab | left-click to open its target screen |
 
 ---
@@ -68,12 +77,12 @@ Settings live in the in-game **MidnightLib** config screen (and in
 |---|---|---|
 | **Allow Layout Editing** | `true` | When off, every layout-editor entry point is locked. Intended for modpacks shipping a fixed layout. |
 | **Enable Nearby Container Tabs** | `false` | Show one tab per nearby chest / barrel / shulker box / modded container. |
-| **Nearby Container Range** | `5` | Radius in blocks to scan for openable containers (`1`–`16`). |
+| **Nearby Container Range** | `5` | Radius in blocks to scan for openable containers (`1`–`16`); the effective radius is additionally capped at your block-interaction reach. |
 | **Require Line of Sight** | `false` | If on, containers behind walls won't show a tab. |
-| **Custom Tabs** | `true` | Toggles for the data-driven custom-tab subsystem and its debug logging. |
 
-Per-tab visibility (`Yes` / `No` / `Tuck`), order, sticky state and custom icons are
-edited through the in-game layout tools rather than the raw config file.
+Config changes apply as soon as the config screen closes — no restart needed. Per-tab
+visibility (`Yes` / `No` / `Tuck`), order, sticky state and custom icons are edited
+through the in-game layout editor (Shift+Z) rather than the raw config file.
 
 ---
 
