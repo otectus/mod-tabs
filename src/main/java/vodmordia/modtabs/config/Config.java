@@ -6,6 +6,17 @@ public class Config
 {
 	// Old NeoForge config system completely removed - now using MidnightConfig only
 
+	/**
+	 * Single entry point for anything that mutates {@link ModTabsConfig} statics at
+	 * runtime and needs the change reflected in hot paths: the MidnightLib config
+	 * screen closing, and the layout editor's per-tab write helpers. Runtime code
+	 * reads the {@link Baked} snapshot, never the MidnightConfig statics directly.
+	 */
+	public static void rebake()
+	{
+		Baked.bakeClient();
+	}
+
 	public static class Baked
 	{
 		// Global icon-offset & paging from the General tab of the in-game settings modal.

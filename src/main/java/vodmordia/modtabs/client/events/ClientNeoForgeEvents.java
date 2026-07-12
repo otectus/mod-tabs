@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
+import eu.midnightdust.lib.config.MidnightConfigScreen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
@@ -13,6 +14,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.common.EventBusSubscriber;
 import vodmordia.modtabs.ModTabs;
+import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.client.screens.NextTabsButton;
 import vodmordia.modtabs.client.screens.TabButton;
@@ -52,8 +54,39 @@ public class ClientNeoForgeEvents {
     private static int nearbyRefreshTickCounter = 0;
     private static final int NEARBY_REFRESH_TICKS = 10;
 
+    // Set when our MidnightLib config screen closes; the actual re-bake is deferred to
+    // the next client tick so we never depend on MidnightConfig's internal ordering of
+    // loadValuesFromJson() vs setScreen() inside onClose().
+    private static boolean pendingConfigRebake = false;
+
+    /**
+     * MidnightLib (1.9.3) has no save/close callback API, and {@code Config.Baked} is a
+     * one-shot snapshot — without this hook, config-screen changes silently do nothing
+     * until the game is relaunched. The {@code modid} public field is unofficial API;
+     * pinned against midnightlib 1.9.3.
+     */
+    @SubscribeEvent
+    public static void onScreenClosing(ScreenEvent.Closing event) {
+        if (event.getScreen() instanceof MidnightConfigScreen configScreen
+                && ModTabs.MOD_ID.equals(configScreen.modid)) {
+            pendingConfigRebake = true;
+        }
+    }
+
     @SubscribeEvent
     public static void onClientTickPost(ClientTickEvent.Post event) {
+        if (pendingConfigRebake) {
+            pendingConfigRebake = false;
+            Config.rebake();
+            // If the config was opened from a tabbed screen, that screen never refires
+            // ScreenEvent.Init.Post on return — rebuild its tab bar so the new values
+            // (enabled tabs, nearby-container options) show up immediately.
+            Minecraft rebakeMc = Minecraft.getInstance();
+            if (rebakeMc.screen != null && TabsMenu.hasTabsForScreen(rebakeMc.screen.getClass())) {
+                TabsMenu.reinitCurrentScreen();
+            }
+        }
+
         // Without this, a chest broken (or placed) while the player has an inventory /
         // container screen open leaves a stale tab in the bar until they close + reopen.
         // We poll the provider's change-detection helper and trigger a screen re-init when
