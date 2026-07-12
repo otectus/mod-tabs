@@ -63,11 +63,14 @@ dependencies {
     // MidnightLib — required for the in-game config system (has a 26.1 NeoForge build).
     implementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
-    // Sophisticated Backpacks + Core — compile against them for the SophisticatedBackpacksTab.
-    // Runtime presence is gated by ModList.isLoaded(...). Re-resolve these 26.1.2 file IDs at build time.
-    // TODO(port): confirm/refresh CurseForge file IDs for 26.1.2 before the runtime smoke test.
-    compileOnly("curse.maven:sophisticated-core-618298:8337377")        // sophisticatedcore-26.1.2-1.4.75.2082
-    compileOnly("curse.maven:sophisticated-backpacks-422301:8034904")   // sophisticatedbackpacks-26.1.2-3.25.55.1739
+    // Unit tests cover the MC-free logic (TabPaginationMath); no game test fixtures needed.
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 tasks.named('processResources', ProcessResources).configure {

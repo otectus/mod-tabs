@@ -17,16 +17,19 @@ public final class TabPaginationMath {
      * Clamp a (possibly stale) start index against the current tab set. A preserved
      * index can point past the end after the set shrinks (chest broken, tab disabled);
      * without the clamp the bar renders an empty page until the user pages manually.
-     * The result is always a valid page start: floored to a page boundary and capped
-     * at the last non-empty page.
+     *
+     * <p>In-range indices pass through untouched — {@link #advanceStartIndex}
+     * deliberately produces page starts that are NOT multiples of the slot count
+     * (it back-shifts so the last page is full), and re-aligning them here would
+     * yank the user off their current page on every screen switch. Only indices
+     * past {@code nonStickyCount - availableSlots} are snapped back, to the start
+     * of a full last page.
      */
     public static int clampStartIndex(int startTabIndex, int nonStickyCount, int availableSlots) {
         if (availableSlots <= 0 || nonStickyCount <= 0 || startTabIndex <= 0) {
             return 0;
         }
-        int lastPageStart = ((nonStickyCount - 1) / availableSlots) * availableSlots;
-        int pageAligned = (startTabIndex / availableSlots) * availableSlots;
-        return Math.min(pageAligned, lastPageStart);
+        return Math.min(startTabIndex, Math.max(0, nonStickyCount - availableSlots));
     }
 
     /**
