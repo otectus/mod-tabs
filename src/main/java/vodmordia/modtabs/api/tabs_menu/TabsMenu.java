@@ -123,6 +123,16 @@ public class TabsMenu {
         return screen != null && editingScreenClass != null && editingScreenClass.equals(screen.getClass());
     }
 
+    /** True while the layout editor is active for ANY screen class. */
+    public static boolean isEditingAnything() {
+        return editingScreenClass != null;
+    }
+
+    /** True when the layout editor is active and locked to exactly this screen class. */
+    public static boolean isEditingScreenClass(Class<?> screenClass) {
+        return editingScreenClass != null && editingScreenClass.equals(screenClass);
+    }
+
     public static void enterEditMode(Screen screen) {
         // Modpack lock: when the modpack maker sets allowEditing=false in the config file,
         // every entry point into the layout editor (Shift+Z, tab long-press, the Edit button
@@ -140,7 +150,7 @@ public class TabsMenu {
         tempIconRotation = 0;
         dragMode = DragMode.NONE;
         panelCollapsed = true;
-        // editor settings-panel stripped
+        GlobalSettingsPanel.close(false);
         setTabTooltipsSuppressed(screen, true);
     }
 
@@ -149,7 +159,7 @@ public class TabsMenu {
         if (current != null) {
             setTabTooltipsSuppressed(current, false);
         }
-        // editor stripped
+        vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconDropdown.closeOpen();
         editingScreenClass = null;
         dragOffsetX = 0;
         dragOffsetY = 0;
@@ -763,10 +773,10 @@ public class TabsMenu {
             if (child instanceof net.minecraft.client.gui.components.AbstractWidget w) {
                 if (child instanceof vodmordia.modtabs.client.screens.TabButton
                         || child instanceof vodmordia.modtabs.client.screens.NextTabsButton
-                        || false
-                        || false
-                        || false
-                        || false) {
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditOnly
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconScaleEditBox
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconNudgeEditBox
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.MaxTabsPerPageEditBox) {
                     w.extractRenderState(gui, mouseX, mouseY, 0f);
                 }
             }
@@ -862,31 +872,45 @@ public class TabsMenu {
         gui.pose().popMatrix();
 
         // Pass 3: panel controls at Z=700 — must be ABOVE the panel BG (Z=600) or they'd
-        // be obscured by the rectangle drawn in drawOptionsPanel.
+        // be obscured by the rectangle drawn in drawOptionsPanel. The CustomIconDropdown
+        // renders LAST among the panel widgets: its open popup used to be lifted to Z+50,
+        // but 26.1 layering is submission order, so drawing it after its siblings is what
+        // keeps the popup above the neighbouring rows.
         gui.pose().pushMatrix();
         gui.pose().translate(0, 0);
         for (var child : screen.children()) {
             if (child instanceof net.minecraft.client.gui.components.AbstractWidget w) {
-                if (false
-                        || false
-                        || false
-                        || false
-                        || false
-                        || false
-                        || false
-                        || false
-                        || false
-                        || false
-                        || false) {
+                if (child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconDropdown) {
+                    continue; // rendered after the other panel widgets (see below)
+                }
+                if (child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconRotationCycle
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.VisibilityCycle
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.TuckDirectionCycle
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconRefresh
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconFolder
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconScaleEditBox
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconNudgeEditBox
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.AnchorCycle
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.TabOrderCycle
+                        || child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.MaxTabsPerPageEditBox) {
                     w.extractRenderState(gui, mouseX, mouseY, 0f);
                 }
             }
         }
+        for (var child : screen.children()) {
+            if (child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.CustomIconDropdown w) {
+                w.extractRenderState(gui, mouseX, mouseY, 0f);
+            }
+        }
         gui.pose().popMatrix();
 
-        // Pass 4: global settings modal (Z=900) — sits above everything else, including
+        // Pass 4: global settings modal — sits above everything else, including
         // the panel and its widgets, so its scrim and controls capture all input.
-        // Global settings panel rendering stripped with the layout editor.
+        // nextStratum() replaces the old Z=900 lift (26.1 layers by submission order).
+        if (GlobalSettingsPanel.isOpen()) {
+            gui.nextStratum();
+            GlobalSettingsPanel.render(gui, screen, mouseX, mouseY);
+        }
     }
 
     /** Public so the LayoutEditorButtons module can position controls inside it. */
@@ -1572,7 +1596,8 @@ public class TabsMenu {
             // widgets self-gate on isEditing — they don't render in play mode.
             TabDisplayVisibility visibility = getTabDisplayVisibilityForScreen(event.getScreen());
             if (visibility == TabDisplayVisibility.NO) {
-                // Editor toggle stripped with the layout editor; just render no tabs.
+                vodmordia.modtabs.client.screens.LayoutEditorButtons.addToScreen(
+                        event.getScreen(), event::addListener);
                 return;
             }
 
@@ -1782,18 +1807,18 @@ public class TabsMenu {
 
             // Layout editor controls (always added when tabs are visible on this screen)
             event.getScreen().children().removeIf(child ->
-                false ||
-                false ||
-                false ||
-                false ||
-                false);
+                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditToggle ||
+                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditOnly ||
+                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconScaleEditBox ||
+                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconNudgeEditBox ||
+                child instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.MaxTabsPerPageEditBox);
             event.getScreen().renderables.removeIf(r ->
-                false ||
-                false ||
-                false ||
-                false ||
-                false);
-            // editor stripped
+                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditToggle ||
+                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.EditOnly ||
+                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconScaleEditBox ||
+                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.IconNudgeEditBox ||
+                r instanceof vodmordia.modtabs.client.screens.LayoutEditorButtons.MaxTabsPerPageEditBox);
+            vodmordia.modtabs.client.screens.LayoutEditorButtons.addToScreen(event.getScreen(), event::addListener);
         }
     }
 
