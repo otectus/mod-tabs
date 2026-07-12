@@ -40,53 +40,6 @@ public class TabsMenu {
     private static TabBarAnimationManager animationManager = null;
     private static boolean isInTuckMode = false;
 
-    // Set to true while AbstractContainerScreenMixin is replaying our tab widgets BEFORE
-    // the GUI panel draws, so they appear behind it. TabButton/NextTabsButton check this
-    // (with edit-mode) to render once at the right pass and skip the other.
-    public static boolean renderingBehindPanel = false;
-
-    /**
-     * Container screens that completely override {@code render} and never call
-     * {@code super.render} (e.g. Sophisticated Backpacks' {@code StorageScreenBase}
-     * replays its own version manually). Our {@code AbstractContainerScreen.render}
-     * mixin never fires for these, so {@code renderingBehindPanel} stays false and
-     * the behind-panel pass is lost. For screens in this set, tabs render in the
-     * normal renderables iteration (on top of the GUI panel) instead.
-     */
-    private static final java.util.Set<String> RENDER_TABS_ON_TOP_FQNS = java.util.Set.of(
-            "net.p3pp3rf1y.sophisticatedbackpacks.client.gui.BackpackScreen"
-    );
-
-    public static boolean rendersTabsOnTop(Screen screen) {
-        return screen != null && RENDER_TABS_ON_TOP_FQNS.contains(screen.getClass().getName());
-    }
-
-    /**
-     * Renders the screen's TabButtons / NextTabsButton manually, before the GUI panel
-     * draws. Called from {@link vodmordia.modtabs.mixin.AbstractContainerScreenMixin}
-     * between the dim and the panel image. Skipped while editing — edit mode wants tabs
-     * on top so the user can grab handles.
-     */
-    public static void renderTabsBehindPanel(Screen screen, GuiGraphicsExtractor gui, int mouseX, int mouseY, float partialTick) {
-        if (isEditing(screen)) return;
-        if (!tabsScreens.containsKey(screen.getClass())) return;
-        renderingBehindPanel = true;
-        try {
-            for (var r : screen.renderables) {
-                if (r instanceof TabButton || r instanceof NextTabsButton) {
-                    r.extractRenderState(gui, mouseX, mouseY, partialTick);
-                }
-            }
-            // ItemRenderer (used for icons like Apothic Attributes' sword) submits to
-            // GuiGraphicsExtractor's deferred item buffer, which flushes only at the end of the
-            // frame — by then the panel has already drawn, leaving the icon on top of
-            // it. Flush now so the icons rasterize at this point in the render order.
-            gui.nextStratum();
-        } finally {
-            renderingBehindPanel = false;
-        }
-    }
-
     // Layout editor (Phase 1: drag, Phase 2: scale + spacing)
     private static Class<? extends Screen> editingScreenClass = null;
     private static int dragOffsetX = 0;
@@ -1345,40 +1298,11 @@ public class TabsMenu {
                 }
             }
         }
-        String screenClassName = screen.getClass().getName();
-        switch (screenClassName) {
-            case ScreenClasses.VANILLA_INVENTORY: return "inventory";
-            case ScreenClasses.VANILLA_ADVANCEMENTS:
-            case ScreenClasses.BETTER_ADVANCEMENTS: return "advancements";
-            case ScreenClasses.ARS_NOUVEAU_SPELLBOOK_GUI_LEGACY1:
-            case ScreenClasses.ARS_NOUVEAU_SPELLBOOK_GUI_LEGACY2: return "arsNouveau";
-            case ScreenClasses.BACKPACKED_FLYWHEEL_TRANSFORM:
-            case ScreenClasses.BACKPACKED_SCREEN_ALT:
-            case ScreenClasses.BACKPACKED_SCREEN: return "backpacked";
-            case ScreenClasses.LSO_BODY_HEALTH: return "bodyDamage";
-            case ScreenClasses.COBBLEMON_PARTY_LEGACY:
-            case ScreenClasses.COBBLEMON_PARTY: return "cobblemon";
-            case ScreenClasses.APPLESKIN_FOOD_STATS: return "diet";
-            case ScreenClasses.FTB_LIBRARY_WRAPPER: return "ftbQuests";
-            case ScreenClasses.JOURNEYMAP_FULLSCREEN: return "journeyMap";
-            case ScreenClasses.SCGUNS_ATTACHMENT:
-            case ScreenClasses.DRACONIC_EVOLUTION_GUI: return "draconicEvolution";
-            case ScreenClasses.MAP_ATLASES_ACCESS_UTILS: return "mapAtlases";
-            case ScreenClasses.XAEROS_MAP: return "xaerosMap";
-            case ScreenClasses.PUFFERFISH_SKILLS_ALT1:
-            case ScreenClasses.PUFFERFISH_SKILLS_ALT2: return "pufferfishSkills";
-            case ScreenClasses.SCGUNS_PASSIVE_SKILL: return "passiveSkillTree";
-            case ScreenClasses.BRASSWORKS_MISSIONS_UI: return "brassworksMissions";
-            case ScreenClasses.BIOLOGY_DICTIONARY_HOME_SCREEN:
-            case ScreenClasses.BIOLOGY_DICTIONARY_ABOUT_SCREEN:
-            case ScreenClasses.BIOLOGY_DICTIONARY_CONFIG_SCREEN:
-            case ScreenClasses.BIOLOGY_DICTIONARY_ENTITY_OVERVIEW_SCREEN:
-            case ScreenClasses.BIOLOGY_DICTIONARY_ENTITY_DETAIL_SCREEN: return "biologyDictionary";
-            case ScreenClasses.WILDEX_SCREEN: return "wildex";
-            case ScreenClasses.VANILLA_CONTAINER:
-                if (screenClassName.contains("sophisticatedbackpacks")) return "sophisticatedBackpacks";
-                if (screenClassName.contains("travelersbackpack")) return "travelersBackpack";
-                break;
+        // Fallback for the player inventory: its tab (InventoryTab) is never
+        // "currently used" while you're already ON the inventory screen, so the
+        // annotation loop above misses it.
+        if (ScreenClasses.VANILLA_INVENTORY.equals(screen.getClass().getName())) {
+            return "inventory";
         }
         return null;
     }
@@ -1608,12 +1532,6 @@ public class TabsMenu {
             } else {
                 animationManager = null;
             }
-
-            // Clear existing tab buttons to prevent duplicates
-            var existingTabButtons = event.getScreen().children().stream()
-                .filter(widget -> widget instanceof TabButton || widget instanceof NextTabsButton)
-                .toList();
-            existingTabButtons.forEach(event.getScreen().children()::remove);
 
             if (Minecraft.getInstance().player == null)
                 return;

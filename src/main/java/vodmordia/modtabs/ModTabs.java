@@ -22,10 +22,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Minimal 26.1.2 core port of Mod Tabs: only the tab framework, the vanilla
- * inventory/nearby-container tabs, and the Sophisticated Backpacks tab are kept.
- * The ~45 third-party integration tabs, the custom-JSON-tab subsystem, and the
- * integration network packets from upstream have been stripped.
+ * Minimal 26.1.2 core port of Mod Tabs: only the tab framework and the vanilla
+ * inventory/nearby-container tabs are kept. The ~45 third-party integration tabs,
+ * the custom-JSON-tab subsystem, and the integration network packets from
+ * upstream have been stripped.
  */
 @Mod(ModTabs.MOD_ID)
 public class ModTabs
@@ -82,10 +82,9 @@ public class ModTabs
             // Initialize icons directory for custom tab icons
             vodmordia.modtabs.utils.DynamicTextureLoader.getIconsDirectory();
 
-            // Home/inventory tab (appears on the inventory + vanilla container screens, not the
-            // SB backpack screen). Renders a valid chest icon. Mod Tabs' generic
-            // SophisticatedBackpacksTab stays UNregistered — it drew a component-less backpack as a
-            // black box, and Sophisticated Tab provides richer per-backpack tabs already.
+            // Home/inventory tab (appears on the inventory + vanilla container screens).
+            // Third-party integration tabs (e.g. for backpack mods) are intentionally not
+            // part of this minimal core port.
             TabsMenu.register(new InventoryTab());
 
             // One transient tab per nearby container block (chests, barrels, modded

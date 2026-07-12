@@ -22,9 +22,6 @@ import vodmordia.modtabs.client.screens.NextTabsButton;
 import vodmordia.modtabs.client.screens.TabButton;
 import vodmordia.modtabs.client.tabs_menu.NearbyContainersProvider;
 import vodmordia.modtabs.client.keybinds.ModKeybinds;
-import vodmordia.modtabs.integration.ModIntegration;
-import vodmordia.modtabs.integration.ModIntegrationManager;
-import vodmordia.modtabs.utils.ScreenClasses;
 
 @EventBusSubscriber(modid = ModTabs.MOD_ID, value = Dist.CLIENT)
 public class ClientNeoForgeEvents {
@@ -338,37 +335,7 @@ public class ClientNeoForgeEvents {
 
     @SubscribeEvent
     public static void screenInitPost(ScreenEvent.Init.Post event) {
-        event.getScreen();
         TabsMenu.initScreenButtons(event);
-
-        // Wildex's bestiary screen renders its children inside a scaled PoseStack,
-        // which would draw our tab widgets microscopic in the corner. Strip them from
-        // `renderables` so vanilla's render path skips them; the post-render handler
-        // below redraws them at correct scale, and the mouse-click handler forwards
-        // input manually since the buttons remain in `children()`.
-        if (event.getScreen().getClass().getName().equals("de.coldfang.wildex.client.screen.WildexScreen")) {
-            event.getScreen().renderables.removeIf(r ->
-                r instanceof TabButton || r instanceof NextTabsButton);
-        }
-
-        // Hide L2 tabs after screen initialization
-        if (ModIntegrationManager.isModLoaded(ModIntegration.L2_LIBRARY) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.L2_HOSTILITY) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.L2_ARTIFACTS) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.MODULAR_GOLEMS)) {
-            // But don't hide tabs when we're in the Modular Golems tracker screens (they need sub-tabs)
-            boolean isModularGolemsTrackerScreen = false;
-            try {
-                Class<?> golemInfoScreenClass = Class.forName("dev.xkmc.modulargolems.content.client.tracker.GolemInfoScreen");
-                isModularGolemsTrackerScreen = golemInfoScreenClass.isInstance(event.getScreen());
-            } catch (ClassNotFoundException e) {
-                // Class not found, not a Modular Golems screen
-            }
-
-            if (!isModularGolemsTrackerScreen) {
-                hideL2Tabs(event.getScreen());
-            }
-        }
     }
 
 
@@ -496,98 +463,9 @@ public class ClientNeoForgeEvents {
     }
 
     @SubscribeEvent
-    public static void onScreenRender(ScreenEvent.Render.Pre event) {
-        // Hide L2Library tabs when L2 mods are loaded and we're managing tabs
-        if (ModIntegrationManager.isModLoaded(ModIntegration.L2_LIBRARY) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.L2_HOSTILITY) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.L2_ARTIFACTS) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.MODULAR_GOLEMS)) {
-            Screen screen = event.getScreen();
-            if (screen instanceof AbstractContainerScreen<?>) {
-                // Cancel L2's tab rendering by removing their tab widgets
-                // But don't hide tabs when we're in the Modular Golems tracker screens (they need sub-tabs)
-                boolean isModularGolemsTrackerScreen = false;
-                try {
-                    Class<?> golemInfoScreenClass = Class.forName("dev.xkmc.modulargolems.content.client.tracker.GolemInfoScreen");
-                    isModularGolemsTrackerScreen = golemInfoScreenClass.isInstance(screen);
-                } catch (ClassNotFoundException e) {
-                    // Class not found, not a Modular Golems screen
-                }
-
-                if (!isModularGolemsTrackerScreen) {
-                    hideL2Tabs(screen);
-                }
-            }
-        }
-    }
-
-    private static void hideL2Tabs(Screen screen) {
-        if (ModIntegrationManager.isModLoaded(ModIntegration.L2_LIBRARY) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.L2_HOSTILITY) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.L2_ARTIFACTS) ||
-            ModIntegrationManager.isModLoaded(ModIntegration.MODULAR_GOLEMS)) {
-            try {
-                // Remove L2's tab buttons from the screen
-                screen.children().removeIf(widget -> {
-                    String className = widget.getClass().getName();
-                    boolean isL2Tab = className.contains("l2tabs") ||
-                                     className.contains("l2library") ||
-                                     className.contains("l2hostility") ||
-                                     className.contains("l2artifacts") ||
-                                     className.contains("modulargolems");
-                    boolean isTab = className.toLowerCase().contains("tab");
-                    return isL2Tab && isTab;
-                });
-                
-                screen.renderables.removeIf(renderable -> {
-                    String className = renderable.getClass().getName();
-                    boolean isL2Tab = className.contains("l2tabs") ||
-                                     className.contains("l2library") ||
-                                     className.contains("l2hostility") ||
-                                     className.contains("l2artifacts") ||
-                                     className.contains("modulargolems");
-                    boolean isTab = className.toLowerCase().contains("tab");
-                    return isL2Tab && isTab;
-                });
-                
-            } catch (Exception e) {
-                
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onScreenRenderPost(ScreenEvent.Render.Post event) {
         // Update mouse position for tuck mode hover detection (for screens that need special handling)
         TabsMenu.onMouseMove(event.getMouseX(), event.getMouseY(), event.getScreen());
-
-        // Special handling for screens that don't call super.render() properly
-        String screenClassName = event.getScreen().getClass().getName();
-
-        if (screenClassName.equals("net.puffish.skillsmod.client.gui.SkillsScreen") ||
-            screenClassName.equals("dev.ftb.mods.ftblibrary.ui.ScreenWrapper") ||
-            screenClassName.equals("xaero.map.gui.GuiMap") ||
-            screenClassName.equals("pepjebs.mapatlases.client.screen.AtlasOverviewScreen") ||
-            screenClassName.equals("betteradvancements.common.gui.BetterAdvancementsScreen") ||
-            screenClassName.equals("de.coldfang.wildex.client.screen.WildexScreen") ||
-            screenClassName.equals(ScreenClasses.EPIC_FIGHT_SKILL_EDIT_SCREEN) ||
-            screenClassName.equals(ScreenClasses.EPIC_SKILLS_SKILL_TREE_SCREEN)) {
-
-            // These screens don't iterate renderables in their render method, so we
-            // manually render TabButton/NextTabsButton at Z=0 (above any blur the screen
-            // applied). Editor widgets are NOT rendered here — they go through
-            // renderEditModeOverlay's Z=400/Z=700 passes, which correctly layer them
-            // ABOVE the panel background drawn at Z=600. Rendering them here at Z=0
-            // would put them behind the panel BG and they'd be invisible.
-            for (var child : event.getScreen().children()) {
-                if (child instanceof TabButton tabButton) {
-                    tabButton.extractContents(event.getGuiGraphics(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
-                }
-                if (child instanceof NextTabsButton nextTabsButton) {
-                    nextTabsButton.extractContents(event.getGuiGraphics(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
-                }
-            }
-        }
     }
 
     /**

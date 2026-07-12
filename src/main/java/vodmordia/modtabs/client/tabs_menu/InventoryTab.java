@@ -12,8 +12,6 @@ import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
 import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
-import vodmordia.modtabs.integration.ModIntegration;
-import vodmordia.modtabs.integration.ModIntegrationManager;
 
 @TabConfig(configKey = "inventoryTab", defaultEnabled = true, defaultOrder = 0)
 public class InventoryTab extends ConfigurableIconTab {

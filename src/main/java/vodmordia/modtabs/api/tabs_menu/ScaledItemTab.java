@@ -8,7 +8,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import java.util.function.Supplier;
 
 /**
- * A specialized version of SimpleItemTab that allows custom scaling for the item icon.
+ * An item-icon tab that allows custom scaling for the item icon.
  * Use this for tabs that need their item icons rendered at a different scale than the default.
  */
 @OnlyIn(Dist.CLIENT)

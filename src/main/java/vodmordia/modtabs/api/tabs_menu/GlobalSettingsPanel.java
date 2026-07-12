@@ -423,9 +423,8 @@ public final class GlobalSettingsPanel {
     }
 
     /**
-     * Tooltip text for a tab icon. Upstream preferred the integration mod's display name
-     * when the tab carried a TabSpec; this port ships no integration tabs, so the tab's
-     * own getTooltip() text is the label.
+     * Tooltip text for a tab icon. Upstream preferred the integration mod's display name;
+     * this port ships no integration tabs, so the tab's own getTooltip() text is the label.
      */
     private static String gsTabLabelFor(String key) {
         if (gsTabsCache == null) return null;

@@ -128,10 +128,8 @@ public class TabButton extends Button {
 
     @Override
     public void extractContents(@NotNull GuiGraphicsExtractor gui, int mouseX, int mouseY, float partial) {
-        // 26.1: the behind-panel render strategy (and its `renderingBehindPanel` gate) is gone —
-        // it was driven by AbstractContainerScreenMixin, which 26.1's render-state rewrite made
-        // untargetable, so the mixin was removed. Tabs now always draw on top in the normal
-        // renderable pass, on every screen.
+        // Tabs always draw on top in the normal renderable pass, on every screen (the old
+        // behind-panel render strategy did not survive the 26.1 render-state rewrite).
         // Recompute position from the bar anchor each render so live scale/spacing edits are visible.
         int x = calculateX(barLeft, tabPositionIndex);
         int y = calculateY(barTop, tabPositionIndex, displayMode);
