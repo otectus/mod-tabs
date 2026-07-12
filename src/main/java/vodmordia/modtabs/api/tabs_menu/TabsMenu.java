@@ -1866,6 +1866,28 @@ public class TabsMenu {
     }
 
     /**
+     * Close the player's open container menu with full vanilla semantics — the close
+     * packet, the client-side reset of {@code containerMenu} back to {@code inventoryMenu},
+     * and {@code setScreen(null)} — exactly what vanilla does between closing chest A and
+     * right-clicking chest B. The previous ad-hoc implementations sent only the raw close
+     * packet, leaving {@code player.containerMenu} pointing at the dead menu, which desyncs
+     * anything that consults it afterwards.
+     *
+     * <p>No-op when only the inventory menu is open (identity check, matching vanilla's
+     * own {@code hasContainerOpen} logic).
+     *
+     * @return true if a menu was actually closed
+     */
+    public static boolean closeCurrentContainer() {
+        var player = Minecraft.getInstance().player;
+        if (player == null || player.containerMenu == player.inventoryMenu) {
+            return false;
+        }
+        player.closeContainer();
+        return true;
+    }
+
+    /**
      * Check if a screen class has tabs registered for it
      */
     public static boolean hasTabsForScreen(Class<? extends Screen> screenClass) {

@@ -171,15 +171,9 @@ public class ClientNeoForgeEvents {
         if (TabsMenu.wasScreenOpenedViaTab() && TabsMenu.hasTabsForScreen(event.getScreen().getClass())) {
             if (minecraft.options.keyInventory.matches(event.getKeyEvent())) {
                 if (minecraft.player != null && minecraft.gameMode != null) {
-                    // Before switching to inventory, properly close any open container (like backpack)
-                    // This fixes the duplication issue when switching from backpack to inventory via keybind
-                    try {
-                        if (minecraft.player.containerMenu != null && !minecraft.player.containerMenu.getClass().getSimpleName().equals("InventoryMenu")) {
-                            minecraft.player.closeContainer();
-                        }
-                    } catch (Exception e) {
-                        // Silently ignore close container errors
-                    }
+                    // Before switching to inventory, properly close any open container (like a
+                    // backpack) — fixes the duplication issue when switching via keybind.
+                    TabsMenu.closeCurrentContainer();
 
                     // Open inventory and clear tab tracking so normal E key behavior works
                     TabsMenu.clearTabScreenTracking();

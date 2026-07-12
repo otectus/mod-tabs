@@ -10,6 +10,7 @@ import vodmordia.modtabs.ModTabs;
 import vodmordia.modtabs.api.tabs_menu.ConfigurableIconTab;
 import vodmordia.modtabs.api.tabs_menu.TabConfig;
 import vodmordia.modtabs.api.tabs_menu.ScreenRegistry;
+import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 import vodmordia.modtabs.config.Config;
 import vodmordia.modtabs.integration.ModIntegration;
 import vodmordia.modtabs.integration.ModIntegrationManager;
@@ -27,15 +28,10 @@ public class InventoryTab extends ConfigurableIconTab {
         Minecraft mc = Minecraft.getInstance();
         // If a non-inventory menu is open (e.g. the player clicked this tab from a chest
         // screen mounted via ScreenRegistry.registerStandardScreens(ContainerScreen.class)),
-        // tell the server to close it first — a plain setScreen(InventoryScreen) only
-        // changes the client view and leaves the server still holding the container menu,
-        // which desyncs the next interaction.
-        if (mc.player != null && mc.player.containerMenu != null
-                && mc.player.containerMenu != mc.player.inventoryMenu
-                && mc.getConnection() != null) {
-            mc.getConnection().send(new net.minecraft.network.protocol.game.ServerboundContainerClosePacket(
-                    mc.player.containerMenu.containerId));
-        }
+        // close it with full vanilla semantics first — a plain setScreen(InventoryScreen)
+        // only changes the client view and leaves the server still holding the container
+        // menu, which desyncs the next interaction.
+        TabsMenu.closeCurrentContainer();
         mc.setScreen(new InventoryScreen(player));
     }
 

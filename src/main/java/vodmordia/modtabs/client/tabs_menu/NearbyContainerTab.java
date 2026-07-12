@@ -5,10 +5,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ServerboundContainerClosePacket;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -17,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import vodmordia.modtabs.api.tabs_menu.ScaledItemTab;
+import vodmordia.modtabs.api.tabs_menu.TabsMenu;
 
 import java.util.Objects;
 
@@ -78,13 +77,13 @@ public class NearbyContainerTab extends ScaledItemTab {
             return;
         }
 
-        // Close whatever menu the player has open (player inventory, or a previously-opened
-        // chest) before triggering the new use-on. Without this, the server can briefly hold
-        // two menus and the next click desyncs slot ids.
-        AbstractContainerMenu currentMenu = mc.player.containerMenu;
-        if (currentMenu != null) {
-            mc.getConnection().send(new ServerboundContainerClosePacket(currentMenu.containerId));
-        }
+        // Close whatever container menu the player has open (a previously-opened chest)
+        // with full vanilla semantics before triggering the new use-on. Without this, the
+        // server can briefly hold two menus and the next click desyncs slot ids. The
+        // setScreen(null) inside is vanilla-identical: it's what happens between closing
+        // chest A and right-clicking chest B by hand; the server's open packet then sets
+        // the new menu and screen.
+        TabsMenu.closeCurrentContainer();
 
         // Synthetic hit on the centre of the target block. Direction.UP is a harmless choice —
         // the server's BlockBehaviour.use* path doesn't care about the face for container opens.
