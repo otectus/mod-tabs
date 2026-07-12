@@ -6,6 +6,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import vodmordia.modtabs.config.ModTabsConfig;
+import vodmordia.modtabs.utils.DynamicTextureLoader;
 import vodmordia.modtabs.utils.IconResolver;
 
 import java.lang.reflect.Field;
@@ -25,6 +26,7 @@ public abstract class ConfigurableIconTab extends SimpleTextureTab {
     private final String tabId;
     private String lastResolvedFor;
     private Identifier lastResolved;
+    private int lastResolvedGeneration = -1;
 
     protected ConfigurableIconTab(Identifier defaultIcon, String customIconConfig, String tabId) {
         super(defaultIcon);
@@ -37,10 +39,19 @@ public abstract class ConfigurableIconTab extends SimpleTextureTab {
 
     private Identifier currentIcon() {
         String cfg = readCurrentCustomIconConfig();
-        if (!Objects.equals(cfg, lastResolvedFor)) {
+        boolean cfgChanged = !Objects.equals(cfg, lastResolvedFor);
+        // Re-resolve after a resource reload too: clearLoadedTextures() released the
+        // texture lastResolved points at, and only a fresh resolve re-registers it.
+        if (cfgChanged || lastResolvedGeneration != DynamicTextureLoader.generation()) {
+            if (cfgChanged) {
+                // The old file's DynamicTexture would otherwise stay registered for the
+                // rest of the session — this is the eviction path for icon experiments.
+                DynamicTextureLoader.releaseTexturesForTab(tabId);
+            }
             lastResolvedFor = cfg;
             Identifier custom = IconResolver.resolveIcon(cfg, tabId);
             lastResolved = custom != null ? custom : defaultIcon;
+            lastResolvedGeneration = DynamicTextureLoader.generation();
         }
         return lastResolved;
     }

@@ -54,6 +54,7 @@ public class ModTabs
         if (dist == Dist.CLIENT) {
             modEventBus.addListener(ClientModEvents::registerKeys);
             modEventBus.addListener(ClientModEvents::onClientSetup);
+            modEventBus.addListener(ClientModEvents::onAddReloadListeners);
         }
     }
 
@@ -62,6 +63,16 @@ public class ModTabs
         public static void registerKeys(RegisterKeyMappingsEvent event) {
             event.register(ModKeybinds.TAB_CYCLE);
             event.register(ModKeybinds.TAB_CYCLE_BACK);
+        }
+
+        public static void onAddReloadListeners(net.neoforged.neoforge.client.event.AddClientReloadListenersEvent event) {
+            // Custom-icon DynamicTextures are registered outside the resource system, so
+            // F3+T doesn't refresh them on its own. Release them all on reload; the
+            // generation bump makes ConfigurableIconTab re-resolve on its next render.
+            event.addListener(
+                    net.minecraft.resources.Identifier.fromNamespaceAndPath(MOD_ID, "dynamic_icon_textures"),
+                    (net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager ->
+                            vodmordia.modtabs.utils.DynamicTextureLoader.clearLoadedTextures());
         }
 
         public static void onClientSetup(FMLClientSetupEvent event)

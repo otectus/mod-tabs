@@ -23,6 +23,26 @@ public class DynamicTextureLoader {
     private static final Map<String, Identifier> loadedTextures = new HashMap<>();
     private static final String DYNAMIC_TEXTURE_PREFIX = "modtabs_dynamic";
 
+    // Bumped whenever the cache is cleared (resource reload), so cached Identifier
+    // holders (ConfigurableIconTab.lastResolved) know to re-resolve rather than keep
+    // pointing at a released texture.
+    private static int generation = 0;
+
+    public static int generation() {
+        return generation;
+    }
+
+    /**
+     * The map and the TextureManager register/release calls are client-thread only —
+     * a ConcurrentHashMap would paper over an ordering bug rather than fix one, so we
+     * assert instead of synchronizing.
+     */
+    private static boolean wrongThread(String op) {
+        if (Minecraft.getInstance().isSameThread()) return false;
+        ModTabs.LOGGER.error("DynamicTextureLoader.{} called off the client thread", op, new Throwable());
+        return true;
+    }
+
     /**
      * Load a texture from a file path and register it with Minecraft's texture manager.
      * The path should be relative to the game directory (e.g., "config/modtabs/icons/my_icon.png")
@@ -32,6 +52,7 @@ public class DynamicTextureLoader {
      * @return The Identifier of the loaded texture, or null if loading failed
      */
     public static Identifier loadTextureFromFile(String filePath, String textureId) {
+        if (wrongThread("loadTextureFromFile")) return null;
         // Check if we've already loaded this texture
         if (loadedTextures.containsKey(textureId)) {
             return loadedTextures.get(textureId);
@@ -113,6 +134,7 @@ public class DynamicTextureLoader {
      * This should be called when reloading custom tabs.
      */
     public static void clearLoadedTextures() {
+        if (wrongThread("clearLoadedTextures")) return;
         for (Map.Entry<String, Identifier> entry : loadedTextures.entrySet()) {
             try {
                 Minecraft.getInstance().getTextureManager().release(entry.getValue());
@@ -121,7 +143,29 @@ public class DynamicTextureLoader {
             }
         }
         loadedTextures.clear();
+        generation++;
         ModTabs.LOGGER.info("Cleared all dynamically loaded textures");
+    }
+
+    /**
+     * Release every texture loaded for one tab (keys are {@code "tab_<tabId>__<file>"},
+     * see IconResolver). Called when a tab's custom-icon config changes so the superseded
+     * file's GPU texture is freed instead of accumulating for the rest of the session.
+     */
+    public static void releaseTexturesForTab(String tabId) {
+        if (wrongThread("releaseTexturesForTab")) return;
+        String prefix = "tab_" + tabId + "__";
+        var it = loadedTextures.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Identifier> entry = it.next();
+            if (!entry.getKey().startsWith(prefix)) continue;
+            try {
+                Minecraft.getInstance().getTextureManager().release(entry.getValue());
+            } catch (Exception e) {
+                ModTabs.LOGGER.warn("Failed to release texture: " + entry.getValue());
+            }
+            it.remove();
+        }
     }
 
     /**
