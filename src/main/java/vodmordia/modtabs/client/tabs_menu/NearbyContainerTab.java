@@ -77,6 +77,15 @@ public class NearbyContainerTab extends ScaledItemTab {
             return;
         }
 
+        // Nothing may close until the interaction can plausibly succeed: if the server
+        // rejects the useItemOn on range, a menu we already closed stays closed and the
+        // player is left staring at a desynced screen. Padding 1.0 matches the server's
+        // own check in ServerGamePacketListenerImpl.handleUseItemOn, so this pre-check
+        // is never looser than what the server enforces.
+        if (!mc.player.isWithinBlockInteractionRange(blockPos, 1.0)) {
+            return;
+        }
+
         // Close whatever container menu the player has open (a previously-opened chest)
         // with full vanilla semantics before triggering the new use-on. Without this, the
         // server can briefly hold two menus and the next click desyncs slot ids. The

@@ -99,7 +99,15 @@ public class NearbyContainersProvider implements DynamicTabProvider {
      * workstations, not containers, and covering them would reinstate the cube scan.
      */
     private static List<BlockPos> scanPositions(Player player, Level level) {
-        int range = Math.max(1, Config.Baked.nearbyContainersTabRange);
+        // The configured radius is capped at the player's actual block-interaction reach:
+        // the server validates useItemOn against that attribute, so a tab beyond it would
+        // be a dead button whose click closes the current menu and then fails. Our
+        // centre-distance check is slightly STRICTER than the server's AABB-distance
+        // check — deliberate, since erring strict never emits an unopenable tab. The
+        // attribute is dynamic (creative, modded reach items) and this re-runs every
+        // scan, so the clamp tracks it automatically.
+        int range = Math.max(1, Math.min(Config.Baked.nearbyContainersTabRange,
+                (int) Math.floor(player.blockInteractionRange())));
         boolean sightCheck = Config.Baked.nearbyContainersTabRequireLineOfSight;
 
         Vec3 eye = player.getEyePosition();
