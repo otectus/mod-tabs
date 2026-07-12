@@ -1716,6 +1716,13 @@ public class TabsMenu {
                 enabledTabs.addAll(nonStickyTabs);
             }
 
+            // Re-clamp the (possibly preserved) start index against the final non-sticky
+            // list. A tab set that shrank since the index was stashed (chest broken, tab
+            // disabled) would otherwise leave the bar showing an empty page until the
+            // user pages manually.
+            startTabIndex = TabPaginationMath.clampStartIndex(
+                    startTabIndex, nonStickyTabs.size(), Math.max(0, currentTabsCount - stickyCount));
+
 
             // Sweep both children AND renderables for any leftover TabButton or
             // NextTabsButton from a prior init. Skipping renderables for NextTabsButton
@@ -1810,10 +1817,7 @@ public class TabsMenu {
             return; // sticky tabs fill the page — nothing to page through
         }
 
-        if (startTabIndex + availableSlots >= nonStickyTabs.size())
-            startTabIndex = 0;
-        else
-            startTabIndex += availableSlots + Math.min(nonStickyTabs.size() - availableSlots * 2 - startTabIndex, 0);
+        startTabIndex = TabPaginationMath.advanceStartIndex(startTabIndex, availableSlots, nonStickyTabs.size());
 
         // Update buttons: skip the leading sticky buttons.
         int buttonStartIndex = stickyCount;
@@ -1965,8 +1969,7 @@ public class TabsMenu {
         } else {
             int nextNonStickyIndex = nonStickyTabs.indexOf(nextTab);
             if (nextNonStickyIndex != -1) {
-                int targetPage = nextNonStickyIndex / availableSlots;
-                startTabIndex = targetPage * availableSlots;
+                startTabIndex = TabPaginationMath.pageStartFor(nextNonStickyIndex, availableSlots);
             }
         }
 
