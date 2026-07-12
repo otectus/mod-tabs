@@ -146,11 +146,22 @@ public class ClientNeoForgeEvents {
     public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
 
-        // Handle tab cycling keybind
-        if (ModKeybinds.TAB_CYCLE.matches(event.getKeyEvent()) && (event.getModifiers() & org.lwjgl.glfw.GLFW.GLFW_MOD_SHIFT) != 0) {
+        // Handle tab cycling keybinds. The modifier check lives in the KeyMapping
+        // (isConflictContextAndModifierActive) so rebinds work as advertised. BACK is
+        // checked first: with Ctrl+Shift+Tab held, both mappings' modifiers are active
+        // and the backward cycle should win.
+        if (ModKeybinds.TAB_CYCLE_BACK.matches(event.getKeyEvent()) && ModKeybinds.TAB_CYCLE_BACK.isConflictContextAndModifierActive()) {
             Screen currentScreen = event.getScreen();
             if (currentScreen != null && TabsMenu.hasTabsForScreen(currentScreen.getClass())) {
-                TabsMenu.cycleToNextTab(currentScreen);
+                TabsMenu.cycleTab(currentScreen, -1);
+                event.setCanceled(true);
+                return;
+            }
+        }
+        if (ModKeybinds.TAB_CYCLE.matches(event.getKeyEvent()) && ModKeybinds.TAB_CYCLE.isConflictContextAndModifierActive()) {
+            Screen currentScreen = event.getScreen();
+            if (currentScreen != null && TabsMenu.hasTabsForScreen(currentScreen.getClass())) {
+                TabsMenu.cycleTab(currentScreen, 1);
                 event.setCanceled(true);
                 return;
             }

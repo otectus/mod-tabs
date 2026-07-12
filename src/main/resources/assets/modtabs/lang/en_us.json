@@ -439,5 +439,6 @@
   "tooltip.modtabs.custom_tab.patchouli_book": "Patchouli Book",
 
   "key.categories.modtabs": "Mod Tabs",
-  "key.modtabs.tab_cycle": "Tab Cycle"
+  "key.modtabs.tab_cycle": "Tab Cycle",
+  "key.modtabs.tab_cycle_back": "Tab Cycle (Backward)"
 }

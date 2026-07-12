@@ -61,6 +61,7 @@ public class ModTabs
     {
         public static void registerKeys(RegisterKeyMappingsEvent event) {
             event.register(ModKeybinds.TAB_CYCLE);
+            event.register(ModKeybinds.TAB_CYCLE_BACK);
         }
 
         public static void onClientSetup(FMLClientSetupEvent event)

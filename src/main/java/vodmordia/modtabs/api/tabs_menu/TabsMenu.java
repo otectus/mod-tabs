@@ -1881,6 +1881,14 @@ public class TabsMenu {
      * Cycle to the next tab when the tab cycle keybind is pressed
      */
     public static void cycleToNextTab(Screen currentScreen) {
+        cycleTab(currentScreen, 1);
+    }
+
+    /**
+     * Cycle to the adjacent enabled tab. {@code direction} is +1 for the next tab,
+     * -1 for the previous one; any offset works thanks to floorMod wrapping.
+     */
+    public static void cycleTab(Screen currentScreen, int direction) {
         if (currentScreen == null) {
             return;
         }
@@ -1906,13 +1914,13 @@ public class TabsMenu {
             }
         }
 
-        // If no current tab was found, default to cycling from the first tab
+        // If no current tab was found, cycle to the first tab (forward) or last (backward)
         if (currentTab == null) {
-            currentTabIndex = -1; // This will make next index 0
+            currentTabIndex = direction > 0 ? -1 : 0;
         }
 
-        // Calculate the next tab index
-        int nextTabIndex = (currentTabIndex + 1) % enabledTabs.size();
+        // Calculate the next tab index (floorMod so direction -1 wraps to the end)
+        int nextTabIndex = Math.floorMod(currentTabIndex + direction, enabledTabs.size());
         TabBase nextTab = enabledTabs.get(nextTabIndex);
 
         // Calculate which page the next tab should be on and update startTabIndex.
