@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -84,9 +86,17 @@ public class NearbyContainersProvider implements DynamicTabProvider {
     }
 
     /**
-     * Single-source-of-truth cube scan used by both {@link #contribute} (emit tabs) and
+     * Single-source-of-truth scan used by both {@link #contribute} (emit tabs) and
      * {@link #hasContainerSetChanged} (change detection). Returns immutable {@link BlockPos}
      * instances ready to be stored.
+     *
+     * <p>Instead of cube-scanning {@code (2r+1)³} block states (35,937 lookups at range 16,
+     * twice a second while a tabbed screen is open), we walk the block-entity maps of the
+     * few chunks the radius touches — virtually every openable container is a block entity,
+     * so this reduces the scan to a handful of map entries. Known limitation, accepted
+     * deliberately: blocks with a MenuProvider but no block entity (crafting table,
+     * grindstone, anvil, stonecutter, …) no longer get tabs; they are stateless
+     * workstations, not containers, and covering them would reinstate the cube scan.
      */
     private static List<BlockPos> scanPositions(Player player, Level level) {
         int range = Math.max(1, Config.Baked.nearbyContainersTabRange);
@@ -96,38 +106,44 @@ public class NearbyContainersProvider implements DynamicTabProvider {
         BlockPos origin = player.blockPosition();
         double rangeSq = (double) range * range;
 
-        // Dedup set tracks the second half of double-chests once we accept the first half,
-        // so we never emit two tabs for one logical chest.
-        Set<BlockPos> claimedDoubleHalves = new HashSet<>();
         List<BlockPos> found = new ArrayList<>();
-        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
-        for (int dx = -range; dx <= range; dx++) {
-            for (int dy = -range; dy <= range; dy++) {
-                for (int dz = -range; dz <= range; dz++) {
-                    cursor.set(origin.getX() + dx, origin.getY() + dy, origin.getZ() + dz);
+        int minChunkX = (origin.getX() - range) >> 4;
+        int maxChunkX = (origin.getX() + range) >> 4;
+        int minChunkZ = (origin.getZ() - range) >> 4;
+        int maxChunkZ = (origin.getZ() + range) >> 4;
 
-                    // Cheap distance reject before any state lookup.
-                    Vec3 centre = new Vec3(cursor.getX() + 0.5, cursor.getY() + 0.5, cursor.getZ() + 0.5);
-                    if (centre.distanceToSqr(eye) > rangeSq) continue;
+        for (int cx = minChunkX; cx <= maxChunkX; cx++) {
+            for (int cz = minChunkZ; cz <= maxChunkZ; cz++) {
+                // create=false: an unloaded border chunk yields null (a tab may appear one
+                // refresh cycle late while sprinting — cosmetic). Level.getChunk(int,int)
+                // must NOT be used here; on the client it returns empty placeholder chunks.
+                if (!(level.getChunkSource().getChunk(cx, cz, ChunkStatus.FULL, false)
+                        instanceof LevelChunk chunk)) {
+                    continue;
+                }
+                for (BlockPos pos : chunk.getBlockEntities().keySet()) {
+                    if (distSqToEye(eye, pos) > rangeSq) continue;
 
-                    BlockState state = level.getBlockState(cursor);
+                    BlockState state = chunk.getBlockState(pos);
                     if (state.isAir()) continue;
                     // Any block that yields a MenuProvider on right-click is a container as
                     // far as we're concerned. Covers vanilla chests/barrels/shulker boxes/
-                    // hoppers/dispensers/droppers/lecterns/brewing stands/etc. and any modded
-                    // block that follows the standard right-click-to-open pattern.
-                    if (state.getMenuProvider(level, cursor) == null) continue;
+                    // hoppers/dispensers/droppers/brewing stands/etc. and any modded block
+                    // entity that follows the standard right-click-to-open pattern.
+                    if (state.getMenuProvider(level, pos) == null) continue;
 
-                    if (claimedDoubleHalves.contains(cursor)) continue;
-
-                    // Double chests: drop the SECOND half so the player sees one tab per pair.
+                    // Double chests: emit exactly one tab per pair, chosen deterministically
+                    // (the half with the smaller encoded position) so the emitted pos never
+                    // flips between consecutive scans — chunk-map iteration order is not
+                    // stable across chunks, and a flip would make hasContainerSetChanged
+                    // report phantom changes for a pair straddling a chunk border.
                     if (state.hasProperty(BlockStateProperties.CHEST_TYPE)) {
                         ChestType type = state.getValue(BlockStateProperties.CHEST_TYPE);
-                        if (type == ChestType.LEFT || type == ChestType.RIGHT) {
-                            BlockPos other = otherChestHalf(cursor, state, type);
-                            if (claimedDoubleHalves.contains(other)) continue;
-                            claimedDoubleHalves.add(other);
+                        if ((type == ChestType.LEFT || type == ChestType.RIGHT)
+                                && partnerRepresentsPair(level, eye, rangeSq, pos,
+                                        otherChestHalf(pos, state, type))) {
+                            continue;
                         }
                     }
 
@@ -135,19 +151,43 @@ public class NearbyContainersProvider implements DynamicTabProvider {
                     // un-openable. Honour the same gate so we don't emit a tab that produces
                     // no menu when clicked.
                     if (state.getBlock() instanceof ChestBlock
-                            && ChestBlock.isChestBlockedAt(level, cursor)) {
+                            && ChestBlock.isChestBlockedAt(level, pos)) {
                         continue;
                     }
 
-                    if (sightCheck && !hasLineOfSight(level, player, eye, cursor)) {
+                    if (sightCheck && !hasLineOfSight(level, player, eye, pos)) {
                         continue;
                     }
 
-                    found.add(cursor.immutable());
+                    found.add(pos.immutable());
                 }
             }
         }
         return found;
+    }
+
+    /** Squared distance from the eye position to the centre of {@code pos}, allocation-free. */
+    private static double distSqToEye(Vec3 eye, BlockPos pos) {
+        double dx = pos.getX() + 0.5 - eye.x;
+        double dy = pos.getY() + 0.5 - eye.y;
+        double dz = pos.getZ() + 0.5 - eye.z;
+        return dx * dx + dy * dy + dz * dz;
+    }
+
+    /**
+     * True when the OTHER half of a double chest should represent the pair instead of
+     * {@code pos}: it has the smaller encoded position, it is itself within range, and it
+     * is still the matching chest half (an unloaded partner chunk reads as air, in which
+     * case {@code pos} takes over so the pair doesn't vanish).
+     */
+    private static boolean partnerRepresentsPair(Level level, Vec3 eye, double rangeSq,
+            BlockPos pos, BlockPos other) {
+        if (other.asLong() >= pos.asLong()) return false;
+        if (distSqToEye(eye, other) > rangeSq) return false;
+        BlockState otherState = level.getBlockState(other);
+        if (!otherState.hasProperty(BlockStateProperties.CHEST_TYPE)) return false;
+        ChestType otherType = otherState.getValue(BlockStateProperties.CHEST_TYPE);
+        return otherType == ChestType.LEFT || otherType == ChestType.RIGHT;
     }
 
     private static BlockPos otherChestHalf(BlockPos pos, BlockState state, ChestType type) {
