@@ -101,7 +101,7 @@ public class TabButton extends Button {
                 setTooltip(Tooltip.create(tabBase.getTooltip()));
                 if (wasShortClick && this.isMouseOver(mouseX, mouseY) && !this.isDisabled) {
                     TabsMenu.markScreenOpenedViaTab(this.screen);
-                    tabBase.openTargetScreen(this.player);
+                    TabsMenu.openTabSafely(tabBase, this.player);
                 }
             }
             return true;
@@ -116,7 +116,7 @@ public class TabButton extends Button {
         super.onPress(input);
         if (!this.isDisabled) {
             TabsMenu.markScreenOpenedViaTab(this.screen);
-            tabBase.openTargetScreen(this.player);
+            TabsMenu.openTabSafely(tabBase, this.player);
         }
     }
 

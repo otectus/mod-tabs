@@ -1618,7 +1618,8 @@ public class TabsMenu {
             enabledTabs = new ArrayList<>();
             for (List<TabBase> tabBases: screenInfo.tabs.values()) {
                 enabledTabs.addAll(tabBases.stream()
-                        .filter(tabBase -> tabBase.isEnabled(Minecraft.getInstance().player))
+                        .filter(tabBase -> tabBase.isEnabled(Minecraft.getInstance().player)
+                                && !isSessionDisabled(tabBase))
                         .toList());
             }
 
@@ -1666,6 +1667,7 @@ public class TabsMenu {
             }
             // Default placement: at the tail, after all static tabs. Pagination overflow
             // is handled below by re-inserting dynamics into the page-1 tail.
+            dynamicTabs.removeIf(TabsMenu::isSessionDisabled);
             enabledTabs.addAll(dynamicTabs);
 
             // Handle sticky tabs - any tab flagged sticky is pinned to the leading end of the
@@ -1869,6 +1871,46 @@ public class TabsMenu {
         preservedStartTabIndex = 0;
     }
 
+    // Tabs whose openTargetScreen threw this session. Equality-based on purpose:
+    // NearbyContainerTab has pos-equality, so a failing container stays disabled across
+    // the re-inits that rebuild tab instances. Cleared on logout so a chest at pos X in
+    // one world can't poison pos X in the next.
+    private static final Set<TabBase> sessionDisabledTabs = new HashSet<>();
+    private static final net.minecraft.client.gui.components.toasts.SystemToast.SystemToastId TAB_OPEN_FAILED_TOAST =
+            new net.minecraft.client.gui.components.toasts.SystemToast.SystemToastId();
+
+    public static boolean isSessionDisabled(TabBase tab) {
+        return sessionDisabledTabs.contains(tab);
+    }
+
+    public static void clearSessionDisabledTabs() {
+        sessionDisabledTabs.clear();
+    }
+
+    /**
+     * Open a tab's target screen, failing soft: a tab bar touches every other mod's
+     * screens, and the genre's crash reports are all "clicked a tab, game died". A tab
+     * whose open action throws (including LinkageError from a broken mod integration)
+     * is disabled for the session, the player gets a toast, and the full stack goes to
+     * the log.
+     */
+    public static void openTabSafely(TabBase tab, Player player) {
+        if (isSessionDisabled(tab)) return;
+        try {
+            tab.openTargetScreen(player);
+        } catch (Exception | LinkageError e) {
+            vodmordia.modtabs.ModTabs.LOGGER.error(
+                    "Tab {} threw while opening its target screen; disabling it for this session",
+                    tab.getClass().getName(), e);
+            sessionDisabledTabs.add(tab);
+            Minecraft mc = Minecraft.getInstance();
+            net.minecraft.client.gui.components.toasts.SystemToast.add(
+                    mc.getToastManager(), TAB_OPEN_FAILED_TOAST,
+                    net.minecraft.network.chat.Component.translatable("toast.modtabs.tab_open_failed.title"),
+                    net.minecraft.network.chat.Component.translatable("toast.modtabs.tab_open_failed.body"));
+        }
+    }
+
     /**
      * Close the player's open container menu with full vanilla semantics — the close
      * packet, the client-side reset of {@code containerMenu} back to {@code inventoryMenu},
@@ -1977,7 +2019,7 @@ public class TabsMenu {
         markScreenOpenedViaTab(currentScreen);
 
         // Open the next tab
-        nextTab.openTargetScreen(Minecraft.getInstance().player);
+        openTabSafely(nextTab, Minecraft.getInstance().player);
     }
 
     public static class ScreenInfo {

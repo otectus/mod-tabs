@@ -185,6 +185,14 @@ public class ClientNeoForgeEvents {
     }
 
     @SubscribeEvent
+    public static void onLoggingOut(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut event) {
+        // Session-disabled tabs are equality-keyed (NearbyContainerTab compares by pos),
+        // so without this a failing chest at pos X in one world would stay disabled at
+        // pos X in the next.
+        TabsMenu.clearSessionDisabledTabs();
+    }
+
+    @SubscribeEvent
     public static void onScreenOpening(ScreenEvent.Opening event) {
         if (!TabsMenu.wasScreenOpenedViaTab()) {
             TabsMenu.clearTabScreenTracking();
